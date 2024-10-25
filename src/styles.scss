@@ -1,4 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "./assets/_palette.scss" as palettes;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@include mat.core();
+
+// python theme
+$python-primary: mat.define-palette(palettes.$sage-palette, 200);
+$python-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$python-warn: mat.define-palette(mat.$red-palette);
+
+$python-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $python-primary,
+      accent: $python-accent,
+      warn: $python-warn,
+    ),
+    density: 0,
+  )
+);
+
+// c theme
+$c-primary: mat.define-palette(palettes.$azure-palette, 200);
+$c-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+$c-warn: mat.define-palette(mat.$red-palette);
+
+$c-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $c-primary,
+      accent: $c-accent,
+      warn: $c-warn,
+    ),
+  )
+);
+
+// js
+$js-primary: mat.define-palette(palettes.$gold-palette, 200);
+$js-accent: mat.define-palette(mat.$deep-orange-palette, A200, A100, A400);
+$js-warn: mat.define-palette(mat.$red-palette);
+
+$js-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $js-primary,
+      accent: $js-accent,
+      warn: $js-warn,
+    ),
+  )
+);
+
+
+body.python-theme {
+  @include mat.all-component-colors($python-theme);
+}
+
+body.c-theme {
+  @include mat.all-component-colors($c-theme);
+
+}
+
+body.js-theme {
+  @include mat.all-component-colors($js-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+

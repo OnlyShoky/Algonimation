@@ -1,35 +1,39 @@
 <div class="app-container">
-    <!-- Angular Material Toolbar -->
-    <mat-toolbar color="primary">
-      <span>Welcome to Algonimation</span>
-      <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <button mat-raised-button (click)="toggleTheme()">Toggle Theme</button>
-    </mat-toolbar>
+  <!-- Angular Material Toolbar -->
+  <mat-toolbar color="primary">
+    <span>Welcome to Algonimation</span>
+    <span class="spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
 
+    <mat-button-toggle-group
+      [(value)]="defaultLanguage"
+      (change)="onFontStyleChange($event.value)"
+      name="fontStyle"
+      aria-label="Font Style"
+      hideSingleSelectionIndicator="true"
+    >
+      <mat-button-toggle value="c" class="c-toggle">C++</mat-button-toggle>
+      <mat-button-toggle value="js" class="js-toggle">JS </mat-button-toggle>
+      <mat-button-toggle value="python" class="python-toggle" >Python</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </mat-toolbar>
 
-
-    <!-- Angular Material Menu -->
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>code</mat-icon>
-        <span>Visualize Code</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>info</mat-icon>
-        <span>About</span>
-      </button>
-    </mat-menu>
-
-
-
-  </div>
-
-
-
+  <!-- Angular Material Menu -->
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>home</mat-icon>
+      <span>home</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>code</mat-icon>
+      <span>Visualize Code</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>info</mat-icon>
+      <span>About</span>
+    </button>
+  </mat-menu>
+</div>

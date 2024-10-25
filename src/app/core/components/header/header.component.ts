@@ -1,39 +1,62 @@
-import { Component } from '@angular/core';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
+import { Component, OnInit } from '@angular/core';
+import {SharedMaterialModule} from '../../../shared/material/shared-material.module';
+
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
+    SharedMaterialModule,
+    
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
 
-  currentTheme = 'indigo-pink.css';
 
-  toggleTheme() {
-    const themeLink = document.getElementById('theme-link') as HTMLLinkElement;
-    console.log(this.currentTheme);
-    if (this.currentTheme === 'deeppurple-amber.css') {
-      this.currentTheme = 'indigo-pink.css';
-    } else {
-      this.currentTheme = 'deeppurple-amber.css';
+
+export class HeaderComponent implements OnInit {
+
+  currentTheme = '';
+  defaultLanguage:string = 'python'
+
+  theme= 'my_theme'
+
+
+  constructor() { }
+
+
+  ngOnInit(): void {
+    if (typeof document !== 'undefined') {
+      const bodyClassList = document.body.classList;
+      this.currentTheme = bodyClassList.item(1)  ?? '';
+      console.log(this.currentTheme); // Muestra el valor seleccionado en la consola
     }
-    themeLink.href = `/assets/themes/${this.currentTheme}`;
+    
   }
+ onFontStyleChange(value: string) {
+
+    const bodyClassList = document.body.classList;
+    this.currentTheme = bodyClassList.item(1)  ?? 'light-theme';
+    console.log(this.currentTheme); // Muestra el valor seleccionado en la consola
+
+
+    switch (value) {
+      case 'python':
+        document.body.classList.remove(this.currentTheme);
+        document.body.classList.add('python-theme');
+        break;
+      case 'c':
+        document.body.classList.remove(this.currentTheme);
+        document.body.classList.add('c-theme');
+        break;
+      case 'js':
+        document.body.classList.remove(this.currentTheme);
+       document.body.classList.add('js-theme');
+        break;
+    }
+
+  }
+
 }

@@ -3,7 +3,7 @@
 
 @include mat.core();
 
-// python theme
+// Python Light Theme
 $python-primary: mat.define-palette(palettes.$sage-palette, 200);
 $python-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
 $python-warn: mat.define-palette(mat.$red-palette);
@@ -19,7 +19,23 @@ $python-theme: mat.define-light-theme(
   )
 );
 
-// c theme
+// Python Dark Theme
+$python-dark-primary: mat.define-palette(palettes.$sage-palette, 900);
+$python-dark-accent: mat.define-palette(mat.$green-palette, A700, A400, A200);
+$python-dark-warn: mat.define-palette(mat.$red-palette);
+
+$python-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $python-dark-primary,
+      accent: $python-dark-accent,
+      warn: $python-dark-warn,
+    ),
+    density: 0,
+  )
+);
+
+// C Light Theme
 $c-primary: mat.define-palette(palettes.$azure-palette, 100);
 $c-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
 $c-warn: mat.define-palette(mat.$red-palette);
@@ -34,7 +50,22 @@ $c-theme: mat.define-light-theme(
   )
 );
 
-// js
+// C Dark Theme
+$c-dark-primary: mat.define-palette(palettes.$azure-palette, 900);
+$c-dark-accent: mat.define-palette(mat.$blue-palette, A700, A400, A200);
+$c-dark-warn: mat.define-palette(mat.$red-palette);
+
+$c-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $c-dark-primary,
+      accent: $c-dark-accent,
+      warn: $c-dark-warn,
+    ),
+  )
+);
+
+// JavaScript Light Theme
 $js-primary: mat.define-palette(palettes.$gold-palette, 200);
 $js-accent: mat.define-palette(mat.$deep-orange-palette, A200, A100, A400);
 $js-warn: mat.define-palette(mat.$red-palette);
@@ -49,20 +80,47 @@ $js-theme: mat.define-light-theme(
   )
 );
 
+// JavaScript Dark Theme
+$js-dark-primary: mat.define-palette(palettes.$gold-palette, 900);
+$js-dark-accent: mat.define-palette(mat.$deep-orange-palette, A700, A400, A200);
+$js-dark-warn: mat.define-palette(mat.$red-palette);
 
+$js-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $js-dark-primary,
+      accent: $js-dark-accent,
+      warn: $js-dark-warn,
+    ),
+  )
+);
+
+// Apply the themes to body classes
 body.python-theme {
   @include mat.all-component-colors($python-theme);
 }
 
 body.c-theme {
   @include mat.all-component-colors($c-theme);
-
 }
 
 body.js-theme {
   @include mat.all-component-colors($js-theme);
 }
 
+body.python-dark-theme {
+  @include mat.all-component-colors($python-dark-theme);
+}
+
+body.c-dark-theme {
+  @include mat.all-component-colors($c-dark-theme);
+}
+
+body.js-dark-theme {
+  @include mat.all-component-colors($js-dark-theme);
+}
+
+// General styles
 html,
 body {
   height: 100%;
@@ -71,6 +129,3 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-
-

@@ -40,7 +40,6 @@ $light-focused: rgba(white, 0.12);
 
 $azure-dark-text: rgba(0, 92, 187, 1);
 $azure-darker-text: rgba(0, 0, 110, 1);
-
 $azure-light-text: rgba(171, 199, 255, 1);
 
 
@@ -55,8 +54,8 @@ $azure-palette: (
   500: #0074e9,
   600: #005cbb,
   700: #0050a5,
-  800: #00458f,
-  900: #003a7a,
+  800: #003a7a,
+  900: #001F3F,
   A100: #f9f9ff,
   A200: #ecf0ff,
   A400: #b0d8ff,
@@ -80,8 +79,8 @@ $azure-palette: (
 );
 
 $sage-dark-text: rgba(62, 77, 52, 1); // Example for dark text
-$sage-darker-text: rgba(31, 38, 26, 1); // Example for darker text
-$sage-light-text: rgba(145, 182, 130, 1); // Example for light text
+$sage-darker-text: rgba(18, 55, 42, 1); // Example for darker text
+$sage-light-text: rgba(211, 236, 188, 1); // Example for light text
 
 $sage-palette: (
   50: #f3f9f0,         // Lightest shade
@@ -92,8 +91,8 @@ $sage-palette: (
   500: #87986a,       // Provided color
   600: #87986a,       // Darker shade
   700: #718355,       // Darker shade
-  800: #3c703f,       // Darker shade
-  900: #2f5c2e,       // Darker shade
+  800: #2f5c2e,       // Darker shade
+  900: #163020,       // Darker shade
   A100: #f9f9f0,      // Light accent shade
   A200: #ecf0f0,      // Light accent shade
   A400: #c7e6b4,      // Medium accent shade
@@ -118,7 +117,6 @@ $sage-palette: (
 
 $gold-dark-text: rgba(50, 50, 50, 1); // Example for dark text
 $gold-darker-text: rgba(30, 30, 30, 1); // Example for darker text
-
 $gold-light-text: rgba(255, 228, 196, 1); // Example for light text
 $gold-palette: (
   50: #fff8e1,         // Very light gold

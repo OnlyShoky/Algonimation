@@ -1,11 +1,19 @@
 .sidenav-container {
   height: 100%;
+
 }
 
 .sidenav {
   width: 100px;
-  background-color: inherit;
+  height: 100%;
 }
+
+app-darkmode-toggle {
+  margin-left: 1rem; // Añade un margen si deseas separarlo un poco del borde inferior
+  position:absolute;
+  bottom: 2rem;
+}
+
 
 // .sidenav .mat-toolbar {
 //   background: inherit;

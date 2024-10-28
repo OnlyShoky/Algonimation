@@ -1,58 +1,55 @@
-/* The switch - the box around the slider */
-.switch {
-    font-size: 17px;
+/* From Uiverse.io by andrew-demchenk0 */ 
+.theme {
+    --bg-color: #fff;
+    --main-color: #323232;
     position: relative;
-    display: inline-block;
-    width: 3.5em;
-    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--bg-color);
+    border-radius: 100%;
+    border: 2px solid var(--main-color);
+    box-shadow: 4px 4px var(--main-color);
+    
   }
   
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
+  .input {
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: white;
-    transition: .4s;
-    border-radius: 30px;
-  }
-  
-  .slider:before {
     position: absolute;
-    content: "";
-    height: 1.4em;
-    width: 1.4em;
-    border-radius: 20px;
-    left: 0.3em;
-    bottom: 0.3em;
-    background-color: black;
-    transition: .4s;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
   }
   
-  .switch input:checked + .slider:before {
-    background-color: black;
-    border-radius: 50px;
-    box-shadow: inset 9px 0px 1px 0px white;
+  .icon {
+    position: absolute;
+    top: calc(50% - 13px);
+    left: calc(50% - 13px);
+    width: 26px;
+    height: 26px;
   }
   
-  .switch input:checked + .slider {
-    background-color: black;
+  .icon.icon-moon {
+    fill: var(--main-color);
   }
   
-  .switch input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+  .icon.icon-sun {
+    stroke: var(--main-color);
+    display: none;
   }
   
-  .switch input:checked + .slider:before {
-    transform: translateX(1.5em);
+  .input:checked ~ .icon.icon-sun {
+    display: block;
+  }
+  
+  .input:checked ~ .icon.icon-moon {
+    display: none;
+  }
+  
+  .theme:active {
+    box-shadow: 0px 0px var(--main-color);
+    transform: translate(3px, 3px);
   }

@@ -8,6 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { DarkmodeToggleComponent } from "../../../../shared/components/darkmode-toggle/darkmode-toggle.component";
 
 @Component({
   selector: 'app-nav',
@@ -21,7 +22,8 @@ import { map, shareReplay } from 'rxjs/operators';
     MatListModule,
     MatIconModule,
     AsyncPipe,
-  ]
+    DarkmodeToggleComponent
+]
 })
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);

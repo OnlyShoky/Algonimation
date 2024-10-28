@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {SharedMaterialModule} from '../../../shared/material/shared-material.module';
-import {DarkmodeToggleComponent} from '../../../shared/components/darkmode-toggle/darkmode-toggle.component';
 
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
@@ -14,7 +13,6 @@ import { CodeLangButtonComponent } from "./code-lang-button/code-lang-button.com
   imports: [
     SharedMaterialModule,
     CommonModule,
-    DarkmodeToggleComponent,
     CodeLangButtonComponent
 ],
   templateUrl: './header.component.html',

@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 
 
@@ -28,7 +30,9 @@ import {MatDividerModule} from '@angular/material/divider';
     MatInputModule,
     MatMenuModule,
     MatButtonToggleModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSlideToggleModule,
+    CommonModule,
   ]
 })
 export class SharedMaterialModule { }

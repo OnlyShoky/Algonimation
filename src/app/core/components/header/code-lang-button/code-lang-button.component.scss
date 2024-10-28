@@ -1,0 +1,62 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+
+@import "../../../../../styles.scss"; //  <-- the theme file shown above
+
+.mat-button-toggle-group {
+    transform: scale(0.7);
+
+  border-radius: 50px; // Makes the whole group rounded
+//   transform: scale(0.5); // adjust the scale value to your liking
+  border: 3px solid black; // Customize the color and thickness
+
+  .mat-button-toggle {
+    font-size: larger;
+    transition: background-color 0.3s ease, color 0.3s ease; // Add smooth transition for color changes
+
+    // Define color for C++
+    &.c-toggle {
+      background-color: mat.get-color-from-palette($c-primary, 200);
+
+      &.mat-button-toggle-checked {
+        background-color: mat.get-color-from-palette($c-primary, 400);
+      }
+
+      &:hover {
+        background-color: mat.get-color-from-palette($c-primary, 500);
+      }
+    }
+
+    // Define color for JS
+    &.js-toggle {
+        margin: 0; // Remove default margin
+        padding: 0; // Remove default padding
+      border-left: 3px solid black; // Customize the color and thickness
+      border-right: 3px solid black; // Customize as needed
+
+      background-color: mat.get-color-from-palette($js-primary, 200);
+
+      &.mat-button-toggle-checked {
+        background-color: mat.get-color-from-palette($js-primary, 400);
+      }
+
+      &:hover {
+        background-color: mat.get-color-from-palette($js-primary, 500);
+      }
+    }
+
+    // Define color for Python
+    &.python-toggle {
+        border:none;
+      background-color: mat.get-color-from-palette($python-primary, 200);
+
+      &.mat-button-toggle-checked {
+        background-color: mat.get-color-from-palette($python-primary, 400);
+      }
+
+      &:hover {
+        background-color: mat.get-color-from-palette($python-primary, 600);
+      }
+    }
+  }
+}

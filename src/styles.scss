@@ -36,31 +36,31 @@ $python-dark-theme: mat.define-dark-theme(
 );
 
 // C Light Theme
-$c-primary: mat.define-palette(palettes.$azure-palette, 100);
-$c-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
-$c-warn: mat.define-palette(mat.$red-palette);
+$cpp-primary: mat.define-palette(palettes.$azure-palette, 100);
+$cpp-accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+$cpp-warn: mat.define-palette(mat.$red-palette);
 
-$c-theme: mat.define-light-theme(
+$cpp-theme: mat.define-light-theme(
   (
     color: (
-      primary: $c-primary,
-      accent: $c-accent,
-      warn: $c-warn,
+      primary: $cpp-primary,
+      accent: $cpp-accent,
+      warn: $cpp-warn,
     ),
   )
 );
 
 // C Dark Theme
-$c-dark-primary: mat.define-palette(palettes.$azure-palette, 900);
-$c-dark-accent: mat.define-palette(mat.$blue-palette, A700, A400, A200);
-$c-dark-warn: mat.define-palette(mat.$red-palette);
+$cpp-dark-primary: mat.define-palette(palettes.$azure-palette, 900);
+$cpp-dark-accent: mat.define-palette(mat.$blue-palette, A700, A400, A200);
+$cpp-dark-warn: mat.define-palette(mat.$red-palette);
 
-$c-dark-theme: mat.define-dark-theme(
+$cpp-dark-theme: mat.define-dark-theme(
   (
     color: (
-      primary: $c-dark-primary,
-      accent: $c-dark-accent,
-      warn: $c-dark-warn,
+      primary: $cpp-dark-primary,
+      accent: $cpp-dark-accent,
+      warn: $cpp-dark-warn,
     ),
   )
 );
@@ -98,34 +98,120 @@ $js-dark-theme: mat.define-dark-theme(
 // Apply the themes to body classes
 body.python-theme {
   @include mat.all-component-colors($python-theme);
+  .line-highlight {
+    background-color: rgba(
+      mat.get-color-from-palette($python-primary, 900),
+      0.1
+    );
+
+    &::before {
+      background-color: mat.get-color-from-palette($python-primary, 200);
+      color: palettes.$sage-darker-text;
+      border : 2px solid palettes.$sage-darker-text;
+    }
+  }
 }
 
-body.c-theme {
-  @include mat.all-component-colors($c-theme);
+body.cpp-theme {
+  @include mat.all-component-colors($cpp-theme);
+  .line-highlight {
+    background-color: rgba(mat.get-color-from-palette($cpp-primary, 900), 0.1);
+
+    &::before {
+      background-color: mat.get-color-from-palette($cpp-primary, 200);
+      color: palettes.$azure-darker-text;
+      border : 2px solid palettes.$azure-darker-text;
+
+    }
+  }
 }
 
 body.js-theme {
   @include mat.all-component-colors($js-theme);
+  .line-highlight {
+    background-color: rgba(mat.get-color-from-palette($js-primary, 900), 0.1);
+
+    &::before {
+      background-color: mat.get-color-from-palette($js-primary, 200);
+      color: palettes.$gold-darker-text;
+      border : 2px solid palettes.$gold-darker-text;
+
+    }
+  }
 }
 
 body.python-dark-theme {
   @include mat.all-component-colors($python-dark-theme);
+  .mat-icon {
+    color: mat.get-color-from-palette(
+      $python-primary,
+      200
+    ); // Especifica el tono
+  }
+
+  .line-highlight {
+    background-color: rgba(
+      mat.get-color-from-palette($python-primary, 200),
+      0.2
+    );
+
+    &::before {
+      background-color: mat.get-color-from-palette($python-primary, 900);
+      color: palettes.$sage-light-text;
+      border : 2px solid palettes.$sage-light-text;
+
+    }
+  }
 }
 
-body.c-dark-theme {
-  @include mat.all-component-colors($c-dark-theme);
+body.cpp-dark-theme {
+  @include mat.all-component-colors($cpp-dark-theme);
+  .mat-icon {
+    color: mat.get-color-from-palette($cpp-primary, 200);
+  }
+
+  .line-highlight {
+    background-color: rgba(mat.get-color-from-palette($cpp-primary, 200), 0.2);
+
+    &::before {
+      background-color: mat.get-color-from-palette($cpp-primary, 900);
+      color: palettes.$azure-light-text;
+      border : 2px solid palettes.$azure-light-text;
+
+    }
+  }
 }
 
 body.js-dark-theme {
   @include mat.all-component-colors($js-dark-theme);
+  .mat-icon {
+    color: mat.get-color-from-palette($js-primary, 200);
+  }
+  .line-highlight {
+    background-color: rgba(mat.get-color-from-palette($js-primary, 200), 0.2);
+
+    &::before {
+      background-color: mat.get-color-from-palette($js-primary, 900);
+      color: palettes.$gold-light-text;
+      border : 2px solid palettes.$gold-light-text;
+
+    }
+  }
 }
 
 // General styles
 html,
 body {
   height: 100%;
-}
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  .prism-theme{
+    overflow : none;
+  }
+  .line-highlight::before {
+    top: 0.1em;
+    font: bold 100% sans-serif;
+    box-shadow: none;
+  }
 }

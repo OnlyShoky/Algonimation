@@ -19,8 +19,27 @@ app-darkmode-toggle {
 //   background: inherit;
 // }
 
-.mat-toolbar.mat-primary {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; // Align items to the top of the container
+  gap: 2rem; // Space between the two divs
+  padding: 1rem;
+
+  .code-block-container {
+    width: 45%; // Adjust as needed
+  }
+
+  .side-content {
+    width: 45%; // Adjust as needed
+  }
+
+  // Adjust layout for smaller screens
+  @media (max-width: 768px) {
+    flex-direction: column; // Stack vertically on small screens
+    .code-block-container,
+    .side-content {
+      width: 100%;
+    }
+  }
 }

@@ -13,14 +13,12 @@
         <a mat-list-item href="#">Link 3</a>
         <app-darkmode-toggle></app-darkmode-toggle>
       </div>
-      
-
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav position="end">End</mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar >
+    <mat-toolbar>
       @if (isHandset$ | async) {
       <button
         type="button"
@@ -31,8 +29,16 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
-      <span>Algonimation</span>
+      <!-- <span>Algonimation</span> -->
     </mat-toolbar>
-    <!-- Add Content Here -->
+
+    <div class="flex-container">
+      <div class="code-block-container">
+        <app-code-block></app-code-block>
+      </div>
+      <div class="side-content">
+        <app-temp-example></app-temp-example>
+      </div>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

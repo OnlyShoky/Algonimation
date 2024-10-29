@@ -16,16 +16,16 @@
     transition: background-color 0.3s ease, color 0.3s ease; // Add smooth transition for color changes
 
     // Define color for C++
-    &.c-toggle {
-      background-color: mat.get-color-from-palette($c-primary, 200);
+    &.cpp-toggle {
+      background-color: mat.get-color-from-palette($cpp-primary, 200);
       color: black;
 
       &.mat-button-toggle-checked {
-        background-color: mat.get-color-from-palette($c-primary, 400);
+        background-color: mat.get-color-from-palette($cpp-primary, 400);
       }
 
       &:hover {
-        background-color: mat.get-color-from-palette($c-primary, 500);
+        background-color: mat.get-color-from-palette($cpp-primary, 500);
       }
     }
 

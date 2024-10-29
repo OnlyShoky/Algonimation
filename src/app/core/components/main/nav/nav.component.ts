@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DarkmodeToggleComponent } from "../../../../shared/components/darkmode-toggle/darkmode-toggle.component";
+import { CodeBlockComponent } from '../../../../shared/components/code-block/code-block.component';
+import { TempExampleComponent } from "../../../../shared/components/temp-example/temp-example.component";
 
 @Component({
   selector: 'app-nav',
@@ -22,7 +24,9 @@ import { DarkmodeToggleComponent } from "../../../../shared/components/darkmode-
     MatListModule,
     MatIconModule,
     AsyncPipe,
-    DarkmodeToggleComponent
+    DarkmodeToggleComponent,
+    CodeBlockComponent,
+    TempExampleComponent
 ]
 })
 export class NavComponent {

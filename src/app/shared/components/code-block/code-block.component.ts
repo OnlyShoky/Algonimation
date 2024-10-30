@@ -1,8 +1,10 @@
-import {  Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemesManagerService } from '../../services/themes-manager.service';
 
+import { languages } from 'prismjs';
 declare var Prism: any;
+
 
 @Component({
   selector: 'app-code-block',
@@ -12,6 +14,7 @@ declare var Prism: any;
   styleUrl: './code-block.component.scss',
 })
 export class CodeBlockComponent implements OnInit {
+  
   dataLine: string = '1'; // Default data-line value
   codeClass: string = 'language-python'; // Default class
   codeText: string =
@@ -55,12 +58,16 @@ export class CodeBlockComponent implements OnInit {
   constructor(private themesManagerService: ThemesManagerService) {}
 
   ngOnInit() {
-    const code = this.codePython;
-    this.highlightedCode = Prism.highlight(
-      code,
-      Prism.languages.python,
-      'python'
-    );
+    if (typeof window !== 'undefined') {
+      // Code that uses Prism.js
+      const code = this.codePython;
+      this.highlightedCode = Prism.highlight(
+        code,
+        Prism.languages.python,
+        'python'
+      );
+
+    }
 
     this.themesManagerService.currentLanguage$.subscribe((language: string) => {
       this.updateCodeBlock(language);
@@ -75,8 +82,7 @@ export class CodeBlockComponent implements OnInit {
   }
 
   updateCodeBlock(newClass: string) {
-    console.log(" updateCodeBlock: ",newClass);
-    this.codeClass = "language-" + newClass;
+    this.codeClass = 'language-' + newClass;
 
     switch (newClass) {
       case 'python':
@@ -120,5 +126,12 @@ export class CodeBlockComponent implements OnInit {
     console.log(newText);
     this.codeText = newText;
     Prism.highlightAll();
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    // Execute Prism.highlightAll() on window resize or zoom change
+    Prism.highlightAll();
+    console.log('Window resized');
   }
 }

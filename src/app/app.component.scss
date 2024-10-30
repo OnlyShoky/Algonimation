@@ -1,5 +1,25 @@
-div{
-    display:grid;
-    min-height: 100dvb;
-    grid-template-rows: auto 1fr auto;
-}
+// div{
+//     display:block;
+//     min-height: 100dvb;
+//     // max-width: 900px;
+//     grid-template-rows: auto 1fr auto;
+// }
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+  }
+  
+  .main-content {
+    flex: 1; /* Takes up the remaining space between header and footer */
+  }
+  
+  .footer {
+    height: 50px; /* Adjust as needed */
+    background-color: #333; /* Customize footer color */
+    color: white; /* Customize footer text color */
+    text-align: center;
+    padding: 10px 0;
+  }
+  

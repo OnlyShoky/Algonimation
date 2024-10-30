@@ -1,28 +1,22 @@
-
-
-
-.flex-spacer{
-    flex: 1 ;
+.flex-spacer {
+  flex: 1;
 }
 
-.navbar-header{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+.navbar-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
+button {
+  border-radius: 50px;
+}
 
-  button{
-    border-radius: 50px;
-  }
+.icon {
+  display: flex;
+  align-items: center;
+}
 
-
-
-  .icon {
-    display: flex;
-    align-items: center;
-  }
-  
-  .icon svg {
-    vertical-align: bottom;
-  }
+.icon svg {
+  vertical-align: bottom;
+}

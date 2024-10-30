@@ -206,12 +206,24 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  .prism-theme{
-    overflow : none;
-  }
+  // .prism-theme{
+  //   overflow : none;
+  // }
   .line-highlight::before {
     top: 0.1em;
     font: bold 100% sans-serif;
     box-shadow: none;
+  }
+
+  @media (max-width: 768px) {
+    .line-highlight::before {
+      top: 0em;
+    }
+
+    .mat-toolbar{
+
+      gap: 1rem; // Space between the two divs
+      padding: 1rem;
+    }
   }
 }

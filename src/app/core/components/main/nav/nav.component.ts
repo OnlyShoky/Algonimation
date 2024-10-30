@@ -11,6 +11,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { DarkmodeToggleComponent } from "../../../../shared/components/darkmode-toggle/darkmode-toggle.component";
 import { CodeBlockComponent } from '../../../../shared/components/code-block/code-block.component';
 import { TempExampleComponent } from "../../../../shared/components/temp-example/temp-example.component";
+import { ChartAnimationComponent } from "../../../../shared/components/chart-animation/chart-animation.component";
 
 @Component({
   selector: 'app-nav',
@@ -26,7 +27,8 @@ import { TempExampleComponent } from "../../../../shared/components/temp-example
     AsyncPipe,
     DarkmodeToggleComponent,
     CodeBlockComponent,
-    TempExampleComponent
+    TempExampleComponent,
+    ChartAnimationComponent
 ]
 })
 export class NavComponent {

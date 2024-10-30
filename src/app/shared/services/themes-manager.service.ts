@@ -9,77 +9,117 @@ export class ThemesManagerService {
   private isDarkMode: boolean = false;
   private currentLanguage: string = 'python';
 
-
-  // Crear un BehaviorSubject para el idioma
+  // Create a BehaviorSubject for the language
   private languageSubject = new BehaviorSubject<string>(this.currentLanguage);
   currentLanguage$ = this.languageSubject.asObservable();
 
-  // Método para alternar entre temas claros y oscuros
+  // Create a BehaviorSubject for the language
+  private themeSubject = new BehaviorSubject<string>(this.currentTheme);
+  currentTheme$ = this.themeSubject.asObservable();
+
+  // Define theme colors
+  private themeColors: {
+    [key: string]: { primary: string; accent: string; warn: string };
+  } = {
+    'python-theme': { primary: '#A8D5BA', accent: '#69F0AE', warn: '#FF5252' },
+    'python-dark-theme': {
+      primary: '#005A32',
+      accent: '#00C853',
+      warn: '#D32F2F',
+    },
+    'cpp-theme': { primary: '#A1C4E9', accent: '#448AFF', warn: '#FF5252' },
+    'cpp-dark-theme': {
+      primary: '#0D47A1',
+      accent: '#2962FF',
+      warn: '#D32F2F',
+    },
+    'js-theme': { primary: '#fad643', accent: '#ff6e40', warn: '#FF5252' },
+    'js-dark-theme': { primary: '#FFA000', accent: '#FF6D00', warn: '#D32F2F' },
+  };
+
+  // Toggle dark mode
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     this.switchLanguageTheme(this.currentLanguage);
     this.switchCodeBlockTheme(this.isDarkMode);
-
-    console.log(' ThemesManagerService: toggleDarkMode: ' + this.isDarkMode);
   }
 
   switchLanguage(language: string) {
     this.currentLanguage = language;
-    this.languageSubject.next(language); // Notifica el cambio
-
-    console.log(
-      ' ThemesManagerService: switchLanguage: ' + this.currentLanguage)
+    this.languageSubject.next(language);
   }
 
-  // Cambia el tema actual
+  // Switch current theme
   switchTheme(theme: string) {
     document.body.classList.remove(this.currentTheme);
     this.currentTheme = theme;
+    this.themeSubject.next(this.currentTheme);
     document.body.classList.add(this.currentTheme);
   }
 
   switchCodeBlockTheme(isDarkMode: boolean) {
-    if(isDarkMode) {
-      
-      document.body.classList.remove("prism-theme");
-      document.body.classList.add("prism-tomorrow-theme");
+    if (isDarkMode) {
+      document.body.classList.remove('prism-theme');
+      document.body.classList.add('prism-tomorrow-theme');
       return;
     }
-    document.body.classList.remove("prism-tomorrow-theme");
-    document.body.classList.add("prism-theme");
-
+    document.body.classList.remove('prism-tomorrow-theme');
+    document.body.classList.add('prism-theme');
   }
 
-  // Cambia el tema basado en el lenguaje
+  // Switch theme based on language
   switchLanguageTheme(language: string) {
     const themeMap: { [key: string]: string } = {
       python: this.isDarkMode ? 'python-dark-theme' : 'python-theme',
       cpp: this.isDarkMode ? 'cpp-dark-theme' : 'cpp-theme',
       js: this.isDarkMode ? 'js-dark-theme' : 'js-theme',
     };
-    
-    this.switchLanguage(language);
     this.switchTheme(themeMap[language] || 'light-theme');
+    this.switchLanguage(language);
 
-    this.currentLanguage = language;
-
-    console.log(
-      ' ThemesManagerService: switchLanguageTheme: ' +
-        themeMap +
-        ' - ' +
-        themeMap[language]
-    );
-    console.log(
-      ' ThemesManagerService: switchLanguageTheme: ' + this.currentTheme
-    );
   }
 
   getCurrentTheme(): string {
-    console.log('ThemesManagerService: getCurrentTheme: ' + this.currentTheme);
     return this.currentTheme;
   }
 
   getIsDarkMode(): boolean {
     return this.isDarkMode;
   }
+
+  // Function to get the current colors based on the theme
+  getThemeColors():
+    | { primary: string; accent: string; warn: string }
+    | undefined {
+    return this.themeColors[this.currentTheme];
+  }
+  // Function to get current theme colors in RGBA format
+  getThemeColorsRGBA(
+    alpha: number = 1
+  ): { primary: string; accent: string; warn: string } | undefined {
+    console.log('RGBA : currenttheme : ', this.currentTheme);
+    const colors = this.themeColors[this.currentTheme];
+    if (colors) {
+      return {
+        primary: hexToRgba(colors.primary, alpha),
+        accent: hexToRgba(colors.accent, alpha),
+        warn: hexToRgba(colors.warn, alpha),
+      };
+    }
+    return undefined;
+  }
+}
+
+// Utility function to convert hex to RGBA
+function hexToRgba(hex: string, alpha: number = 1): string {
+  // Remove the hash at the start if it's there
+  hex = hex.replace(/^#/, '');
+
+  // Parse the r, g, b values
+  let r = parseInt(hex.substring(0, 2), 16);
+  let g = parseInt(hex.substring(2, 4), 16);
+  let b = parseInt(hex.substring(4, 6), 16);
+
+  // Return the rgba color string
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }

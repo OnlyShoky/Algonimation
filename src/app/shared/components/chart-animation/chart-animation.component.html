@@ -1,7 +1,13 @@
 <div class="chart-container">
     <canvas  id="MyChart" >{{ chart }}</canvas>
-    <button mat-raised-button color="primary" (click)="swapValues(0, 1)">Swap 1 and 2</button>
-    <button mat-raised-button color="accent" (click)="swapValues(0, 5)">Swap 1 and 5</button>
+    <button mat-raised-button color="primary" (click)="startSorting()">Sort</button>
+    <button mat-raised-button color="accent" (click)="shuffleArray()">Shuffle</button>
+    <label for="speed">Select Speed:</label>
+    <select id="speed" [(ngModel)]="swapDelay">
+      <option [value]="100">Fast</option>
+      <option [value]="300">Medium</option>
+      <option [value]="600">Slow</option>
+    </select>
 
 
 </div>

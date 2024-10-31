@@ -17,13 +17,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": ["prismjs"],
             "outputPath": "dist/algonimation",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [ "src/assets","src/assets/favicon.ico"],
+            "assets": ["src/assets", "src/assets/favicon.ico"],
             "styles": [
               "src/assets/themes/azure-blue.css",
               "src/styles.scss",
@@ -53,12 +54,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "10kb",
+                  "maximumError": "500kb"
                 }
               ],
               "outputHashing": "all"

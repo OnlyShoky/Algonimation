@@ -1,10 +1,10 @@
-import { Component, OnInit,HostListener } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemesManagerService } from '../../services/themes-manager.service';
+import { Subscription } from 'rxjs';
+import { SortingService } from '../../services/sorting.service';
 
-import { languages } from 'prismjs';
 declare var Prism: any;
-
 
 @Component({
   selector: 'app-code-block',
@@ -14,7 +14,16 @@ declare var Prism: any;
   styleUrl: './code-block.component.scss',
 })
 export class CodeBlockComponent implements OnInit {
-  
+  async loadPrism() {
+    if (typeof Prism === 'undefined') {
+      await import('prismjs');
+    }
+  }
+
+  private subscriptions: Subscription[] = [];
+  public lineAnimationDelay: number = 100; // Default delay in milliseconds
+
+
   dataLine: string = '1'; // Default data-line value
   codeClass: string = 'language-python'; // Default class
   codeText: string =
@@ -45,7 +54,6 @@ export class CodeBlockComponent implements OnInit {
     for (let i = 0; i < n - 1; i++) {
         for (let j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                // Swap arr[j] and arr[j+1]
                 [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
             }
         }
@@ -55,7 +63,10 @@ export class CodeBlockComponent implements OnInit {
 
   highlightedCode!: string;
 
-  constructor(private themesManagerService: ThemesManagerService) {}
+  constructor(
+    private themesManagerService: ThemesManagerService,
+    private sortingService: SortingService
+  ) {}
 
   ngOnInit() {
     if (typeof window !== 'undefined') {
@@ -66,24 +77,45 @@ export class CodeBlockComponent implements OnInit {
         Prism.languages.python,
         'python'
       );
-
     }
 
-    this.themesManagerService.currentLanguage$.subscribe((language: string) => {
-      this.updateCodeBlock(language);
-    });
+    this.subscriptions.push(
+      this.themesManagerService.currentLanguage$.subscribe(
+        (language: string) => {
+          this.updateCodeBlock(language);
+        }
+      ),
+      this.sortingService.linePointerSubject$.subscribe(
+        async (lineEvent: number) => {
+          console.log('lineEvent: ', lineEvent);
+          await this.changeDataLine(lineEvent);
+          this.sortingService.triggerNextStep();
+
+          // Update chart or visualization based on swapEvent if needed
+        }
+      )
+    );
   }
 
-  changeDataLine(line: number) {
-    this.dataLine = line.toString();
-    requestAnimationFrame(() => {
-      Prism.highlightAll();
+  changeDataLine(line: number): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.dataLine = line.toString();
+        requestAnimationFrame(() => {
+          Prism.highlightAll();
+        });
+        resolve();
+      }, this.lineAnimationDelay);
     });
   }
 
   updateCodeBlock(newClass: string) {
+    if (typeof Prism == 'undefined') {
+      console.warn('Prism is still not defined after import');
+      return;
+    }
     this.codeClass = 'language-' + newClass;
-
+    console.log('Updated to original theme colors');
     switch (newClass) {
       case 'python':
         this.codeText = this.codePython;
@@ -133,5 +165,9 @@ export class CodeBlockComponent implements OnInit {
     // Execute Prism.highlightAll() on window resize or zoom change
     Prism.highlightAll();
     console.log('Window resized');
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

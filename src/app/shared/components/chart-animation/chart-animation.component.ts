@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  Input,
   NgModule,
   OnDestroy,
   OnInit,
@@ -11,6 +12,8 @@ import { SortingService } from '../../services/sorting.service';
 import Chart from 'chart.js/auto';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-chart-animation',
@@ -20,21 +23,26 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./chart-animation.component.scss'],
 })
 export class ChartAnimationComponent implements OnInit, OnDestroy {
+  @Input() sortAlgorithm!: string;
+
   private subscriptions: Subscription[] = [];
   public chart: any;
   public labels: string[] = [];
   public colors: string[] = [];
   public data: number[] = [];
 
-  public swapDelay: number = 300; // Default delay in milliseconds
+  public animationDelay: number = 300; // Default delay in milliseconds
 
   public themeColors:
     | { primary: string; accent: string; warn: string }
     | undefined;
+  index1: number = -1 ;
+  index2: number = -1 ;
 
   constructor(
     private themesManagerService: ThemesManagerService,
-    private sortingService: SortingService
+    private sortingService: SortingService,
+    private route: ActivatedRoute
   ) {
     this.data = this.sortingService.getValues();
     // Generate labels from 0 to the length of data
@@ -48,6 +56,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    
     this.createChart();
     this.subscriptions.push(
       this.themesManagerService.currentTheme$.subscribe(() => {
@@ -55,10 +64,22 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
         this.updateColors();
       }),
+      this.sortingService.highlightSubject$.subscribe(async (highlightEvent) => {
+        
+        await this.highlightBar(highlightEvent.index, highlightEvent.unhighlight);
+        if (highlightEvent.needTrigger)
+          this.sortingService.triggerNextStep();
+        // Update chart or visualization based on highlightEvent if needed
+      }),
       this.sortingService.swapObservable$.subscribe(async (swapEvent) => {
         await this.swapValues(swapEvent.index1, swapEvent.index2);
         this.sortingService.triggerNextStep();
         // Update chart or visualization based on swapEvent if needed
+      }),
+      this.route.paramMap.subscribe((params) => {
+        // You can access route parameters here
+        this.sortAlgorithm = params.get('algorithm') || '';
+        
       })
     );
   }
@@ -68,18 +89,35 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   }
 
   startSorting() {
-    this.sortingService.bubbleSort([...this.data]);
+    switch (this.sortAlgorithm) {
+      case 'bubble-sort':
+        this.sortingService.bubbleSort([...this.data]);
+        break;
+
+      case 'insertion-sort':
+        this.sortingService.insertionSort([...this.data]);
+        break;
+
+      case 'selection-sort':
+        this.sortingService.selectionSort([...this.data]);
+        break;
+
+      default:
+        console.log('Invalid sort algorithm');
+        break;
+    }
   }
 
   shuffleArray() {
     this.data = this.sortingService.shuffleArray(this.data);
+    this.updateColors();
     this.chart.update();
   }
 
   updateColors(colors: string[] = this.colors) {
     // Update colors with the primary theme color or default color if not set
     this.colors = colors.map(
-      (color) => this.themeColors?.primary || 'rgba(255, 99, 132, 0.5)'
+      (color) => color = this.themeColors?.primary || 'rgba(255, 99, 132, 0.5)'
     );
 
     // Use regex to replace the alpha value in rgba with '1'
@@ -99,105 +137,183 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     }
   }
 
-  createChart() {
-    this.chart = new Chart('MyChart', {
-      type: 'bar',
-      data: {
-        labels: this.labels,
-        datasets: [
-          {
-            label: '',
-            data: this.data,
-            backgroundColor: this.colors,
-            borderColor: this.colors.map((color) => color.replace('0.5', '1')), // Make borders opaque
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 2.5,
-        responsive: true,
+  // Define variables to store initial positions and distance for swapping
+private initialX1: number | null = null;
+private initialX2: number | null = null;
+private distance: number | null = null;
 
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-          },
-          y: {
-            display: false,
-            grid: {
-              display: false,
-              lineWidth: 0,
-            },
-            ticks: {
-              display: false,
-            },
-          },
+
+createChart() {
+    this.chart = new Chart('MyChart', {
+        type: 'bar',
+        data: {
+            labels: this.labels,
+            datasets: [
+                {
+                    label: '',
+                    data: this.data,
+                    backgroundColor: this.colors,
+                    borderColor: this.colors.map((color) => color.replace('0.5', '1')), // Make borders opaque
+                    borderWidth: 1,
+                },
+            ],
         },
-        plugins: {
-          legend: {
-            display: false,
+        options: {
+            aspectRatio: 2.5,
+            responsive: true,
+            animation: {
+              duration: 0, // Set duration for a smoother animation effect
+              onProgress: (animation) => {
+
+                  const meta = animation.chart.getDatasetMeta(0);
+                  
+                  if (meta && meta.data && this.index1 >= 0 && this.index2 >= 0) {
+                      const bar1 = meta.data[this.index1];
+                      const bar2 = meta.data[this.index2];
+      
+                      // Initialize initial positions and distance only once at the start of the animation
+                      if (this.initialX1 === null && this.initialX2 === null && bar1 && bar2) {
+                          this.initialX1 = bar1.x;
+                          this.initialX2 = bar2.x;
+                          this.distance = this.initialX2 - this.initialX1;
+  
+                      }
+      
+                      // Ensure initial values are set
+                      if (this.initialX1 !== null && this.initialX2 !== null && this.distance !== null) {
+                          const progress = animation.currentStep / animation.numSteps;
+      
+  
+      
+                          // Use initial positions and distance to update bar positions smoothly
+                          bar1.x = this.initialX1 + this.distance * progress;
+                          bar2.x = this.initialX2 - this.distance * progress;
+                      }
+                  }
+              },
+              onComplete: () => {
+                  // Reset initial values after animation completes
+                  this.initialX1 = null;
+                  this.initialX2 = null;
+                  this.distance = null;
+
+              },
           },
+      
+
+            scales: {
+                x: {
+                    grid: { display: false },
+                },
+                y: {
+                    display: false,
+                    grid: { display: false, lineWidth: 0 },
+                    ticks: { display: false },
+                },
+            },
+            plugins: {
+                legend: { display: false },
+            },
         },
-      },
+    });
+}
+
+
+  highlightBar(index: number, unhighlight: boolean = false): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const accentColor = this.themeColors!.accent;
+        const highlightColor = accentColor.replace(
+          /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+          'rgba($1, $2, $3, 0.7)'
+        );
+
+        this.colors[index] = unhighlight
+          ? this.themeColors!.primary
+          : highlightColor;
+
+        this.chart.data.datasets[0].backgroundColor = this.colors;
+        this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+          color.replace(
+            /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+            'rgba($1, $2, $3, 1)'
+          )
+        );
+        this.chart.update();
+        // Resolve the Promise after colors are reset
+        resolve();
+      }, this.animationDelay);
     });
   }
 
   swapValues(index1: number, index2: number): Promise<void> {
     return new Promise((resolve) => {
-      // Define the highlight color for the swap animation
-      const accentColor = this.themeColors!.warn;
-      const highlightColor = accentColor.replace(
-        /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-        'rgba($1, $2, $3, 0.7)'
-      );
+        // Store the index of the bars being swapped
+        this.index1 = index1;
+        this.index2 = index2;
+        console.log("Swapping indices:", this.index1, this.index2);
 
-      // Step 1: Apply highlight color to both bars being swapped
-      this.colors[index1] = highlightColor;
-      this.colors[index2] = highlightColor;
+        // Define the highlight color for the swap animation
+        const warnColor = this.themeColors!.warn;
+        const highlightColor = warnColor.replace(
+            /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+            'rgba($1, $2, $3, 0.7)'
+        );
 
-      // Update the background and border colors for the chart
-      this.chart.data.datasets[0].backgroundColor = this.colors;
-      this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
-        color.replace(
-          /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-          'rgba($1, $2, $3, 1)'
-        )
-      );
-      this.chart.update();
+        // Step 1: Apply highlight color to both bars being swapped
+        this.colors[index1] = highlightColor;
+        this.colors[index2] = highlightColor;
 
-      // Step 2: Delay to make the highlight effect visible
-      setTimeout(() => {
-        // Swap values in the data array
-        [this.data[index1], this.data[index2]] = [
-          this.data[index2],
-          this.data[index1],
-        ];
+        // Update the chart colors
+        this.chart.data.datasets[0].backgroundColor = this.colors;
+        this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+            color.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 1)'
+            )
+        );
 
-        // Update the chart data to show the swapped positions
+        // Set the animation duration for the swap
+        this.chart.options.animation.duration = this.animationDelay-10;
         this.chart.update();
 
-        // Step 3: Restore original colors with a slight delay for the swap effect
+
+        // Step 2: Delay to make the highlight effect visible
         setTimeout(() => {
-          // Restore to original theme colors
-          this.colors[index1] = this.themeColors!.primary;
-          this.colors[index2] = this.themeColors!.primary;
+            // Perform the swap
+            this.chart.options.animation.duration = 0; // Disable further animations
+            this.chart.update();
 
-          // Update the background and border colors for the chart
-          this.chart.data.datasets[0].backgroundColor = this.colors;
-          this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
-            color.replace(
-              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-              'rgba($1, $2, $3, 1)'
-            )
-          );
-          this.chart.update();
+    
+            [this.data[index1], this.data[index2]] = [this.data[index2], this.data[index1]];
+            this.chart.update();
 
-          // Resolve the Promise after colors are reset
-          resolve();
-        }, this.swapDelay); // Use swapDelay here for color reset
-      }, this.swapDelay); // Use swapDelay here for the initial swap
+            // Step 3: Reset colors after the swap is visually complete
+            setTimeout(() => {
+                // Restore original colors
+                this.colors[index1] = this.themeColors!.primary;
+                this.colors[index2] = this.themeColors!.primary;
+
+                // Update chart colors and reset the animation duration to prevent any further animation
+                this.chart.data.datasets[0].backgroundColor = this.colors;
+                this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+                    color.replace(
+                        /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                        'rgba($1, $2, $3, 1)'
+                    )
+                );
+
+                this.index1 = -1;
+                this.index2 = -1;
+                
+
+                this.chart.update();
+
+                // Resolve the Promise after colors are reset
+                resolve();
+            }, this.animationDelay); // Use animationDelay here for color reset
+        }, this.animationDelay); // Use animationDelay here for the initial swap
     });
-  }
+}
+
 }

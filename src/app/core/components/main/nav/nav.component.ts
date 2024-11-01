@@ -8,10 +8,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { DarkmodeToggleComponent } from "../../../../shared/components/darkmode-toggle/darkmode-toggle.component";
-import { CodeBlockComponent } from '../../../../shared/components/code-block/code-block.component';
-import { TempExampleComponent } from "../../../../shared/components/temp-example/temp-example.component";
-import { ChartAnimationComponent } from "../../../../shared/components/chart-animation/chart-animation.component";
+import { DarkmodeToggleComponent } from '../../../../shared/components/darkmode-toggle/darkmode-toggle.component';
+import { DsaComponent } from '../dsa/dsa.component';
+import { RouterOutlet,RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -26,17 +25,18 @@ import { ChartAnimationComponent } from "../../../../shared/components/chart-ani
     MatIconModule,
     AsyncPipe,
     DarkmodeToggleComponent,
-    CodeBlockComponent,
-    TempExampleComponent,
-    ChartAnimationComponent
-]
+    DsaComponent,
+    RouterOutlet,
+    RouterLink
+  ],
 })
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 }

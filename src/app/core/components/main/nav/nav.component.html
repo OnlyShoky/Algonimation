@@ -8,9 +8,9 @@
   >
     <mat-nav-list class="nav-links">
       <div class="nav-links">
-        <a mat-list-item href="#">Link 1</a>
-        <a mat-list-item href="#">Link 2</a>
-        <a mat-list-item href="#">Link 3</a>
+        <a mat-list-item routerLink="dsa/bubble-sort"> bubble sort</a>
+        <a mat-list-item routerLink="dsa/selection-sort">selelection sort</a>
+        <a mat-list-item routerLink="dsa/insertion-sort">insertion sort</a>
         <app-darkmode-toggle></app-darkmode-toggle>
       </div>
     </mat-nav-list>
@@ -30,23 +30,8 @@
       </button>
       }
     </mat-toolbar>
-    <h3>Sample Python Code</h3>
+    <router-outlet></router-outlet>
 
-    <div class="flex-container">
-      <div class="code-block-container">
-        <app-code-block></app-code-block>
-      </div>
-      <div class="side-content">
-        <!-- <app-temp-example></app-temp-example> -->
-         <app-chart-animation></app-chart-animation> 
-      </div>
-
-      <div class="side-content">
-        <app-temp-example></app-temp-example>
-      </div>
-    </div>
-
+    <!-- <app-dsa></app-dsa> -->
   </mat-sidenav-content>
-
-  
 </mat-sidenav-container>

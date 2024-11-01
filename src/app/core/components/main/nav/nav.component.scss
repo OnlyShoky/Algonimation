@@ -17,36 +17,3 @@ app-darkmode-toggle {
 //   background: inherit;
 // }
 
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start; // Align items to the top of the container
-  gap: 2rem; // Space between the two divs
-  padding: 1rem;
-
-  .code-block-container {
-    width: 50%;
-    max-width: 100vw; /* Make sure it does not exceed the viewport width */
-    overflow-x: auto; /* Allow horizontal scrolling only if necessary */
-  }
-
-  .side-content {
-    width: 45%; // Adjust as needed
-  }
-
-  // Adjust layout for smaller screens
-  @media (max-width: 768px) {
-    flex-direction: column; // Stack vertically on small screens
-    .code-block-container,
-    .side-content {
-      width: fit-content;
-      font-size: 0.6rem; /* Adjust as needed */
-      padding: 5px; /* Tweak padding */
-      line-height: 1.5; /* Adjust line spacing */
-      max-width: 100vw; /* Limit width relative to viewport */
-      overflow-x: auto; /* Prevents horizontal scroll overflow */
-    }
-
-
-  }
-}

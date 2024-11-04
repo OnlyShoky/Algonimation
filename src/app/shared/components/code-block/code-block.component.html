@@ -1,5 +1,10 @@
-
-<pre [attr.data-line]="dataLine" >
+<div class="code-container">
+    <pre [attr.data-line]="dataLine" style="background-color: inherit;" class="code-block">
     <code [ngClass]="codeClass" [innerHTML]="highlightedCode"></code>
-</pre>
-
+    </pre>
+    
+    <button mat-mini-fab color="primary" class="copy-button" (click)="copyToClipboard()">
+        <mat-icon>content_copy</mat-icon>
+    </button>
+    
+</div>

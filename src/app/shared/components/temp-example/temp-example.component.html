@@ -1,6 +1,19 @@
 
 <div class="app-container">
 
+    <button (click)="playSound()">Play Sound</button>
+    <button (click)="stopSound()">Stop Sound</button>
+    <input type="range" min="20" max="2000" [(ngModel)]="frequency" (input)="changeFrequency(frequency)">
+    <input type="range" min="0" max="1" step="0.01" [(ngModel)]="volume" (input)="changeVolume(volume)">
+
+    <button (click)="playCoinSound()">Play Coin Sound</button>
+  <button (click)="playLaserSound()">Play Laser Sound</button>
+  <button (click)="playBlipSound(440)">Play Laser Sound 400</button>
+  <button (click)="playBlipSound(800)">Play Laser Sound 800 </button>
+
+
+
+
     <!-- Angular Material Card for Testing Theme -->
     <div class="danger">
       <mat-card>

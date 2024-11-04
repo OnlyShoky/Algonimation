@@ -1,3 +1,4 @@
+
 <mat-sidenav-container class="sidenav-container" color="primary">
   <mat-sidenav
     #drawer
@@ -26,12 +27,20 @@
         mat-icon-button
         (click)="drawer.toggle()"
       >
+
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
+
+      <div text-align="center"><h3>DSA COMPONENT</h3></div>
+
     </mat-toolbar>
     <router-outlet></router-outlet>
 
-    <!-- <app-dsa></app-dsa> -->
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+<footer class="footer">
+  <app-footer></app-footer>
+</footer>

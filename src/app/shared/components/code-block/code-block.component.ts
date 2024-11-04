@@ -1,18 +1,21 @@
-import { Component, OnInit, HostListener, Input } from '@angular/core';
+import { Component, OnInit, HostListener, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ThemesManagerService } from '../../services/themes-manager.service';
 import { Subscription } from 'rxjs';
 import { SortingService } from '../../services/sorting.service';
 import { AlgorithmService } from '../../services/algorithm.service';
 import { Algorithm } from '../../models/algorithm';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 declare var Prism: any;
 
 @Component({
   selector: 'app-code-block',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './code-block.component.html',
   styleUrl: './code-block.component.scss',
 })
@@ -23,15 +26,16 @@ export class CodeBlockComponent implements OnInit {
     }
   }
   @Input() sortAlgorithm!: string;
+  private _snackBar = inject(MatSnackBar);
 
   private subscriptions: Subscription[] = [];
-  public lineAnimationDelay: number = 100; // Default delay in milliseconds
+  public lineAnimationDelay: number = 50; // Default delay in milliseconds
 
   dataLine: string = '1'; // Default data-line value
   codeClass: string = 'language-python'; // Default class
   currentLanguage = 'python';
   deltaLine: number = 0;
-  codeText: string = '\tprint("Hello, World!")'; // Default code text
+  codeText: string = 'print("Hello, World!")'; // Default code text
 
   codePython = `import random
 
@@ -223,4 +227,23 @@ function bogosort(arr) {
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
+
+  copyToClipboard() {
+    navigator.clipboard.writeText(this.codeText).then(
+      () => {
+        this.openSnackBar('Code copied!', 'Close');
+      },
+      (err) => {
+        console.error('Could not copy text: ', err);
+      }
+    );
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000, // Duration in milliseconds (2 seconds)
+      
+    });
+  }
 }
+

@@ -11,6 +11,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { DarkmodeToggleComponent } from '../../../../shared/components/darkmode-toggle/darkmode-toggle.component';
 import { DsaComponent } from '../dsa/dsa.component';
 import { RouterOutlet,RouterLink } from '@angular/router';
+import { FooterComponent } from '../../footer/footer.component';
 
 @Component({
   selector: 'app-nav',
@@ -27,6 +28,7 @@ import { RouterOutlet,RouterLink } from '@angular/router';
     DarkmodeToggleComponent,
     DsaComponent,
     RouterOutlet,
+    FooterComponent,
     RouterLink
   ],
 })

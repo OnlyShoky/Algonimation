@@ -1,19 +1,26 @@
 .sidenav-container {
-  flex: 1 ;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .sidenav {
-  width: 100px;
+  width: 200px; /* Set a width that suits your layout */
 }
 
 app-darkmode-toggle {
   margin-left: 1rem; // Añade un margen si deseas separarlo un poco del borde inferior
   position: absolute;
-  bottom: 2rem;
+  bottom: 5rem;
+
+  @media (max-width: 1500px) {
+    bottom: 6rem;
+  }
 }
 
-// .sidenav .mat-toolbar {
-//   background: inherit;
-// }
-
+.footer {
+  // height: 50px; /* Adjust as needed */
+  background-color: #2a373b; /* Customize footer color */
+  color: white; /* Customize footer text color */
+  text-align: center;
+  padding: 10px 0; /* This padding is fine, but make sure it’s intended */
+  margin: 0; /* Remove margin */
+}

@@ -1,14 +1,18 @@
-// .code-line[data-line="1"] {
-//     background-color: yellow; // Apply background color to line 1
-//   }
-  
-//   .code-line[data-line="2"] {
-//     background-color: lightblue; // Apply background color to line 2
-//   }
-  
-//   /* Additional styles for the code lines */
-//   .code-line {
-//     display: block;
-//     white-space: pre;
-//   }
+.code-container {
+    position: relative; /* Enables positioning for children */
+    display: inline-block; /* Shrinks to fit content */
+}
 
+.code-block {
+    border: 2px solid rgba(128, 128, 128, 0.7);
+    border-radius: 20px;
+    padding: 1rem; /* Adjust padding if needed */
+}
+
+.copy-button {
+    position: absolute;
+    top: 10px; /* Adjust distance from the top */
+    right: 10px; /* Adjust distance from the right */
+    box-shadow: none;
+    background-color: inherit;
+}

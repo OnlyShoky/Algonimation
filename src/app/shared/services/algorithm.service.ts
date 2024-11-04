@@ -11,17 +11,14 @@ export class AlgorithmService {
       description: 'A simple comparison-based sorting algorithm.',
       code: {
         cpp: `#include <iostream>
-using namespace std;
+    using namespace std;
 
-void bubbleSort(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                swap(arr[j], arr[j + 1]);
-            }
-        }
-    }
-}`,
+    void bubbleSort(int arr[], int n) {
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    swap(arr[j], arr[j + 1]);}}}}`,
+
         python: `def bubble_sort(arr):
     n = len(arr)
     for i in range(n):
@@ -94,7 +91,8 @@ void selectionSort(int arr[], int n) {
     },
     {
       name: 'Insertion-Sort',
-      description: 'An efficient algorithm for sorting a small number of elements.',
+      description:
+        'An efficient algorithm for sorting a small number of elements.',
       code: {
         cpp: `#include <iostream>
 using namespace std;
@@ -139,7 +137,8 @@ void insertionSort(int arr[], int n) {
     },
     {
       name: 'Quick-Sort',
-      description: 'A highly efficient sorting algorithm using the divide and conquer principle.',
+      description:
+        'A highly efficient sorting algorithm using the divide and conquer principle.',
       code: {
         cpp: `#include <iostream>
 using namespace std;

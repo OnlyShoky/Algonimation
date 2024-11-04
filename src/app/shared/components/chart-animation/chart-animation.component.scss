@@ -1,0 +1,26 @@
+// mat-slider {
+//     width: 300px;
+//   }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%; /* Full width of parent container */
+  max-width: 800px; /* Adjust as needed */
+  margin: 0 auto; /* Centering the container */
+  border: 2px solid rgba(128, 128, 128, 0.7);
+  border-radius: 20px;
+}
+
+#MyChart {
+  width: 100%; /* Full width of chart-container */
+  height: 100%; /* Full height of chart-container */
+  max-width: 100%; /* Prevents overflow when zooming */
+  max-height: 100%;
+  object-fit: contain; /* Keeps canvas contents contained */
+}

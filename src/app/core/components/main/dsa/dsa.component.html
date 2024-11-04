@@ -1,12 +1,14 @@
-<h3>DSA COMPONENT</h3>
-
 <div class="flex-container">
+
+  <div class="side-content">
+    <!-- <app-temp-example></app-temp-example> -->
+    <app-chart-animation
+      [sortAlgorithm]="getAlgorithmCode()"
+    ></app-chart-animation>
+  </div>
+
   <div class="code-block-container">
     <!-- <app-code-block></app-code-block> -->
     <app-code-block [sortAlgorithm]="getAlgorithmCode()"></app-code-block>
-  </div>
-  <div class="side-content">
-    <!-- <app-temp-example></app-temp-example> -->
-     <app-chart-animation [sortAlgorithm]="getAlgorithmCode()"></app-chart-animation> 
   </div>
 </div>

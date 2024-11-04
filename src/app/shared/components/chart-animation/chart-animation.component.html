@@ -1,13 +1,20 @@
 <div class="chart-container">
-    <canvas  id="MyChart" >{{ chart }}</canvas>
-    <button mat-raised-button color="primary" (click)="startSorting()">Sort</button>
-    <button mat-raised-button color="accent" (click)="shuffleArray()">Shuffle</button>
+  <canvas id="MyChart">{{ chart }}</canvas>
+  <div class="button-container">
+
+    <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="startSorting()"><mat-icon>play_arrow</mat-icon></button>
+    <button mat-mini-fab style="border-radius: 10px;" color="accent" (click)="shuffleArray()"><mat-icon>replay</mat-icon></button>
+
     <label for="speed">Select Speed:</label>
-    <select id="speed" [(ngModel)]="animationDelay">
-      <option [value]="100">Fast</option>
-      <option [value]="300">Medium</option>
-      <option [value]="600">Slow</option>
-    </select>
-
-
+    <mat-slider min="1" max="500" step="50">
+      <input matSliderThumb value="500" [(ngModel)]="animationDelay" />
+    </mat-slider>
+  </div>
 </div>
+
+<!-- <label for="speed">Select Speed:</label>
+  <select id="speed" [(ngModel)]="animationDelay">
+    <option [value]="100">Fast</option>
+    <option [value]="300">Medium</option>
+    <option [value]="600">Slow</option>
+  </select> -->

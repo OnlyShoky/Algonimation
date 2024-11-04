@@ -10,16 +10,11 @@
     flex-direction: column;
     min-height: 100vh; /* Full viewport height */
   }
+
   
   .main-content {
     flex: 1; /* Takes up the remaining space between header and footer */
-  }
-  
-  .footer {
-    height: 50px; /* Adjust as needed */
-    background-color: #333; /* Customize footer color */
-    color: white; /* Customize footer text color */
-    text-align: center;
-    padding: 10px 0;
+    margin: 0; /* Ensure no margin */
+    padding: 0; /* Ensure no padding */
   }
   

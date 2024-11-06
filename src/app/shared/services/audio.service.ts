@@ -2,25 +2,33 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AudioService {
-  private audioContext: AudioContext;
+  private audioContext: AudioContext | undefined ;
   private oscillator: OscillatorNode | null = null;
-  private gainNode: GainNode;
+  private gainNode: GainNode | undefined;
 
   constructor() {
     // Initialize the audio context and nodes
-    this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    this.gainNode = this.audioContext.createGain();
-    this.gainNode.connect(this.audioContext.destination);
+    if (typeof window !== 'undefined') {
+      // Code that uses Prism.js
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.gainNode = this.audioContext.createGain();
+      this.gainNode.connect(this.audioContext.destination);
+    } else {
+      console.warn('AudioService: Unable to initialize audio context');
+    }
   }
 
   // Start generating a sound with a specific frequency
   startSound(frequency: number = 440) {
-    if (!this.oscillator) {
+    if (!this.oscillator && this.audioContext && this.gainNode) {
       this.oscillator = this.audioContext.createOscillator();
-      this.oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+      this.oscillator.frequency.setValueAtTime(
+        frequency,
+        this.audioContext.currentTime
+      );
       this.oscillator.connect(this.gainNode);
       this.oscillator.start();
     }
@@ -37,27 +45,42 @@ export class AudioService {
 
   // Change frequency
   changeFrequency(frequency: number) {
-    if (this.oscillator) {
-      this.oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+    if (this.oscillator && this.audioContext) {
+      this.oscillator.frequency.setValueAtTime(
+        frequency,
+        this.audioContext.currentTime
+      );
     }
   }
 
   // Change volume
   changeVolume(volume: number) {
-    this.gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+    this.gainNode && this.audioContext ? this.gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime) : null;
   }
 
   // Method to generate the coin sound
-  playCoinSound(frequency:number = 440) {
+  playCoinSound(frequency: number = 440) {
+    if (!this.audioContext) {
+      return;
+    }
     const oscillator = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
 
     oscillator.type = 'square'; // 8-bit style
-    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime); // Start frequency
-    oscillator.frequency.exponentialRampToValueAtTime(300, this.audioContext.currentTime + 0.1); // Drop
+    oscillator.frequency.setValueAtTime(
+      frequency,
+      this.audioContext.currentTime
+    ); // Start frequency
+    oscillator.frequency.exponentialRampToValueAtTime(
+      300,
+      this.audioContext.currentTime + 0.1
+    ); // Drop
 
     gainNode.gain.setValueAtTime(1, this.audioContext.currentTime); // Volume
-    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      this.audioContext.currentTime + 0.1
+    );
 
     oscillator.connect(gainNode).connect(this.audioContext.destination);
     oscillator.start();
@@ -66,15 +89,27 @@ export class AudioService {
 
   // Method to generate the laser blast sound
   playLaserSound(frequency: number = 800) {
+    if (!this.audioContext) {
+      return;
+    }
     const oscillator = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();
 
     oscillator.type = 'sawtooth'; // Different wave for laser effect
-    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime); // Start frequency
-    oscillator.frequency.exponentialRampToValueAtTime(300, this.audioContext.currentTime + 0.3); // Drop for laser effect
+    oscillator.frequency.setValueAtTime(
+      frequency,
+      this.audioContext.currentTime
+    ); // Start frequency
+    oscillator.frequency.exponentialRampToValueAtTime(
+      300,
+      this.audioContext.currentTime + 0.3
+    ); // Drop for laser effect
 
     gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(1, this.audioContext.currentTime + 0.3);
+    gainNode.gain.exponentialRampToValueAtTime(
+      1,
+      this.audioContext.currentTime + 0.3
+    );
 
     oscillator.connect(gainNode).connect(this.audioContext.destination);
     oscillator.start();
@@ -82,21 +117,33 @@ export class AudioService {
   }
 
   // audio.service.ts
-playBlipSound(frequency: number = 800) {
-  const oscillator = this.audioContext.createOscillator();
-  const gainNode = this.audioContext.createGain();
+  playBlipSound(frequency: number = 800) {
+    if (!this.audioContext) {
+      return;
+    }
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
 
-  // Set the oscillator to a high frequency for a "blip" effect
-  oscillator.type = 'sine'; // "sine" wave works well for a blip
-  oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime); // Start frequency
-  oscillator.frequency.exponentialRampToValueAtTime(1200, this.audioContext.currentTime + 0.05); // Quick frequency ramp up
+    // Set the oscillator to a high frequency for a "blip" effect
+    oscillator.type = 'sine'; // "sine" wave works well for a blip
+    oscillator.frequency.setValueAtTime(
+      frequency,
+      this.audioContext.currentTime
+    ); // Start frequency
+    oscillator.frequency.exponentialRampToValueAtTime(
+      1200,
+      this.audioContext.currentTime + 0.05
+    ); // Quick frequency ramp up
 
-  // Short gain envelope for the blip effect
-  gainNode.gain.setValueAtTime(1, this.audioContext.currentTime); // Volume
-  gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.05); // Decay quickly
+    // Short gain envelope for the blip effect
+    gainNode.gain.setValueAtTime(1, this.audioContext.currentTime); // Volume
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      this.audioContext.currentTime + 0.05
+    ); // Decay quickly
 
-  oscillator.connect(gainNode).connect(this.audioContext.destination);
-  oscillator.start();
-  oscillator.stop(this.audioContext.currentTime + 0.05); // Stop after 50ms for a brief blip
-}
+    oscillator.connect(gainNode).connect(this.audioContext.destination);
+    oscillator.start();
+    oscillator.stop(this.audioContext.currentTime + 0.05); // Stop after 50ms for a brief blip
+  }
 }

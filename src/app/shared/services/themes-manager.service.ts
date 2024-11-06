@@ -19,22 +19,39 @@ export class ThemesManagerService {
 
   // Define theme colors
   private themeColors: {
-    [key: string]: { primary: string; accent: string; warn: string };
+    [key: string]: { primary: string; accent: string; secondary : string; warn: string };
   } = {
-    'python-theme': { primary: '#A8D5BA', accent: '#69F0AE', warn: '#FF5252' },
+    'python-theme': {
+      primary: '#A8D5BA',
+      accent: '#69F0AE',
+      secondary: '#FEFFA7',
+      warn: '#FF5252',
+    },
     'python-dark-theme': {
       primary: '#005A32',
-      accent: '#00C853',
+      accent: '#69F0AE',
+      secondary: '#FFE700',
       warn: '#D32F2F',
     },
-    'cpp-theme': { primary: '#A1C4E9', accent: '#448AFF', warn: '#FF5252' },
+    'cpp-theme': {
+      primary: '#A1C4E9',
+      accent: '#448AFF',
+      secondary: '#FEFFA7',
+      warn: '#FF5252',
+    },
     'cpp-dark-theme': {
       primary: '#0D47A1',
       accent: '#2962FF',
+      secondary: '#FFE700',
       warn: '#D32F2F',
     },
-    'js-theme': { primary: '#fad643', accent: '#ff6e40', warn: '#FF5252' },
-    'js-dark-theme': { primary: '#FFA000', accent: '#FF6D00', warn: '#D32F2F' },
+    'js-theme': {
+      primary: '#fad643',
+      accent: '#ff6e40',
+      secondary: '#BCF2F6',
+      warn: '#FF5252',
+    },
+    'js-dark-theme': { primary: '#FFA000', accent: '#FF6D00', secondary: '#08C2FF', warn: '#D32F2F' },
   };
 
   // Toggle dark mode
@@ -76,7 +93,6 @@ export class ThemesManagerService {
     };
     this.switchTheme(themeMap[language] || 'light-theme');
     this.switchLanguage(language);
-
   }
 
   getCurrentTheme(): string {
@@ -96,13 +112,14 @@ export class ThemesManagerService {
   // Function to get current theme colors in RGBA format
   getThemeColorsRGBA(
     alpha: number = 1
-  ): { primary: string; accent: string; warn: string } | undefined {
+  ): { primary: string; accent: string; secondary: string; warn: string } | undefined {
     console.log('RGBA : currenttheme : ', this.currentTheme);
     const colors = this.themeColors[this.currentTheme];
     if (colors) {
       return {
         primary: hexToRgba(colors.primary, alpha),
         accent: hexToRgba(colors.accent, alpha),
+        secondary : hexToRgba(colors.secondary, alpha),
         warn: hexToRgba(colors.warn, alpha),
       };
     }

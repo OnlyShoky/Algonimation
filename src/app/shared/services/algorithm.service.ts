@@ -2,218 +2,394 @@ import { Injectable } from '@angular/core';
 import { Algorithm } from '../models/algorithm';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AlgorithmService {
-  private algorithms: Algorithm[] = [
-    {
-      name: 'Bubble-Sort',
-      description: 'A simple comparison-based sorting algorithm.',
-      code: {
-        cpp: `#include <iostream>
-    using namespace std;
+    private algorithms: Algorithm[] = [
+        {
+            name: 'bubble-sort',
+            description: 'A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.',
+            keyProperties: {
+                bestCase: 'O(n)',
+                averageCase: 'O(n^2)',
+                worstCase: 'O(n^2)',
+                spaceComplexity: 'O(1)',
+                stable: true,
+                inPlace: true,
+            },
+            howItWorks: [
+                'The algorithm repeatedly steps through the array, compares adjacent elements, and swaps them if they are in the wrong order.',
+                'Each pass through the array places the next largest element in its correct position.',
+                'The algorithm continues to make passes until no more swaps are needed, indicating the array is sorted.',
+            ],
+            steps: [
+                '1. Start from the first element of the array and compare adjacent elements.',
+                '2. If the adjacent elements are in the wrong order, swap them.',
+                '3. Repeat this process for each element in the array.',
+                '4. Each iteration through the array moves the largest unsorted element to its correct position.',
+                '5. Continue making passes through the array until no more swaps are made in a pass.'
+            ],
+            code: {
+                cpp: `#include <iostream>
+      using namespace std;
+      
+      void bubbleSort(int arr[], int n) {
+          for (int i = 0; i < n - 1; i++) {
+              for (int j = 0; j < n - i - 1; j++) {
+                  if (arr[j] > arr[j + 1]) {
+                      swap(arr[j], arr[j + 1]);
+                  }
+              }
+          }
+      }`,
+                python: `def bubble_sort(arr):
+          n = len(arr)
+          for i in range(n):
+              for j in range(0, n-i-1):
+                  if arr[j] > arr[j+1]:
+                      arr[j], arr[j+1] = arr[j+1], arr[j]`,
+                javascript: `function bubbleSort(arr) {
+          let n = arr.length;
+          for (let i = 0; i < n - 1; i++) {
+              for (let j = 0; j < n - i - 1; j++) {
+                  if (arr[j] > arr[j + 1]) {
+                      [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                  }
+              }
+          }
+          return arr;
+      }`,
+            },
+            deltaLine: {
+                cpp: 2,
+                python: 0,
+                javascript: 0,
+            },
+            exampleUsage: {
+                cpp: `int arr[] = {64, 34, 25, 12, 22, 11, 90};
+      int n = sizeof(arr) / sizeof(arr[0]);
+      bubbleSort(arr, n);
+      for (int i = 0; i < n; i++) {
+          cout << arr[i] << " ";
+      }`,
+                python: `arr = [64, 34, 25, 12, 22, 11, 90]
+      bubble_sort(arr)
+      print(arr)`,
+                javascript: `let arr = [64, 34, 25, 12, 22, 11, 90];
+      console.log(bubbleSort(arr));`,
+            },
+            prosAndCons: {
+                pros: [
+                    'Simple to implement and easy to understand.',
+                    'In-place sorting, so no extra memory is required.',
+                    'Stable algorithm, meaning equal elements retain their original relative order.'
+                ],
+                cons: [
+                    'Inefficient for large lists due to its O(n^2) time complexity.',
+                    'Does not adapt well to partially sorted arrays, as it still makes multiple passes through the entire array.'
+                ],
+            },
+        },
 
-    void bubbleSort(int arr[], int n) {
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swap(arr[j], arr[j + 1]);}}}}`,
-
-        python: `def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]`,
-        javascript: `function bubbleSort(arr) {
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-        for (let j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        {
+            name: 'selection-sort',
+            description: 'An in-place, comparison-based sorting algorithm that is not stable but simple to implement.',
+            keyProperties: {
+                bestCase: 'O(n^2)',
+                averageCase: 'O(n^2)',
+                worstCase: 'O(n^2)',
+                spaceComplexity: 'O(1)',
+                stable: false,
+                inPlace: true
+            },
+            howItWorks: [
+                'The algorithm iterates through the array multiple times.',
+                'In each iteration, it finds the minimum element from the unsorted part of the array.',
+                'It then swaps the minimum element with the first element of the unsorted part, effectively growing the sorted portion of the array from left to right.',
+                'This continues until the entire array is sorted.'
+            ],
+            steps: [
+                '1. Go through the array to find the minimum value in the unsorted section.',
+                '2. Swap this minimum value with the first element of the unsorted section.',
+                '3. Repeat the process for each position in the array until the entire array is sorted.'
+            ],
+            code: {
+                cpp: `#include <iostream>
+      using namespace std;
+      
+      void selectionSort(int arr[], int n) {
+          for (int i = 0; i < n - 1; i++) {
+              int minIdx = i;
+              for (int j = i + 1; j < n; j++) {
+                  if (arr[j] < arr[minIdx]) {
+                      minIdx = j;
+                  }
+              }
+              swap(arr[minIdx], arr[i]);
+          }
+      }`,
+                python: `def selection_sort(arr):
+          n = len(arr)
+          for i in range(n):
+              min_idx = i
+              for j in range(i + 1, n):
+                  if arr[j] < arr[min_idx]:
+                      min_idx = j
+              arr[i], arr[min_idx] = arr[min_idx], arr[i]`,
+                javascript: `function selectionSort(arr) {
+          let n = arr.length;
+          for (let i = 0; i < n - 1; i++) {
+              let minIdx = i;
+              for (let j = i + 1; j < n; j++) {
+                  if (arr[j] < arr[minIdx]) {
+                      minIdx = j;
+                  }
+              }
+              [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+          }
+          return arr;
+      }`
+            },
+            deltaLine: {
+                cpp: 2,         // Difference in lines compared to insertion sort, used for tracking edits.
+                python: 0,      // Difference in lines compared to insertion sort, used for tracking edits.
+                javascript: 0   // Difference in lines compared to insertion sort, used for tracking edits.
+            },
+            exampleUsage: {
+                cpp: `int arr[] = {29, 10, 14, 37, 13};
+      int n = sizeof(arr) / sizeof(arr[0]);
+      selectionSort(arr, n);
+      for (int i = 0; i < n; i++)
+          cout << arr[i] << " ";`,
+                python: `arr = [29, 10, 14, 37, 13]
+      selection_sort(arr)
+      print(arr)`,
+                javascript: `let arr = [29, 10, 14, 37, 13];
+      console.log(selectionSort(arr));`
+            },
+            prosAndCons: {
+                pros: [
+                    'Simple and easy to understand.',
+                    'In-place sorting, so it does not require extra memory.'
+                ],
+                cons: [
+                    'Inefficient on large lists, with time complexity of O(n^2).',
+                    'Does not adapt well to partially sorted arrays.'
+                ]
             }
-        }
-    }
-    return arr;
-}`,
-      },
-      deltaLine: {
-        cpp: 2,
-        python: 0,
-        javascript: 0,
-      },
-    },
-    {
-      name: 'Selection-Sort',
-      description: 'An in-place comparison-based sorting algorithm.',
-      code: {
-        cpp: `#include <iostream>
-using namespace std;
+        },
 
-void selectionSort(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int minIdx = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] < arr[minIdx]) {
-                minIdx = j;
-            }
-        }
-        swap(arr[minIdx], arr[i]);
-    }
-}`,
-        python: `def selection_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        min_idx = i
-        for j in range(i + 1, n):
-            if arr[j] < arr[min_idx]:
-                min_idx = j
-        arr[i], arr[min_idx] = arr[min_idx], arr[i]`,
-        javascript: `function selectionSort(arr) {
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-        let minIdx = i;
-        for (let j = i + 1; j < n; j++) {
-            if (arr[j] < arr[minIdx]) {
-                minIdx = j;
-            }
-        }
-        [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
-    }
-    return arr;
-}`,
-      },
-      deltaLine: {
-        cpp: 2,
-        python: 0,
-        javascript: 0,
-      },
-    },
-    {
-      name: 'Insertion-Sort',
-      description:
-        'An efficient algorithm for sorting a small number of elements.',
-      code: {
-        cpp: `#include <iostream>
-using namespace std;
+        {
+            name: 'insertion-sort',
+            description: 'An efficient algorithm for sorting a small number of elements, where elements are gradually inserted into their correct position.',
+            keyProperties: {
+                bestCase: 'O(n)',
+                averageCase: 'O(n^2)',
+                worstCase: 'O(n^2)',
+                spaceComplexity: 'O(1)',
+                stable: true,
+                inPlace: true,
+            },
+            howItWorks: [
+                'The algorithm builds the sorted array one element at a time by picking an element and inserting it into its correct position.',
+                'It works similarly to how you might sort playing cards in your hands, by inserting one card at a time into its proper place.',
+                'It continues this process for each element of the array until the entire array is sorted.',
+            ],
+            steps: [
+                '1. Start at the second element of the array.',
+                '2. Compare the current element with the elements before it.',
+                '3. If the current element is smaller, move the larger elements one position to the right.',
+                '4. Insert the current element into its correct position.',
+                '5. Repeat this process for all remaining elements in the array.'
+            ],
+            code: {
+                cpp: `#include <iostream>
+      using namespace std;
+      
+      void insertionSort(int arr[], int n) {
+          for (int i = 1; i < n; i++) {
+              int key = arr[i];
+              int j = i - 1;
+              while (j >= 0 && arr[j] > key) {
+                  arr[j + 1] = arr[j];
+                  j--;
+              }
+              arr[j + 1] = key;
+          }
+      }`,
+                python: `def insertion_sort(arr):
+          for i in range(1, len(arr)):
+              key = arr[i]
+              j = i - 1
+              while j >= 0 and arr[j] > key:
+                  arr[j + 1] = arr[j]
+                  j -= 1
+              arr[j + 1] = key`,
+                javascript: `function insertionSort(arr) {
+          for (let i = 1; i < arr.length; i++) {
+              let key = arr[i];
+              let j = i - 1;
+              while (j >= 0 && arr[j] > key) {
+                  arr[j + 1] = arr[j];
+                  j--;
+              }
+              arr[j + 1] = key;
+          }
+          return arr;
+      }`,
+            },
+            deltaLine: {
+                cpp: 2,
+                python: 0,
+                javascript: 0,
+            },
+            exampleUsage: {
+                cpp: `int arr[] = {12, 11, 13, 5, 6};
+      int n = sizeof(arr) / sizeof(arr[0]);
+      insertionSort(arr, n);
+      for (int i = 0; i < n; i++) {
+          cout << arr[i] << " ";
+      }`,
+                python: `arr = [12, 11, 13, 5, 6]
+      insertion_sort(arr)
+      print(arr)`,
+                javascript: `let arr = [12, 11, 13, 5, 6];
+      console.log(insertionSort(arr));`,
+            },
+            prosAndCons: {
+                pros: [
+                    'Simple and easy to implement.',
+                    'Efficient for small datasets or nearly sorted data.',
+                    'In-place sorting, requires no additional memory.'
+                ],
+                cons: [
+                    'Inefficient for large datasets with O(n^2) time complexity.',
+                    'Not suitable for large unsorted datasets.'
+                ],
+            },
+        },
+        {
+            name: 'quick-sort',
+            description: 'A highly efficient sorting algorithm using the divide and conquer principle.',
+            keyProperties: {
+                bestCase: 'O(n log n)',
+                averageCase: 'O(n log n)',
+                worstCase: 'O(n^2)',
+                spaceComplexity: 'O(log n)',
+                stable: false,
+                inPlace: true,
+            },
+            howItWorks: [
+                'The algorithm selects a pivot element and partitions the array around it, placing elements smaller than the pivot to the left and larger elements to the right.',
+                'It recursively applies the same partitioning process to the left and right subarrays until the entire array is sorted.',
+                'The efficiency of quicksort comes from the fact that each partitioning step splits the array into smaller parts, reducing the problem size quickly.',
+            ],
+            steps: [
+                '1. Choose a pivot element from the array.',
+                '2. Partition the array into two subarrays: one with elements smaller than the pivot, and the other with elements greater than the pivot.',
+                '3. Recursively apply the same process to the two subarrays.',
+                '4. Continue until the base case is reached, where the subarrays have one or zero elements.'
+            ],
+            code: {
+                cpp: `#include <iostream>
+      using namespace std;
+      
+      int partition(int arr[], int low, int high) {
+          int pivot = arr[high];
+          int i = (low - 1);
+          for (int j = low; j < high; j++) {
+              if (arr[j] < pivot) {
+                  i++;
+                  swap(arr[i], arr[j]);
+              }
+          }
+          swap(arr[i + 1], arr[high]);
+          return (i + 1);
+      }
+      
+      void quickSort(int arr[], int low, int high) {
+          if (low < high) {
+              int pi = partition(arr, low, high);
+              quickSort(arr, low, pi - 1);
+              quickSort(arr, pi + 1, high);
+          }
+      }`,
+                python: `def partition(arr, low, high):
+          pivot = arr[high]
+          i = low - 1
+          for j in range(low, high):
+              if arr[j] < pivot:
+                  i += 1
+                  arr[i], arr[j] = arr[j], arr[i]
+          arr[i + 1], arr[high] = arr[high], arr[i + 1]
+          return i + 1
+      
+      def quick_sort(arr, low, high):
+          if low < high:
+              pi = partition(arr, low, high)
+              quick_sort(arr, low, pi - 1)
+              quick_sort(arr, pi + 1, high)`,
+                javascript: `function partition(arr, low, high) {
+          let pivot = arr[high];
+          let i = low - 1;
+          for (let j = low; j < high; j++) {
+              if (arr[j] < pivot) {
+                  i++;
+                  [arr[i], arr[j]] = [arr[j], arr[i]];
+              }
+          }
+          [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+          return i + 1;
+      }
+      
+      function quickSort(arr, low, high) {
+          if (low < high) {
+              let pi = partition(arr, low, high);
+              quickSort(arr, low, pi - 1);
+              quickSort(arr, pi + 1, high);
+          }
+      }`,
+            },
+            deltaLine: {
+                cpp: 2,
+                python: 0,
+                javascript: 0,
+            },
+            exampleUsage: {
+                cpp: `int arr[] = {10, 7, 8, 9, 1, 5};
+      int n = sizeof(arr) / sizeof(arr[0]);
+      quickSort(arr, 0, n - 1);
+      for (int i = 0; i < n; i++) {
+          cout << arr[i] << " ";
+      }`,
+                python: `arr = [10, 7, 8, 9, 1, 5]
+      quick_sort(arr, 0, len(arr) - 1)
+      print(arr)`,
+                javascript: `let arr = [10, 7, 8, 9, 1, 5];
+      quickSort(arr, 0, arr.length - 1);
+      console.log(arr);`,
+            },
+            prosAndCons: {
+                pros: [
+                    'Efficient for large datasets with O(n log n) time complexity on average.',
+                    'In-place sorting, requires only a small, constant amount of additional space.',
+                    'Divide and conquer method leads to better performance on large arrays.'
+                ],
+                cons: [
+                    'Worst-case time complexity is O(n^2), which happens when the pivot selection is poor (e.g., always picking the smallest or largest element).',
+                    'Not a stable algorithm, which means equal elements may change their relative order.',
+                ],
+            },
+        },
+    ];
 
-void insertionSort(int arr[], int n) {
-    for (int i = 1; i < n; i++) {
-        int key = arr[i];
-        int j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = key;
+    getAlgorithms(): Algorithm[] {
+        return this.algorithms;
     }
-}`,
-        python: `def insertion_sort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        while j >= 0 and arr[j] > key:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key`,
-        javascript: `function insertionSort(arr) {
-    for (let i = 1; i < arr.length; i++) {
-        let key = arr[i];
-        let j = i - 1;
-        while (j >= 0 && arr[j] > key) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = key;
+
+    getAlgorithmByName(name: string): Algorithm | undefined {
+        return this.algorithms.find(
+            (algo) => algo.name.toLowerCase() === name.toLowerCase()
+        );
     }
-    return arr;
-}`,
-      },
-      deltaLine: {
-        cpp: 2,
-        python: 0,
-        javascript: 0,
-      },
-    },
-    {
-      name: 'Quick-Sort',
-      description:
-        'A highly efficient sorting algorithm using the divide and conquer principle.',
-      code: {
-        cpp: `#include <iostream>
-using namespace std;
-
-int partition(int arr[], int low, int high) {
-    int pivot = arr[high];
-    int i = (low - 1);
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            swap(arr[i], arr[j]);
-        }
-    }
-    swap(arr[i + 1], arr[high]);
-    return (i + 1);
-}
-
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}`,
-        python: `def partition(arr, low, high):
-    pivot = arr[high]
-    i = low - 1
-    for j in range(low, high):
-        if arr[j] < pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
-
-def quick_sort(arr, low, high):
-    if low < high:
-        pi = partition(arr, low, high)
-        quick_sort(arr, low, pi - 1)
-        quick_sort(arr, pi + 1, high)`,
-        javascript: `function partition(arr, low, high) {
-    let pivot = arr[high];
-    let i = low - 1;
-    for (let j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-    }
-    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
-    return i + 1;
-}
-
-function quickSort(arr, low, high) {
-    if (low < high) {
-        let pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}`,
-      },
-      deltaLine: {
-        cpp: 2,
-        python: 0,
-        javascript: 0,
-      },
-    },
-  ];
-
-  getAlgorithms(): Algorithm[] {
-    return this.algorithms;
-  }
-
-  getAlgorithmByName(name: string): Algorithm | undefined {
-    return this.algorithms.find(
-      (algo) => algo.name.toLowerCase() === name.toLowerCase()
-    );
-  }
 }

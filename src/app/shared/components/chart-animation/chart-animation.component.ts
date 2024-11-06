@@ -15,13 +15,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AudioService } from '../../services/audio.service';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatIconModule} from '@angular/material/icon';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-chart-animation',
   standalone: true,
-  imports: [MatButtonModule, FormsModule, MatSliderModule,MatIconModule],
+  imports: [MatButtonModule, FormsModule, MatSliderModule, MatIconModule],
   templateUrl: './chart-animation.component.html',
   styleUrls: ['./chart-animation.component.scss'],
 })
@@ -34,13 +33,21 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   public colors: string[] = [];
   public data: number[] = [];
 
-  public animationDelay: number = 300; // Default delay in milliseconds
+  public animationDelay: number = 500; // Default delay in milliseconds
+  public animationScrollValue: number = 200;
+
 
   public themeColors:
-    | { primary: string; accent: string; warn: string }
+    | { primary: string; accent: string; secondary: string; warn: string }
     | undefined;
   index1: number = -1;
   index2: number = -1;
+
+  // Define variables to store initial positions and distance for swapping
+  private initialX1: number | null = null;
+  private initialX2: number | null = null;
+  private distance: number | null = null;
+  private animationSteps: number | null = null;
 
   constructor(
     private themesManagerService: ThemesManagerService,
@@ -61,6 +68,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createChart();
+
     this.subscriptions.push(
       this.themesManagerService.currentTheme$.subscribe(() => {
         this.themeColors = this.themesManagerService.getThemeColorsRGBA(0.2);
@@ -71,7 +79,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
         async (highlightEvent) => {
           await this.highlightBar(
             highlightEvent.index,
-            highlightEvent.unhighlight
+            highlightEvent.unhighlight,
+            highlightEvent.colorType
           );
           if (highlightEvent.needTrigger) this.sortingService.triggerNextStep();
           // Update chart or visualization based on highlightEvent if needed
@@ -93,10 +102,15 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  updateInvertedSpeed(event : any): void {
+    const maxSliderValue = 500;
+    const minSliderValue = 1;
+    this.animationDelay = maxSliderValue - this.animationScrollValue + minSliderValue;
+  }
+
   async startSorting() {
     let arr: Promise<number[]>;
 
-    console.log('Starting sorting...');
     switch (this.sortAlgorithm) {
       case 'bubble-sort':
         arr = this.sortingService.bubbleSort([...this.data]);
@@ -111,31 +125,29 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
         break;
 
       default:
-        console.log('Invalid sort algorithm');
         arr = Promise.resolve([]);
         break;
     }
 
-    const sortedArray = await arr;
-    console.log('Sorted Array:', sortedArray);
+    await arr;
+
     this.highlightAllBars();
-    console.log('Sorting completed.');
   }
 
   async highlightAllBars() {
-      // Unhighlight all bars from start to end
-      for (let i = 0; i < this.data.length; i++) {
-        await this.highlightBar(i, true); // true to unhighlight
-      }
-      // Highlight all bars from start to end
-      for (let i = 0; i < this.data.length; i++) {
-        await this.highlightBar(i, false); // false to highlight
-      }
-      // Unhighlight all bars from start to end
-      for (let i = 0; i < this.data.length; i++) {
-        await this.highlightBar(i, true); // true to unhighlight
-      }
-    
+    this.animationDelay = 20
+    // Unhighlight all bars from start to end
+    for (let i = 0; i < this.data.length; i++) {
+      await this.highlightBar(i, true); // true to unhighlight
+    }
+    // Highlight all bars from start to end
+    for (let i = 0; i < this.data.length; i++) {
+      await this.highlightBar(i, false); // false to highlight
+    }
+    // Unhighlight all bars from start to end
+    for (let i = 0; i < this.data.length; i++) {
+      await this.highlightBar(i, true); // true to unhighlight
+    }
   }
 
   shuffleArray() {
@@ -168,11 +180,6 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Define variables to store initial positions and distance for swapping
-  private initialX1: number | null = null;
-  private initialX2: number | null = null;
-  private distance: number | null = null;
-
   createChart() {
     this.chart = new Chart('MyChart', {
       type: 'bar',
@@ -191,8 +198,11 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
       options: {
         aspectRatio: 2.5,
         responsive: true,
+
         animation: {
           duration: 0, // Set duration for a smoother animation effect
+          loop: false,
+
           onProgress: (animation) => {
             const meta = animation.chart.getDatasetMeta(0);
 
@@ -210,15 +220,20 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
                 this.initialX1 = bar1.x;
                 this.initialX2 = bar2.x;
                 this.distance = this.initialX2 - this.initialX1;
+                this.animationSteps = animation.numSteps; // Store the initial numSteps value
               }
 
               // Ensure initial values are set
               if (
                 this.initialX1 !== null &&
                 this.initialX2 !== null &&
-                this.distance !== null
+                this.distance !== null &&
+                this.animationSteps !== null
               ) {
-                const progress = animation.currentStep / animation.numSteps;
+                const progress = Math.min(
+                  animation.currentStep / this.animationSteps,
+                  1
+                );
 
                 // Use initial positions and distance to update bar positions smoothly
                 bar1.x = this.initialX1 + this.distance * progress;
@@ -227,10 +242,26 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
             }
           },
           onComplete: () => {
+            // Check if indices are valid before swapping
+            if (this.index1 !== -1 && this.index2 !== -1) {
+              // Perform the swap
+              // Disable further animations
+              [this.data[this.index1], this.data[this.index2]] = [
+                this.data[this.index2],
+                this.data[this.index1],
+              ];
+
+              // Reset indices after swap
+              this.index1 = -1;
+              this.index2 = -1;
+              this.chart.options.animation.duration = 0;
+            }
+
             // Reset initial values after animation completes
             this.initialX1 = null;
             this.initialX2 = null;
             this.distance = null;
+            this.animationSteps = null;
           },
         },
 
@@ -251,33 +282,49 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     });
   }
 
-  highlightBar(index: number, unhighlight: boolean = false): Promise<void> {
+  highlightBar(
+    index: number,
+    unhighlight: boolean = false,
+    colorType: string = 'accent'
+  ): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const accentColor = this.themeColors!.accent;
-        const highlightColor = accentColor.replace(
+        let choosedColor: string =
+          colorType === 'accent'
+            ? this.themeColors!.accent
+            : this.themeColors!.secondary;
+
+        let highlightColor = this.themeColors!.accent.replace(
           /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-          'rgba($1, $2, $3, 0.7)'
+          'rgba($1, $2, $3, 0.8)'
         );
 
-        this.colors[index] = unhighlight
-          ? this.themeColors!.primary
-          : highlightColor;
-
-        if (!unhighlight)
-          this.audioService.playCoinSound(this.data[index] * 100);
-
-        this.chart.data.datasets[0].backgroundColor = this.colors;
-        this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
-          color.replace(
+        if (colorType !== 'accent') 
+          highlightColor = this.themeColors!.accent.replace(
             /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-            'rgba($1, $2, $3, 1)'
-          )
-        );
-        this.chart.update();
-        // Resolve the Promise after colors are reset
-        resolve();
-      }, this.animationDelay);
+            'rgba($1, $2, $3, 0.4)'
+          );
+
+
+
+          this.colors[index] = unhighlight
+            ? this.themeColors!.primary
+            : highlightColor;
+
+          if (!unhighlight)
+            this.audioService.playCoinSound(this.data[index] * 100);
+
+          this.chart.data.datasets[0].backgroundColor = this.colors;
+          this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+            color.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 1)'
+            )
+          );
+          this.chart.update();
+          // Resolve the Promise after colors are reset
+          resolve();
+        }, this.animationDelay);
     });
   }
 
@@ -286,7 +333,6 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
       // Store the index of the bars being swapped
       this.index1 = index1;
       this.index2 = index2;
-      console.log('Swapping indices:', this.index1, this.index2);
 
       // Define the highlight color for the swap animation
       const warnColor = this.themeColors!.warn;
@@ -309,20 +355,12 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
       );
 
       // Set the animation duration for the swap
-      this.chart.options.animation.duration = this.animationDelay - 10;
+      this.chart.options.animation.duration = this.animationDelay - 20;
       this.chart.update();
 
       // Step 2: Delay to make the highlight effect visible
       setTimeout(() => {
         // Perform the swap
-        this.chart.options.animation.duration = 0; // Disable further animations
-        this.chart.update();
-
-        [this.data[index1], this.data[index2]] = [
-          this.data[index2],
-          this.data[index1],
-        ];
-        this.chart.update();
 
         // Step 3: Reset colors after the swap is visually complete
         setTimeout(() => {
@@ -338,9 +376,6 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
               'rgba($1, $2, $3, 1)'
             )
           );
-
-          this.index1 = -1;
-          this.index2 = -1;
 
           this.chart.update();
 

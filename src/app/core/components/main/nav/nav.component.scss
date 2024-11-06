@@ -6,6 +6,9 @@
   width: 200px; /* Set a width that suits your layout */
 }
 
+mat-toolbar {
+  background-color: inherit;
+}
 app-darkmode-toggle {
   margin-left: 1rem; // Añade un margen si deseas separarlo un poco del borde inferior
   position: absolute;

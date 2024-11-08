@@ -98,6 +98,10 @@ $js-dark-theme: mat.define-dark-theme(
 // Apply the themes to body classes
 body.python-theme {
   @include mat.all-component-colors($python-theme);
+
+  .steps {
+    background-color: mat.get-color-from-palette($python-primary, 200);
+  }
   .line-highlight {
     background-color: rgba(
       mat.get-color-from-palette($python-primary, 900),
@@ -110,10 +114,16 @@ body.python-theme {
       border : 2px solid palettes.$sage-darker-text;
     }
   }
+
+    
 }
+
 
 body.cpp-theme {
   @include mat.all-component-colors($cpp-theme);
+  .steps {
+    background-color: mat.get-color-from-palette($cpp-primary, 200);
+  }
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($cpp-primary, 900), 0.1);
 
@@ -124,10 +134,14 @@ body.cpp-theme {
 
     }
   }
+
 }
 
 body.js-theme {
   @include mat.all-component-colors($js-theme);
+  .steps {
+    background-color: mat.get-color-from-palette($js-primary, 200);
+  }
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($js-primary, 900), 0.1);
 
@@ -142,6 +156,13 @@ body.js-theme {
 
 body.python-dark-theme {
   @include mat.all-component-colors($python-dark-theme);
+
+  .steps {
+    background-color: mat.get-color-from-palette($python-primary, 900);
+  }
+
+
+
   .mat-icon {
     color: mat.get-color-from-palette(
       $python-primary,
@@ -170,6 +191,11 @@ body.cpp-dark-theme {
     color: mat.get-color-from-palette($cpp-primary, 200);
   }
 
+  .steps {
+    background-color: mat.get-color-from-palette($cpp-primary, 900);
+  }
+
+
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($cpp-primary, 200), 0.2);
 
@@ -184,6 +210,12 @@ body.cpp-dark-theme {
 
 body.js-dark-theme {
   @include mat.all-component-colors($js-dark-theme);
+
+  
+  .steps {
+    background-color: mat.get-color-from-palette($js-primary, 900);
+  }
+
   .mat-icon {
     color: mat.get-color-from-palette($js-primary, 200);
   }

@@ -68,8 +68,9 @@ export class SortingService {
         await this.highlightElement(j, false, false, 'secondary');
         await this.highlightElement(j + 1, false, true, 'secondary');
 
+        await this.moveToLine(3);
         if (arr[j] > arr[j + 1]) {
-          await this.moveToLine(3);
+          await this.moveToLine(4);
           await this.swapElements(arr, j, j + 1);
         }
 
@@ -128,10 +129,12 @@ export class SortingService {
     return arr;
   }
   async insertionSort(arr: number[]): Promise<number[]> {
+    console.log("insertionSort");
 
     const n = arr.length;
     this.linePointerSubject.next(0 + this.deltaLine);
     await this.waitForUserStep();
+    await this.highlightElement(0, false, true);
 
     for (let i = 1; i < n; i++) {
       this.linePointerSubject.next(1 + this.deltaLine);
@@ -140,23 +143,35 @@ export class SortingService {
       let key = arr[i];
       let j = i - 1;
 
+      await this.highlightElement(i, false, false, 'secondary');
       this.linePointerSubject.next(2 + this.deltaLine);
       await this.waitForUserStep();
 
       while (j >= 0 && arr[j] > key) {
+        // Highlight current elements
+        await this.highlightElement(j, false, false, 'secondary');
+        await this.highlightElement(j + 1, false, true, 'secondary');
+
         this.linePointerSubject.next(3 + this.deltaLine);
         await this.waitForUserStep();
-
-        arr[j + 1] = arr[j];
+        await this.swapElements(arr, j + 1, j);
+        // Highlight sorted element at index i
+        await this.highlightElement(j + 1, false, true);
         j--;
+        
         this.linePointerSubject.next(4 + this.deltaLine);
         await this.waitForUserStep();
+        
+
       }
+       await this.highlightElement(j+1 , false, true);
+
 
       arr[j + 1] = key;
       this.linePointerSubject.next(5 + this.deltaLine);
       await this.waitForUserStep();
     }
+    await this.highlightElement(n-1, false, false);
     this.linePointerSubject.next(1);
 
     return arr;

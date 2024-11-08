@@ -1,4 +1,3 @@
-
 <mat-sidenav-container class="sidenav-container" color="primary">
   <mat-sidenav
     #drawer
@@ -9,9 +8,9 @@
   >
     <mat-nav-list class="nav-links">
       <div class="nav-links">
-        <a mat-list-item routerLink="dsa/bubble-sort"> bubble sort</a>
-        <a mat-list-item routerLink="dsa/selection-sort">selelection sort</a>
-        <a mat-list-item routerLink="dsa/insertion-sort">insertion sort</a>
+        <a mat-list-item routerLink="dsa/bubble-sort"> Bubble Sort </a>
+        <a mat-list-item routerLink="dsa/selection-sort">Selection Sort</a>
+        <a mat-list-item routerLink="dsa/insertion-sort">Insertion Sort</a>
         <app-darkmode-toggle></app-darkmode-toggle>
       </div>
     </mat-nav-list>
@@ -27,18 +26,13 @@
         mat-icon-button
         (click)="drawer.toggle()"
       >
-
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
-
-
     </mat-toolbar>
     <router-outlet></router-outlet>
-
   </mat-sidenav-content>
 </mat-sidenav-container>
-
 
 <footer class="footer">
   <app-footer></app-footer>

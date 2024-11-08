@@ -5,16 +5,20 @@ import { ChartAnimationComponent } from '../../../../shared/components/chart-ani
 import { ActivatedRoute } from '@angular/router';
 import { AlgorithmService } from '../../../../shared/services/algorithm.service';
 import { Algorithm } from '../../../../shared/models/algorithm';
-
+import { CommonModule } from '@angular/common';
+import {MatListModule} from '@angular/material/list';
+import {MatTableModule} from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-dsa',
   standalone: true,
-  imports: [CodeBlockComponent, TempExampleComponent, ChartAnimationComponent],
+  imports: [CodeBlockComponent, TempExampleComponent, ChartAnimationComponent, CommonModule, MatListModule,MatTableModule,MatIconModule],
   templateUrl: './dsa.component.html',
   styleUrl: './dsa.component.scss',
 })
 export class DsaComponent {
   algorithm!: Algorithm;
+  
 
   constructor(private route: ActivatedRoute, private algorithmService: AlgorithmService) { }
 

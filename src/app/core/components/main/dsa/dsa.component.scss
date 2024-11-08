@@ -6,16 +6,23 @@
   padding: 1rem;
   margin: 0 2rem; /* Shortened syntax for left and right margins */
 
-  .side-content, .code-block-container {
+  .chart-content, .code-block-container {
       flex: 1; /* Both items take equal width */
       padding: 1rem; /* Optional: ensures internal padding consistency */
       box-sizing: border-box; /* Prevents overflow from padding */
       max-width: 100%; /* Avoids overflow beyond container */
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-radius: 20px;
   }
 
-  .code-block-container {
-      overflow-x: auto; /* Horizontal scroll for code if it overflows */
-  }
+//   .side-content {
+//     border: 2px solid rgba(128, 128, 128, 0.7);
+//     border-radius: 20px;
+//   }
+
+//   .code-block-container {
+//       overflow-x: auto; /* Horizontal scroll for code if it overflows */
+//   }
 
   /* Responsive layout for smaller screens */
   @media (max-width: 1500px) {
@@ -29,7 +36,7 @@
       gap: 0;
       padding: 0;
 
-      .side-content, .code-block-container {
+      .chart-content, .code-block-container {
           width: 100%; /* Adjust to full width for narrow screens */
           font-size: 0.6rem;
           padding: 5px;
@@ -55,6 +62,71 @@
     margin-left: 1rem;
     text-align: left;
 
+  }
 
+  .steps {
+    padding: 1rem;
+  
+    ul {
+      list-style: none;
+      padding-left: 2em;
+      margin: 0;
+  
+      li {
+        margin-bottom: 10px;
+      }
+    }
+  
+    h5 {
+      font-weight: bold;
+      margin-top: 0;
+    }
+  }
+
+
+  /* From Uiverse.io by Rodrypaladin */ 
+.card {
+    width: 250px;
+    font-family: "Roboto Mono", sans-serif, monospace;
+    border-radius: 20px;
+    overflow: hidden;
+    // border: 2px solid rgba(128, 128, 128, 0.7);
 
   }
+  
+  .card__data {
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    // border-right: 1px solid rgb(203, 203, 203);
+    // border-left: 1px solid rgb(203, 203, 203);
+    // border-bottom: 1px solid rgb(203, 203, 203);
+  }
+  
+  .card__right {
+    width: 60%;
+    font-weight: bold;
+
+    // border-right: 1px solid rgb(203, 203, 203);
+  }
+  
+  .card__left {
+    width: 40%;
+    text-align: end;
+  }
+  
+  .item {
+    padding: 3px 0;
+    font-family: "lexend deca", sans-serif, monospace;
+    // border-bottom: 1px solid rgb(203, 203, 203);
+  }
+  
+  .card__right .item {
+    padding-left: 0.8em;
+  }
+  
+  .card__left .item {
+    padding-right: 0.8em;
+  }
+
+  

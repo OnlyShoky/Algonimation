@@ -1,12 +1,14 @@
 .code-container {
     position: relative; /* Enables positioning for children */
-    display: inline-block; /* Shrinks to fit content */
-    
+    border: 2px solid rgba(128, 128, 128, 0.7);
+    // display: inline-block;
+    height: 100%;
+    border-radius: 20px;
 }
 
 .code-block {
-    border: 2px solid rgba(128, 128, 128, 0.7);
-    border-radius: 20px;
+   
+    // border-radius: 20px;
     padding: 1rem; /* Adjust padding if needed */
 }
 

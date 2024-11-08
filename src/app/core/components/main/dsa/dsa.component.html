@@ -1,12 +1,12 @@
 <div class="container">
-  <h3 class="left-aligned">{{algorithm.name}}</h3>
+  <h3 class="left-aligned">{{ algorithm.name.replace('-', ' ') | titlecase  }}</h3>
   <p class="left-aligned">
-    {{algorithm.description}}
+    {{ algorithm.description }}
   </p>
 </div>
 
 <div class="flex-container">
-  <div class="side-content">
+  <div class="chart-content">
     <!-- <app-temp-example></app-temp-example> -->
     <app-chart-animation
       [sortAlgorithm]="getAlgorithmCode()"
@@ -16,5 +16,65 @@
   <div class="code-block-container">
     <!-- <app-code-block></app-code-block> -->
     <app-code-block [sortAlgorithm]="getAlgorithmCode()"></app-code-block>
+  </div>
+</div>
+
+<div class="steps">
+  <p class="left-aligned"></p>
+  <h5>Steps:</h5>
+
+  <ul>
+    <li *ngFor="let step of algorithm.steps">
+      {{ step }}
+    </li>
+  </ul>
+</div>
+
+<div class="flex-container">
+  <div class="side-content">
+    <h5 style="font-weight: bold; font-family: 'Lexend Deca', sans-serif">
+      Pros
+    </h5>
+    <ul style="font-family: 'Lexend Deca', sans-serif">
+      <li *ngFor="let step of algorithm.prosAndCons?.pros"> {{ step }}</li>
+    </ul>
+  </div>
+
+  <div class="side-content">
+    <h5 style="font-weight: bold">Cons</h5>
+    <ul>
+      <li *ngFor="let step of algorithm.prosAndCons?.cons">{{ step }}</li>
+    </ul>
+  </div>
+
+  <div>
+    <div
+      class="side-content"
+      style="
+        border-radius: 20px;
+        padding: 1rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      "
+    >
+      <div class="card">
+        <div class="card__data">
+          <div class="card__right">
+            <div class="item">Best Case</div>
+            <div class="item">Average Case</div>
+            <div class="item">Worst Case</div>
+            <div class="item">Space Complexity</div>
+          </div>
+          <div class="card__left">
+            <div class="item">{{ algorithm.keyProperties?.bestCase }}</div>
+            <div class="item">{{ algorithm.keyProperties?.averageCase }}</div>
+            <div class="item">{{ algorithm.keyProperties?.worstCase }}</div>
+            <div class="item">
+              {{ algorithm.keyProperties?.spaceComplexity }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

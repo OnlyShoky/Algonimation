@@ -102,7 +102,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  updateInvertedSpeed(event : any): void {
+  updateInvertedSpeed(event: any): void {
     const maxSliderValue = 500;
     const minSliderValue = 1;
     this.animationDelay = maxSliderValue - this.animationScrollValue + minSliderValue;
@@ -198,6 +198,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
       options: {
         aspectRatio: 2.5,
         responsive: true,
+        events: [],
 
         animation: {
           duration: 0, // Set duration for a smoother animation effect
@@ -265,6 +266,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
           },
         },
 
+        
+
         scales: {
           x: {
             grid: { display: false },
@@ -299,7 +302,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
           'rgba($1, $2, $3, 0.8)'
         );
 
-        if (colorType !== 'accent') 
+        if (colorType !== 'accent')
           highlightColor = this.themeColors!.accent.replace(
             /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
             'rgba($1, $2, $3, 0.4)'
@@ -307,24 +310,24 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
 
 
-          this.colors[index] = unhighlight
-            ? this.themeColors!.primary
-            : highlightColor;
+        this.colors[index] = unhighlight
+          ? this.themeColors!.primary
+          : highlightColor;
 
-          if (!unhighlight)
-            this.audioService.playCoinSound(this.data[index] * 100);
+        if (!unhighlight)
+          this.audioService.playCoinSound(this.data[index] * 100);
 
-          this.chart.data.datasets[0].backgroundColor = this.colors;
-          this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
-            color.replace(
-              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-              'rgba($1, $2, $3, 1)'
-            )
-          );
-          this.chart.update();
-          // Resolve the Promise after colors are reset
-          resolve();
-        }, this.animationDelay);
+        this.chart.data.datasets[0].backgroundColor = this.colors;
+        this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+          color.replace(
+            /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+            'rgba($1, $2, $3, 1)'
+          )
+        );
+        this.chart.update();
+        // Resolve the Promise after colors are reset
+        resolve();
+      }, this.animationDelay);
     });
   }
 

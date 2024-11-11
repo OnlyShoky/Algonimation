@@ -10,7 +10,7 @@
       <div class="nav-links">
         <div mat-subheader> <h2><abbr title="Data Structures and Algorithms">DSA</abbr></h2></div>
         <div *ngFor="let algoName of algoNames">
-          <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase  }} </a>
+        <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase  }} </a>
         </div>
         <!-- <a mat-list-item routerLink="dsa/bubble-sort"> Bubble Sort </a>
         <a mat-list-item routerLink="dsa/selection-sort">Selection Sort</a>

@@ -65,7 +65,7 @@ export class SortingService {
         await this.moveToLine(2);
 
         // Highlight current elements
-        await this.highlightElement(j, false, false, 'secondary');
+        await this.highlightElement(j, false, true, 'secondary');
         await this.highlightElement(j + 1, false, true, 'secondary');
 
         await this.moveToLine(3);

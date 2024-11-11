@@ -6,6 +6,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  padding: 1rem;
 }
 
 .chart-container {
@@ -24,4 +25,10 @@
   max-width: 100%; /* Prevents overflow when zooming */
   max-height: 100%;
   object-fit: contain; /* Keeps canvas contents contained */
+}
+
+.audio-settings {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

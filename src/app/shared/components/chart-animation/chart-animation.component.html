@@ -1,17 +1,40 @@
 <div class="chart-container">
   <canvas id="MyChart">{{ chart }}</canvas>
   <div class="button-container">
+    <button
+      mat-mini-fab
+      style="border-radius: 10px"
+      color="primary"
+      (click)="startSorting()"
+    >
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      style="border-radius: 10px"
+      color="accent"
+      (click)="shuffleArray()"
+    >
+      <mat-icon>replay</mat-icon>
+    </button>
 
-    <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="startSorting()"><mat-icon>play_arrow</mat-icon></button>
-    <button mat-mini-fab style="border-radius: 10px;" color="accent" (click)="shuffleArray()"><mat-icon>replay</mat-icon></button>
-
-    <mat-slider min="0" max="500" step="50"  discrete  [displayWith]="formatLabel">
-      <input matSliderThumb [(ngModel)]="animationScrollValue" (ngModelChange)="updateInvertedSpeed($event)" />
+    <mat-slider
+      min="0"
+      max="500"
+      step="50"
+      discrete
+      [displayWith]="formatLabel"
+    >
+      <input
+        matSliderThumb
+        [(ngModel)]="animationScrollValue"
+        (ngModelChange)="updateInvertedSpeed($event)"
+      />
     </mat-slider>
 
+    <app-audio-settings-bs  class="audio-settings"></app-audio-settings-bs>
   </div>
 </div>
 
-    <!-- <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="swapValues(0, 1)"><mat-icon>swap_horiz</mat-icon></button>
+<!-- <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="swapValues(0, 1)"><mat-icon>swap_horiz</mat-icon></button>
     <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="swapValues(0, 10)"><mat-icon>swap_horiz</mat-icon></button> -->
-

@@ -6,10 +6,18 @@
     <input type="range" min="20" max="2000" [(ngModel)]="frequency" (input)="changeFrequency(frequency)">
     <input type="range" min="0" max="1" step="0.01" [(ngModel)]="volume" (input)="changeVolume(volume)">
 
-    <button (click)="playCoinSound()">Play Coin Sound</button>
-  <button (click)="playLaserSound()">Play Laser Sound</button>
-  <button (click)="playBlipSound(440)">Play Laser Sound 400</button>
-  <button (click)="playBlipSound(800)">Play Laser Sound 800 </button>
+
+    <div class="piano-buttons">
+      <button *ngFor="let note of notes; let i = index" (click)="playPianoSound(i)">
+        Play {{ note.note }}
+      </button>
+    </div>
+
+    <div class="piano-buttons">
+      <button *ngFor="let note of notes; let i = index" (click)="playPianoSound(i)">
+        {{ i }}
+      </button>
+    </div>
 
 
 

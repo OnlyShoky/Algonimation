@@ -16,11 +16,12 @@ import { ActivatedRoute } from '@angular/router';
 import { AudioService } from '../../services/audio.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
+import { AudioSettingsBSComponent } from "../audio-settings-bs/audio-settings-bs.component";
 
 @Component({
   selector: 'app-chart-animation',
   standalone: true,
-  imports: [MatButtonModule, FormsModule, MatSliderModule, MatIconModule],
+  imports: [MatButtonModule, FormsModule, MatSliderModule, MatIconModule, AudioSettingsBSComponent],
   templateUrl: './chart-animation.component.html',
   styleUrls: ['./chart-animation.component.scss'],
 })
@@ -266,7 +267,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
           },
         },
 
-        
+
 
         scales: {
           x: {
@@ -314,8 +315,11 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
           ? this.themeColors!.primary
           : highlightColor;
 
-        if (!unhighlight)
-          this.audioService.playCoinSound(this.data[index] * 100);
+        if (!unhighlight){
+          console.log("Data index",this.data[index]);
+          this.audioService.playSound(this.data[index]);
+
+        }
 
         this.chart.data.datasets[0].backgroundColor = this.colors;
         this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
@@ -393,6 +397,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     if (value >= 500) {
       return 'Max Speed';
     }
-     return 'Speed ' + 'x'+((value)/50+1);
+    return 'Speed ' + 'x' + ((value) / 50 + 1);
+
   }
+
 }

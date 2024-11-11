@@ -1,5 +1,7 @@
 <div class="container">
-  <h3 class="left-aligned">{{ algorithm.name.replace('-', ' ') | titlecase  }}</h3>
+  <h3 class="left-aligned">
+    {{ algorithm.name.replace("-", " ") | titlecase }}
+  </h3>
   <p class="left-aligned">
     {{ algorithm.description }}
   </p>
@@ -36,7 +38,7 @@
       Pros
     </h5>
     <ul style="font-family: 'Lexend Deca', sans-serif">
-      <li *ngFor="let step of algorithm.prosAndCons?.pros"> {{ step }}</li>
+      <li *ngFor="let step of algorithm.prosAndCons?.pros">{{ step }}</li>
     </ul>
   </div>
 
@@ -48,11 +50,7 @@
   </div>
 
   <div>
-    <div
-      class="side-content"
-      style="
-      "
-    >
+    <div class="side-content">
       <div class="card">
         <div class="card__data">
           <div class="card__right">

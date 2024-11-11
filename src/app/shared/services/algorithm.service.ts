@@ -14,14 +14,7 @@ export class AlgorithmService {
                 averageCase: 'O(n^2)',
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
-                stable: true,
-                inPlace: true,
             },
-            howItWorks: [
-                'The algorithm repeatedly steps through the array, compares adjacent elements, and swaps them if they are in the wrong order.',
-                'Each pass through the array places the next largest element in its correct position.',
-                'The algorithm continues to make passes until no more swaps are needed, indicating the array is sorted.',
-            ],
             steps: [
                 '1. Start from the first element of the array and compare adjacent elements.',
                 '2. If the adjacent elements are in the wrong order, swap them.',
@@ -65,19 +58,6 @@ export class AlgorithmService {
                 python: 0,
                 javascript: 0,
             },
-            exampleUsage: {
-                cpp: `int arr[] = {64, 34, 25, 12, 22, 11, 90};
-      int n = sizeof(arr) / sizeof(arr[0]);
-      bubbleSort(arr, n);
-      for (int i = 0; i < n; i++) {
-          cout << arr[i] << " ";
-      }`,
-                python: `arr = [64, 34, 25, 12, 22, 11, 90]
-      bubble_sort(arr)
-      print(arr)`,
-                javascript: `let arr = [64, 34, 25, 12, 22, 11, 90];
-      console.log(bubbleSort(arr));`,
-            },
             prosAndCons: {
                 pros: [
                     'Simple to implement and easy to understand.',
@@ -99,15 +79,8 @@ export class AlgorithmService {
                 averageCase: 'O(n^2)',
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
-                stable: false,
-                inPlace: true
+
             },
-            howItWorks: [
-                'The algorithm iterates through the array multiple times.',
-                'In each iteration, it finds the minimum element from the unsorted part of the array.',
-                'It then swaps the minimum element with the first element of the unsorted part, effectively growing the sorted portion of the array from left to right.',
-                'This continues until the entire array is sorted.'
-            ],
             steps: [
                 '1. Go through the array to find the minimum value in the unsorted section.',
                 '2. Swap this minimum value with the first element of the unsorted section.',
@@ -155,18 +128,6 @@ export class AlgorithmService {
                 python: 0,      // Difference in lines compared to insertion sort, used for tracking edits.
                 javascript: 0   // Difference in lines compared to insertion sort, used for tracking edits.
             },
-            exampleUsage: {
-                cpp: `int arr[] = {29, 10, 14, 37, 13};
-      int n = sizeof(arr) / sizeof(arr[0]);
-      selectionSort(arr, n);
-      for (int i = 0; i < n; i++)
-          cout << arr[i] << " ";`,
-                python: `arr = [29, 10, 14, 37, 13]
-      selection_sort(arr)
-      print(arr)`,
-                javascript: `let arr = [29, 10, 14, 37, 13];
-      console.log(selectionSort(arr));`
-            },
             prosAndCons: {
                 pros: [
                     'Simple and easy to understand.',
@@ -187,14 +148,7 @@ export class AlgorithmService {
                 averageCase: 'O(n^2)',
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
-                stable: true,
-                inPlace: true,
             },
-            howItWorks: [
-                'The algorithm builds the sorted array one element at a time by picking an element and inserting it into its correct position.',
-                'It works similarly to how you might sort playing cards in your hands, by inserting one card at a time into its proper place.',
-                'It continues this process for each element of the array until the entire array is sorted.',
-            ],
             steps: [
                 '1. Start at the second element of the array.',
                 '2. Compare the current element with the elements before it.',
@@ -243,19 +197,6 @@ export class AlgorithmService {
                 python: 0,
                 javascript: 0,
             },
-            exampleUsage: {
-                cpp: `int arr[] = {12, 11, 13, 5, 6};
-      int n = sizeof(arr) / sizeof(arr[0]);
-      insertionSort(arr, n);
-      for (int i = 0; i < n; i++) {
-          cout << arr[i] << " ";
-      }`,
-                python: `arr = [12, 11, 13, 5, 6]
-      insertion_sort(arr)
-      print(arr)`,
-                javascript: `let arr = [12, 11, 13, 5, 6];
-      console.log(insertionSort(arr));`,
-            },
             prosAndCons: {
                 pros: [
                     'Simple and easy to implement.',
@@ -276,14 +217,7 @@ export class AlgorithmService {
                 averageCase: 'O(n log n)',
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(log n)',
-                stable: false,
-                inPlace: true,
             },
-            howItWorks: [
-                'The algorithm selects a pivot element and partitions the array around it, placing elements smaller than the pivot to the left and larger elements to the right.',
-                'It recursively applies the same partitioning process to the left and right subarrays until the entire array is sorted.',
-                'The efficiency of quicksort comes from the fact that each partitioning step splits the array into smaller parts, reducing the problem size quickly.',
-            ],
             steps: [
                 '1. Choose a pivot element from the array.',
                 '2. Partition the array into two subarrays: one with elements smaller than the pivot, and the other with elements greater than the pivot.',
@@ -355,20 +289,6 @@ export class AlgorithmService {
                 python: 0,
                 javascript: 0,
             },
-            exampleUsage: {
-                cpp: `int arr[] = {10, 7, 8, 9, 1, 5};
-      int n = sizeof(arr) / sizeof(arr[0]);
-      quickSort(arr, 0, n - 1);
-      for (int i = 0; i < n; i++) {
-          cout << arr[i] << " ";
-      }`,
-                python: `arr = [10, 7, 8, 9, 1, 5]
-      quick_sort(arr, 0, len(arr) - 1)
-      print(arr)`,
-                javascript: `let arr = [10, 7, 8, 9, 1, 5];
-      quickSort(arr, 0, arr.length - 1);
-      console.log(arr);`,
-            },
             prosAndCons: {
                 pros: [
                     'Efficient for large datasets with O(n log n) time complexity on average.',
@@ -385,6 +305,10 @@ export class AlgorithmService {
 
     getAlgorithms(): Algorithm[] {
         return this.algorithms;
+    }
+
+    getAllAlgorithmNames(): string[] {
+        return this.algorithms.map((algo) => algo.name);
     }
 
     getAlgorithmByName(name: string): Algorithm | undefined {

@@ -388,4 +388,11 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
       }, this.animationDelay); // Use animationDelay here for the initial swap
     });
   }
+
+  formatLabel(value: number): string {
+    if (value >= 500) {
+      return 'Max Speed';
+    }
+     return 'Speed ' + 'x'+((value)/50+1);
+  }
 }

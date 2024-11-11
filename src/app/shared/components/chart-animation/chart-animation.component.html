@@ -5,10 +5,10 @@
     <button mat-mini-fab style="border-radius: 10px;" color="primary" (click)="startSorting()"><mat-icon>play_arrow</mat-icon></button>
     <button mat-mini-fab style="border-radius: 10px;" color="accent" (click)="shuffleArray()"><mat-icon>replay</mat-icon></button>
 
-    <label for="speed">Select Speed:</label>
-    <mat-slider min="1" max="550" step="50" >
-            <input matSliderThumb [(ngModel)]="animationScrollValue" (ngModelChange)="updateInvertedSpeed($event)" />
+    <mat-slider min="0" max="500" step="50"  discrete  [displayWith]="formatLabel">
+      <input matSliderThumb [(ngModel)]="animationScrollValue" (ngModelChange)="updateInvertedSpeed($event)" />
     </mat-slider>
+
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -12,6 +12,7 @@ import { DarkmodeToggleComponent } from '../../../../shared/components/darkmode-
 import { DsaComponent } from '../dsa/dsa.component';
 import { RouterOutlet,RouterLink } from '@angular/router';
 import { FooterComponent } from '../../footer/footer.component';
+import { AlgorithmService } from '../../../../shared/services/algorithm.service';
 
 @Component({
   selector: 'app-nav',
@@ -29,11 +30,14 @@ import { FooterComponent } from '../../footer/footer.component';
     DsaComponent,
     RouterOutlet,
     FooterComponent,
-    RouterLink
+    RouterLink,
+    CommonModule
   ],
 })
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);
+
+  algoNames : string[] = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -41,4 +45,10 @@ export class NavComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+    constructor(algorithmService: AlgorithmService) {
+      
+      this.algoNames = algorithmService.getAllAlgorithmNames();
+      console.log(this.algoNames);
+     }
 }

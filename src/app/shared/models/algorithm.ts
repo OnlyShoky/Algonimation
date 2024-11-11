@@ -6,10 +6,7 @@ export interface Algorithm {
     averageCase: string;
     worstCase: string;
     spaceComplexity: string;
-    stable: boolean;
-    inPlace: boolean;
   };
-  howItWorks?: string[];
   steps?: string[];
   code: {
     cpp: string;
@@ -20,11 +17,6 @@ export interface Algorithm {
     cpp: number;
     python: number;
     javascript: number;
-  };
-  exampleUsage?: {
-    cpp: string;
-    python: string;
-    javascript: string;
   };
   prosAndCons?: {
     pros: string[];

@@ -27,3 +27,47 @@ app-darkmode-toggle {
   padding: 10px 0; /* This padding is fine, but make sure it’s intended */
   margin: 0; /* Remove margin */
 }
+
+.nav-links{
+  // padding: 2px 15px 1px 40px;
+  width: 100%;
+  h2{
+    font-size: 21px;
+    padding-left: 0;
+    width: 204px;
+    margin-bottom: -1.5rem;
+    margin-top: -1rem;
+  }
+  a{
+    position: relative;
+    margin-left: 1rem;
+    width: 100%;
+    // margin-top: -2rem;
+    // margin-bottom: 1rem;
+    height: 2rem;
+  }
+
+
+  // a:hover {
+  //   background-color: blue;
+  // }
+  
+  // a:focus {
+  //   background-color: yellow;
+  // }
+  
+  // a:visited {
+  //   background-color: purple;
+  // }
+  
+  // a:active {
+  //   background-color: green;
+  // }
+
+  
+}
+
+abbr {
+  text-decoration: none;
+  border-bottom: none;
+}

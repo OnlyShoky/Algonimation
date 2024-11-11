@@ -99,9 +99,6 @@ $js-dark-theme: mat.define-dark-theme(
 body.python-theme {
   @include mat.all-component-colors($python-theme);
 
-  .steps {
-    background-color: mat.get-color-from-palette($python-primary, 200);
-  }
   .line-highlight {
     background-color: rgba(
       mat.get-color-from-palette($python-primary, 900),
@@ -111,57 +108,117 @@ body.python-theme {
     &::before {
       background-color: mat.get-color-from-palette($python-primary, 200);
       color: palettes.$sage-darker-text;
-      border : 2px solid palettes.$sage-darker-text;
+      border: 2px solid palettes.$sage-darker-text;
     }
   }
 
-    
-}
+  .bg-primary {
+    background-color: mat.get-color-from-palette($python-primary, 200);
+  }
+  .color-primary {
+    color: mat.get-color-from-palette($python-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($python-primary, 200);
+  }
 
+  a:hover {
+    background-color: mat.get-color-from-palette($python-primary, 50);
+  }
+
+  a:focus {
+    background-color: mat.get-color-from-palette($python-primary, 100);
+  }
+
+  a:active {
+    background-color: mat.get-color-from-palette($python-primary, 200);
+  }
+}
 
 body.cpp-theme {
   @include mat.all-component-colors($cpp-theme);
-  .steps {
-    background-color: mat.get-color-from-palette($cpp-primary, 200);
-  }
+
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($cpp-primary, 900), 0.1);
 
     &::before {
       background-color: mat.get-color-from-palette($cpp-primary, 200);
       color: palettes.$azure-darker-text;
-      border : 2px solid palettes.$azure-darker-text;
-
+      border: 2px solid palettes.$azure-darker-text;
     }
   }
 
+  .bg-primary {
+    background-color: mat.get-color-from-palette($cpp-primary, 200);
+  }
+  .color-primary {
+    color: mat.get-color-from-palette($cpp-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($cpp-primary, 200);
+  }
+
+  a:hover {
+    background-color: mat.get-color-from-palette($cpp-primary, 50);
+  }
+
+  a:focus {
+    background-color: mat.get-color-from-palette($cpp-primary, 100);
+  }
+
+  a:active {
+    background-color: mat.get-color-from-palette($cpp-primary, 200);
+  }
 }
 
 body.js-theme {
   @include mat.all-component-colors($js-theme);
-  .steps {
-    background-color: mat.get-color-from-palette($js-primary, 200);
-  }
+
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($js-primary, 900), 0.1);
 
     &::before {
       background-color: mat.get-color-from-palette($js-primary, 200);
       color: palettes.$gold-darker-text;
-      border : 2px solid palettes.$gold-darker-text;
-
+      border: 2px solid palettes.$gold-darker-text;
     }
+  }
+
+  .bg-primary {
+    background-color: mat.get-color-from-palette($js-primary, 200);
+  }
+  .color-primary {
+    color: mat.get-color-from-palette($js-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($js-primary, 200);
+  }
+
+  a:hover {
+    background-color: mat.get-color-from-palette($js-primary, 50);
+  }
+
+  a:focus {
+    background-color: mat.get-color-from-palette($js-primary, 100);
+  }
+
+  a:active {
+    background-color: mat.get-color-from-palette($js-primary, 200);
   }
 }
 
 body.python-dark-theme {
   @include mat.all-component-colors($python-dark-theme);
 
-  .steps {
+  .bg-primary {
     background-color: mat.get-color-from-palette($python-primary, 900);
   }
-
-
+  .color-primary {
+    color: mat.get-color-from-palette($python-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($python-primary, 200);
+  }
 
   .mat-icon {
     color: mat.get-color-from-palette(
@@ -179,8 +236,7 @@ body.python-dark-theme {
     &::before {
       background-color: mat.get-color-from-palette($python-primary, 900);
       color: palettes.$sage-light-text;
-      border : 2px solid palettes.$sage-light-text;
-
+      border: 2px solid palettes.$sage-light-text;
     }
   }
 }
@@ -191,10 +247,15 @@ body.cpp-dark-theme {
     color: mat.get-color-from-palette($cpp-primary, 200);
   }
 
-  .steps {
+  .bg-primary {
     background-color: mat.get-color-from-palette($cpp-primary, 900);
   }
-
+  .color-primary {
+    color: mat.get-color-from-palette($cpp-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($cpp-primary, 200);
+  }
 
   .line-highlight {
     background-color: rgba(mat.get-color-from-palette($cpp-primary, 200), 0.2);
@@ -202,8 +263,7 @@ body.cpp-dark-theme {
     &::before {
       background-color: mat.get-color-from-palette($cpp-primary, 900);
       color: palettes.$azure-light-text;
-      border : 2px solid palettes.$azure-light-text;
-
+      border: 2px solid palettes.$azure-light-text;
     }
   }
 }
@@ -211,11 +271,15 @@ body.cpp-dark-theme {
 body.js-dark-theme {
   @include mat.all-component-colors($js-dark-theme);
 
-  
-  .steps {
+  .bg-primary {
     background-color: mat.get-color-from-palette($js-primary, 900);
   }
-
+  .color-primary {
+    color: mat.get-color-from-palette($js-primary, 900);
+  }
+  .color-primaryLight {
+    color: mat.get-color-from-palette($js-primary, 200);
+  }
   .mat-icon {
     color: mat.get-color-from-palette($js-primary, 200);
   }
@@ -225,8 +289,7 @@ body.js-dark-theme {
     &::before {
       background-color: mat.get-color-from-palette($js-primary, 900);
       color: palettes.$gold-light-text;
-      border : 2px solid palettes.$gold-light-text;
-
+      border: 2px solid palettes.$gold-light-text;
     }
   }
 }
@@ -253,8 +316,7 @@ body {
       top: 0em;
     }
 
-    .mat-toolbar{
-
+    .mat-toolbar {
       gap: 1rem; // Space between the two divs
       padding: 1rem;
     }

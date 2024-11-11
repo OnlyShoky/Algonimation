@@ -97,7 +97,6 @@ function bogosort(arr) {
       this.sortAlgorithm
     );
 
-    console.log(this.algorithmService.getAlgorithmByName(this.sortAlgorithm));
 
     this.algorithm = this.algorithmService.getAlgorithmByName(
       this.sortAlgorithm

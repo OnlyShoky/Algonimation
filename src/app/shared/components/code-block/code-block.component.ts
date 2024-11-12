@@ -29,7 +29,7 @@ export class CodeBlockComponent implements OnInit {
   private _snackBar = inject(MatSnackBar);
 
   private subscriptions: Subscription[] = [];
-  public lineAnimationDelay: number = 50; // Default delay in milliseconds
+  public lineAnimationDelay: number = 10; // Default delay in milliseconds
 
   dataLine: string = '1'; // Default data-line value
   codeClass: string = 'language-python'; // Default class
@@ -133,6 +133,12 @@ function bogosort(arr) {
           this.sortingService.triggerNextStep();
         }
       ),
+      this.sortingService.delaySubject$.subscribe(
+        async (delay: number) => {
+          console.log("update of delay", delay);
+          this.lineAnimationDelay = delay;
+        }
+      ),
       this.route.paramMap.subscribe((params) => {
         // You can access route parameters here
         const algorithm = params.get('algorithm') || ''; // or any parameter you're using
@@ -149,6 +155,7 @@ function bogosort(arr) {
         this.updateCodeBlock(this.currentLanguage);
       })
     );
+
   }
 
   changeDataLine(line: number): Promise<void> {

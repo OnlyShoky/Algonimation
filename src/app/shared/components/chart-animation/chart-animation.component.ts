@@ -107,6 +107,7 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     const maxSliderValue = 500;
     const minSliderValue = 1;
     this.animationDelay = maxSliderValue - this.animationScrollValue + minSliderValue;
+    this.sortingService.setAnimationDelay(this.animationDelay);
   }
 
   async startSorting() {
@@ -123,6 +124,10 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
       case 'selection-sort':
         arr = this.sortingService.selectionSort([...this.data]);
+        break;
+
+      case 'quick-sort':
+        arr = this.sortingService.quickSort([...this.data]);
         break;
 
       default:
@@ -293,21 +298,45 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   ): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        let choosedColor: string =
-          colorType === 'accent'
-            ? this.themeColors!.accent
-            : this.themeColors!.secondary;
+
 
         let highlightColor = this.themeColors!.accent.replace(
           /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
           'rgba($1, $2, $3, 0.8)'
         );
 
-        if (colorType !== 'accent')
-          highlightColor = this.themeColors!.accent.replace(
-            /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-            'rgba($1, $2, $3, 0.4)'
-          );
+
+          switch (colorType) {
+            case 'primary':
+              highlightColor = this.themeColors!.primary.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 0.8)'
+              );
+              break;
+            case 'accent':
+              highlightColor = this.themeColors!.accent.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 0.8)'
+              );
+              break;
+            case 'secondary':
+              highlightColor = this.themeColors!.secondary.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 0.5)'
+              );
+              break;
+            case 'accent-light':
+              highlightColor = this.themeColors!.accent.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 0.4)'
+              );
+              break;
+            default:
+              highlightColor = this.themeColors!.accent.replace(
+                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+                'rgba($1, $2, $3, 0.8)'
+              );
+          }
 
 
 

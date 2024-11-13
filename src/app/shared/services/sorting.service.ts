@@ -220,6 +220,7 @@ async quickSort(arr: number[], low = 0, high = arr.length - 1): Promise<number[]
     await this.moveToLine(11);
     const pivotIndex = await this.partition(arr, low, high);
 
+
     await this.moveToLine(12);
 
     // Recursively sort the left and right halves around the pivot
@@ -228,6 +229,8 @@ async quickSort(arr: number[], low = 0, high = arr.length - 1): Promise<number[]
 
     await this.quickSort(arr, pivotIndex + 1, high);
     await this.moveToLine(14);
+
+
 
   }
 

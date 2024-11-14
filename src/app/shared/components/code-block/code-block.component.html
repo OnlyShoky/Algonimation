@@ -3,7 +3,8 @@
     <code [ngClass]="codeClass" [innerHTML]="highlightedCode"></code>
     </pre>
     
-    <button mat-mini-fab color="primary" class="copy-button" (click)="copyToClipboard()">
+    <button mat-mini-fab color="primary" class="copy-button" (click)="copyToClipboard()" aria-label="Copy button"
+    >
         <mat-icon>content_copy</mat-icon>
     </button>
     

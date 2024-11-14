@@ -31,10 +31,10 @@ View the live demo here: [Algonimation on Netlify](https://algonimation.netlify.
 ## 📌 Table of Contents
 
 - [Features](#features)
-- [Development Commands](#development-commands)
-- [Deployment](#deployment)
 - [Technologies Used](#technologies-used)
-- [Further Help](#further-help)
+- [What I Learned](#What-I-Learned)
+
+
 
 ## ✨ Features
 
@@ -63,7 +63,7 @@ This project was an incredible learning experience in Angular and web developmen
 
 ## Contact Information
 - Email: mohamed.elmoag@gmail.com
-- LinkedIn: [your LinkedIn](https://www.linkedin.com/in/mohamed-el-mourabit-agharbi/)
-- GitHub: [your GitHub](https://github.com/OnlyShoky)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/mohamed-el-mourabit-agharbi/)
+- GitHub: [GitHub](https://github.com/OnlyShoky)
 
 

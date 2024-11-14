@@ -1,3 +1,20 @@
+# Allow all crawlers to access the site
 User-agent: *
-Disallow: /
-SyntaxError: This is an invalid directive
+Disallow: /admin/    # Exclude any sensitive or admin pages from search engines
+Disallow: /login/    # Same for login pages
+Disallow: /dashboard/
+
+# Allow access to assets like images, styles, and scripts
+Allow: /assets/
+Allow: /favicon.ico
+Allow: /robots.txt
+
+# Prevent crawlers from accessing specific folders (e.g., internal resources, temporary files)
+Disallow: /temp/
+Disallow: /uploads/
+
+# Sitemap URL for better crawling
+Sitemap: https://algonimation.netlify.app/sitemap.xml
+
+# Crawl-delay directive for some bots (optional, if needed to limit load)
+Crawl-delay: 10

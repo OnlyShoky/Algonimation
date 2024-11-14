@@ -49,6 +49,6 @@ export class NavComponent {
     constructor(algorithmService: AlgorithmService) {
       
       this.algoNames = algorithmService.getAllAlgorithmNames();
-      console.log(this.algoNames);
+      
      }
 }

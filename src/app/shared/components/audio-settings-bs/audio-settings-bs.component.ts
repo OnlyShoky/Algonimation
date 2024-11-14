@@ -27,19 +27,13 @@ export class AudioSettingsBSComponent {
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
   audioService: any;
-  volume: number = 1;
+  volume: number = 0.2;
 
   audioTypeControl = new FormControl('');
   audioType: string = 'piano';
   constructor(audioService: AudioService) {
     this.audioService = audioService;
-  }
-
-  openMenu() {
-    console.log('open menu');
-    console.log(this.menuMat)
-    console.log(this.menuTrigger)
-
+    this.updateVolume(this.volume);
   }
 
   toggleMute() {

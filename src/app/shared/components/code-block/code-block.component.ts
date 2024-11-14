@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { SortingService } from '../../services/sorting.service';
 import { AlgorithmService } from '../../services/algorithm.service';
 import { Algorithm } from '../../models/algorithm';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 declare var Prism: any;
@@ -88,14 +88,12 @@ function bogosort(arr) {
     private themesManagerService: ThemesManagerService,
     private sortingService: SortingService,
     private algorithmService: AlgorithmService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    console.log(
-      'CodeBlock  animation component initialized',
-      this.sortAlgorithm
-    );
+
 
 
     this.algorithm = this.algorithmService.getAlgorithmByName(
@@ -108,6 +106,8 @@ function bogosort(arr) {
       this.codePython = this.algorithm?.code.python;
     } else {
       console.error('Algorithm not found');
+      this.router.navigate(['/404']);
+
     }
 
     if (typeof window !== 'undefined') {
@@ -135,7 +135,7 @@ function bogosort(arr) {
       ),
       this.sortingService.delaySubject$.subscribe(
         async (delay: number) => {
-          console.log("update of delay", delay);
+
           this.lineAnimationDelay = delay;
         }
       ),
@@ -143,7 +143,7 @@ function bogosort(arr) {
         // You can access route parameters here
         const algorithm = params.get('algorithm') || ''; // or any parameter you're using
         this.algorithm = this.algorithmService.getAlgorithmByName(algorithm);
-        console.log('Route parameter:', algorithm);
+
 
         if (this.algorithm) {
           this.codeC = this.algorithm?.code.cpp;
@@ -177,7 +177,7 @@ function bogosort(arr) {
       return;
     }
     this.codeClass = 'language-' + newClass;
-    console.log('Updated to original theme colors');
+
     switch (newClass) {
       case 'python':
         this.codeText = this.codePython;
@@ -214,11 +214,11 @@ function bogosort(arr) {
     requestAnimationFrame(() => {
       Prism.highlightAll();
     });
-    console.log(this.codeClass);
+
   }
 
   changeText(newText: string) {
-    console.log(newText);
+
     this.codeText = newText;
     Prism.highlightAll();
   }
@@ -227,7 +227,7 @@ function bogosort(arr) {
   onWindowResize() {
     // Execute Prism.highlightAll() on window resize or zoom change
     Prism.highlightAll();
-    console.log('Window resized');
+
   }
 
   ngOnDestroy(): void {
@@ -248,7 +248,7 @@ function bogosort(arr) {
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000, // Duration in milliseconds (2 seconds)
-      
+
     });
   }
 }

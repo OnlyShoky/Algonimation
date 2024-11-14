@@ -20,7 +20,7 @@ ngOnInit(): void {
 }
 
 onToggleChange() {
-  console.log("onToggleChange: isDarkMode: ");
+  
   this.themesManagerService.toggleDarkMode();
 }
  

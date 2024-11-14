@@ -1,3 +1,5 @@
+
+
 <div class="container">
   <h3 class="left-aligned">
     {{ algorithm.name.replace("-", " ") | titlecase }}
@@ -9,14 +11,12 @@
 
 <div class="flex-container">
   <div class="chart-content">
-    <!-- <app-temp-example></app-temp-example> -->
     <app-chart-animation
       [sortAlgorithm]="getAlgorithmCode()"
     ></app-chart-animation>
   </div>
 
   <div class="code-block-container">
-    <!-- <app-code-block></app-code-block> -->
     <app-code-block [sortAlgorithm]="getAlgorithmCode()"></app-code-block>
   </div>
 </div>

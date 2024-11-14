@@ -26,44 +26,53 @@ import { AudioSettingsBSComponent } from "../audio-settings-bs/audio-settings-bs
   styleUrls: ['./chart-animation.component.scss'],
 })
 export class ChartAnimationComponent implements OnInit, OnDestroy {
-  @Input() sortAlgorithm!: string;
+  @Input() sortAlgorithm!: string; // The sorting algorithm to be used
 
+  // Subscription array to store all subscriptions for cleanup
   private subscriptions: Subscription[] = [];
-  public chart: any;
-  public labels: string[] = [];
-  public colors: string[] = [];
-  public data: number[] = [];
 
-  public animationDelay: number = 500; // Default delay in milliseconds
-  public animationScrollValue: number = 200;
+  isSorting: boolean = false;  // Flag to track sorting status
 
+  // Chart data and labels
+  public chart: any; // Chart instance (e.g., Chart.js)
+  public labels: string[] = []; // Labels for chart data
+  public colors: string[] = []; // Colors for chart data visualization
+  public data: number[] = []; // Array to store data for sorting
 
-  public themeColors:
-    | { primary: string; accent: string; secondary: string; warn: string }
-    | undefined;
-  index1: number = -1;
-  index2: number = -1;
+  // Animation-related settings
+  public animationDelay: number = 500; // Default delay for animation in milliseconds
+  public animationScrollValue: number = 200; // Speed of animation scroll
 
-  // Define variables to store initial positions and distance for swapping
-  private initialX1: number | null = null;
-  private initialX2: number | null = null;
-  private distance: number | null = null;
-  private animationSteps: number | null = null;
+  // Theme colors for chart styling (primary, accent, secondary, warn)
+  public themeColors: { primary: string; accent: string; secondary: string; warn: string } | undefined;
 
+  // Variables for tracking indices during sorting (for swapping)
+  index1: number = -1; // First index for swapping
+  index2: number = -1; // Second index for swapping
+
+  // Variables for tracking positions during animation
+  private initialX1: number | null = null; // Initial X position of element 1 (for animation)
+  private initialX2: number | null = null; // Initial X position of element 2 (for animation)
+  private distance: number | null = null; // Distance to move elements during swap animation
+  private animationSteps: number | null = null; // Total steps for the animation
+
+  // Constructor to initialize services and prepare data
   constructor(
     private themesManagerService: ThemesManagerService,
     private sortingService: SortingService,
     private audioService: AudioService,
     private route: ActivatedRoute
   ) {
+    // Fetch initial data for sorting
     this.data = this.sortingService.getValues();
-    // Generate labels from 0 to the length of data
+
+    // Generate labels for the chart (index of each data element)
     this.labels = this.data.map((_, index) => index.toString());
 
-    // Generate RGBA colors based on the size of the data
+    // Generate colors for each data element, decreasing opacity with index
     this.colors = this.data.map((_, index) => {
-      const alpha = 1 - index / this.data.length; // Decrease opacity with index
-      return `rgba(255, 255, 255, ${alpha})`; // White color with decreasing opacity
+      const alpha = 1 - index / this.data.length; // Opacity decreases as index increases
+      return `rgba(255, 255, 255, ${alpha})`; // Use white color with decreasing opacity
     });
   }
 
@@ -111,6 +120,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   }
 
   async startSorting() {
+    this.isSorting = true;  // Disable buttons during sorting
+
     let arr: Promise<number[]>;
 
     switch (this.sortAlgorithm) {
@@ -138,6 +149,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     await arr;
 
     this.highlightAllBars();
+
+    this.isSorting = false;  // Disable buttons during sorting
   }
 
   async highlightAllBars() {
@@ -163,20 +176,49 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   }
 
   updateColors(colors: string[] = this.colors) {
-    // Update colors with the primary theme color or default color if not set
-    this.colors = colors.map(
-      (color) =>
-        (color = this.themeColors?.primary || 'rgba(255, 99, 132, 0.5)')
-    );
 
-    // Use regex to replace the alpha value in rgba with '1'
-    this.chart.data.datasets[0].backgroundColor = this.colors;
-    this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
-      color.replace(
-        /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-        'rgba($1, $2, $3, 1)'
-      )
-    );
+    // Conditionally update colors based on sorting state
+    if (this.isSorting) {
+      // If sorting, preserve the alpha value but change the RGB part (the color)
+      this.colors = colors.map((color) => {
+        // Extract the alpha value from the current color
+        const alphaMatch = color.match(/rgba\((\d+), (\d+), (\d+), ([\d.]+)\)/);
+        const alpha = alphaMatch ? alphaMatch[4] : '0.5'; // Default to 0.5 if no alpha is found
+        const alphaNumber = parseFloat(alpha);
+        if (alphaNumber > 0.5)
+          color = this.themeColors?.accent || 'rgba(255, 99, 132, 0.5)';
+        else
+          color = this.themeColors?.primary || 'rgba(255, 99, 132, 0.5)';
+
+        return color.replace(
+          /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+          'rgba($1, $2, $3, ' + (alpha) + ')'
+        );
+
+
+      });
+
+
+
+    } else {
+      // If not sorting, update color and alpha value as per theme color
+      this.colors = colors.map(
+        (color) =>
+          (color = this.themeColors?.primary || 'rgba(255, 99, 132, 0.5)')
+      );
+
+      // // Use regex to replace the alpha value in rgba with '1'
+      this.chart.data.datasets[0].backgroundColor = this.colors;
+      this.chart.data.datasets[0].borderColor = this.colors.map((color) =>
+        color.replace(
+          /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+          'rgba($1, $2, $3, 1)'
+        )
+      );
+    }
+
+
+
 
     if (this.chart && this.chart.width) {
       // Perform operations that rely on chart width
@@ -306,46 +348,45 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
         );
 
 
-          switch (colorType) {
-            case 'primary':
-              highlightColor = this.themeColors!.primary.replace(
-                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-                'rgba($1, $2, $3, 0.8)'
-              );
-              break;
-            case 'accent':
-              highlightColor = this.themeColors!.accent.replace(
-                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-                'rgba($1, $2, $3, 0.8)'
-              );
-              break;
-            case 'secondary':
-              highlightColor = this.themeColors!.secondary.replace(
-                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-                'rgba($1, $2, $3, 0.5)'
-              );
-              break;
-            case 'accent-light':
-              highlightColor = this.themeColors!.accent.replace(
-                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-                'rgba($1, $2, $3, 0.4)'
-              );
-              break;
-            default:
-              highlightColor = this.themeColors!.accent.replace(
-                /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
-                'rgba($1, $2, $3, 0.8)'
-              );
-          }
+        switch (colorType) {
+          case 'primary':
+            highlightColor = this.themeColors!.primary.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 0.8)'
+            );
+            break;
+          case 'accent':
+            highlightColor = this.themeColors!.accent.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 0.8)'
+            );
+            break;
+          case 'secondary':
+            highlightColor = this.themeColors!.secondary.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 0.5)'
+            );
+            break;
+          case 'accent-light':
+            highlightColor = this.themeColors!.accent.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 0.4)'
+            );
+            break;
+          default:
+            highlightColor = this.themeColors!.accent.replace(
+              /rgba\((\d+), (\d+), (\d+), [\d.]+\)/,
+              'rgba($1, $2, $3, 0.8)'
+            );
+        }
 
 
 
-        this.colors[index] = unhighlight
-          ? this.themeColors!.primary
-          : highlightColor;
+        this.colors[index] = unhighlight ? this.themeColors!.primary : highlightColor;
 
-        if (!unhighlight){
-          console.log("Data index",this.data[index]);
+        if (!unhighlight) {
+
+          
           this.audioService.playSound(this.data[index]);
 
         }

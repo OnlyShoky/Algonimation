@@ -6,20 +6,22 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-nav-list class="nav-links">
-      <div class="nav-links">
-        <div mat-subheader> <h2><abbr title="Data Structures and Algorithms">DSA</abbr></h2></div>
-        <div *ngFor="let algoName of algoNames">
-        <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase  }} </a>
-        </div>
-        <!-- <a mat-list-item routerLink="dsa/bubble-sort"> Bubble Sort </a>
-        <a mat-list-item routerLink="dsa/selection-sort">Selection Sort</a>
-        <a mat-list-item routerLink="dsa/insertion-sort">Insertion Sort</a> -->
-        <app-darkmode-toggle></app-darkmode-toggle>
+  <mat-nav-list class="nav-links">
+    <!-- Wrapper div to take up available space -->
+    <div class="nav-links-wrapper">
+      <div mat-subheader>
+        <h2><abbr title="Data Structures and Algorithms">DSA</abbr></h2>
       </div>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav position="end">End</mat-sidenav>
+      <a mat-list-item routerLink="/dsa/intro"> Introduction </a>
+      <div *ngFor="let algoName of algoNames">
+        <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase }} </a>
+      </div>
+    </div>
+    <!-- Darkmode Toggle: Always Sticky at Bottom Left -->
+
+  </mat-nav-list>
+</mat-sidenav>
+<mat-sidenav position="end">End</mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar>
@@ -38,6 +40,4 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<footer class="footer">
-  <app-footer></app-footer>
-</footer>
+

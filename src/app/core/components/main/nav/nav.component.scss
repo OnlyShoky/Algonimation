@@ -3,68 +3,33 @@
 }
 
 .sidenav {
-  width: 200px; /* Set a width that suits your layout */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-mat-toolbar {
-  background-color: inherit;
-}
-app-darkmode-toggle {
-  margin-left: 1rem; // Añade un margen si deseas separarlo un poco del borde inferior
-  position: absolute;
-  bottom: 5rem;
-
-  @media (max-width: 1500px) {
-    bottom: 6rem;
-  }
-}
-
-.footer {
-  // height: 50px; /* Adjust as needed */
-  background-color: #2a373b; /* Customize footer color */
-  color: white; /* Customize footer text color */
-  text-align: center;
-  padding: 10px 0; /* This padding is fine, but make sure it’s intended */
-  margin: 0; /* Remove margin */
-}
-
-.nav-links{
-  // padding: 2px 15px 1px 40px;
-  width: 100%;
-  h2{
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: auto;
+  h2 {
     font-size: 21px;
     padding-left: 0;
     width: 204px;
     margin-bottom: -1.5rem;
     margin-top: -1rem;
   }
-  a{
+  a {
     position: relative;
     margin-left: 1rem;
-    width: 100%;
-    // margin-top: -2rem;
-    // margin-bottom: 1rem;
+    width: auto;
     height: 2rem;
   }
+}
 
-
-  // a:hover {
-  //   background-color: blue;
-  // }
-  
-  // a:focus {
-  //   background-color: yellow;
-  // }
-  
-  // a:visited {
-  //   background-color: purple;
-  // }
-  
-  a:active {
-    background-color: green;
-  }
-
-  
+.nav-links-wrapper {
+  flex-grow: 1; /* Ensures the nav items take all available space */
 }
 
 abbr {

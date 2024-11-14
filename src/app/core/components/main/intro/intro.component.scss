@@ -1,0 +1,69 @@
+/* dsa-introduction.component.css */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  h4 {
+    font-size: 1.5rem;
+    color: #0056b3;
+    margin-top: 1rem;
+  }
+  
+  h5 {
+    font-size: 1.3rem;
+    color: #0074d9;
+    margin-top: 1rem;
+  }
+  
+  .intro,
+  .note {
+    padding: 16px;
+    margin: 12px 0;
+  }
+  
+  .intro {
+    border-left: 5px solid #0074d9;
+    border-radius: 5px;
+  }
+  
+  .note {
+    border-left: 5px solid #f5a623;
+    border-radius: 5px;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+  }
+  
+ 
+  
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+  }
+  
+  figure {
+    text-align: center;
+    margin: 1rem 0;
+  }
+  
+  figcaption {
+    font-size: 0.9rem;
+  }

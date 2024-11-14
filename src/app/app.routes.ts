@@ -1,10 +1,22 @@
-import { Routes } from '@angular/router';
+import { Routes,RouterModule } from '@angular/router';
 import { DsaComponent } from './core/components/main/dsa/dsa.component';
 import { TempExampleComponent } from './shared/components/temp-example/temp-example.component';
+import { NotFoundComponent } from './core/components/main/not-found/not-found.component';
+import { IntroComponent } from './core/components/main/intro/intro.component';
+import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/dsa/sorting', pathMatch: 'full' },
+    { path: 'dsa/intro', component: IntroComponent },
     { path: 'dsa/:algorithm', component: DsaComponent },
+    { path: '404', component: NotFoundComponent },
     { path: 'example', component: TempExampleComponent },
+    { path: '**', redirectTo: '/404' },
+    { path: '', redirectTo: '/dsa/intro', pathMatch: 'full' },
+
 ];
 
+// @NgModule({
+//     imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+//     exports: [RouterModule]
+//   })
+//   export class AppRoutingModule {}

@@ -7,15 +7,19 @@
       color="primary"
       (click)="startSorting()"
       aria-label="Start sorting button"
+      [disabled]="isSorting" 
+
     >
       <mat-icon>play_arrow</mat-icon>
     </button>
+
     <button
       mat-mini-fab
       style="border-radius: 10px"
       color="accent"
       (click)="shuffleArray()"
       aria-label="Shuffle button"
+      [disabled]="isSorting" 
     >
       <mat-icon>replay</mat-icon>
     </button>

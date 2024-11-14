@@ -6,6 +6,7 @@
       style="border-radius: 10px"
       color="primary"
       (click)="startSorting()"
+      aria-label="Start sorting button"
     >
       <mat-icon>play_arrow</mat-icon>
     </button>
@@ -14,6 +15,7 @@
       style="border-radius: 10px"
       color="accent"
       (click)="shuffleArray()"
+      aria-label="Shuffle button"
     >
       <mat-icon>replay</mat-icon>
     </button>
@@ -24,6 +26,7 @@
       step="50"
       discrete
       [displayWith]="formatLabel"
+      aria-label="Speed slider"
     >
       <input
         matSliderThumb

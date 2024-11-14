@@ -32,7 +32,8 @@
         matSliderThumb
         [(ngModel)]="animationScrollValue"
         (ngModelChange)="updateInvertedSpeed($event)"
-      />
+        aria-label="Speed slider thumb"
+        />
     </mat-slider>
 
     <app-audio-settings-bs  class="audio-settings"></app-audio-settings-bs>

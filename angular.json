@@ -24,7 +24,7 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/assets", "src/assets/favicon.ico", "robots.txt"],
+            "assets": ["src/assets", "src/assets/favicon.ico", "src/robots.txt"],
             "styles": [
               "src/assets/themes/azure-blue.css",
               "src/styles.scss",

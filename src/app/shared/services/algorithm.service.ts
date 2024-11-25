@@ -15,6 +15,11 @@ export class AlgorithmService {
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
             },
+            runtime: {
+                cpp: 15,
+                python: 25,
+                javascript: 20,
+            },
             steps: [
                 '1. Start from the first element of the array and compare adjacent elements.',
                 '2. If the adjacent elements are in the wrong order, swap them.',
@@ -80,6 +85,11 @@ export class AlgorithmService {
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
 
+            },
+            runtime: {
+                cpp: 2,
+                python: 4,
+                javascript: 3,
             },
             steps: [
                 '1. Go through the array to find the minimum value in the unsorted section.',
@@ -148,6 +158,11 @@ export class AlgorithmService {
                 averageCase: 'O(n^2)',
                 worstCase: 'O(n^2)',
                 spaceComplexity: 'O(1)',
+            },
+            runtime: {
+                cpp: 10,
+                python: 15,
+                javascript: 12,
             },
             steps: [
                 '1. Start at the second element of the array.',
@@ -224,6 +239,11 @@ export class AlgorithmService {
                 '3. Recursively apply the same process to the two subarrays.',
                 '4. Continue until the base case is reached, where the subarrays have one or zero elements.'
             ],
+            runtime: {
+                cpp: 1,
+                python: 2,
+                javascript: 1.5,
+            },
             code: {
                 cpp: `#include <iostream>
       using namespace std;
@@ -289,6 +309,7 @@ export class AlgorithmService {
                 python: 0,
                 javascript: 0,
             },
+            
             prosAndCons: {
                 pros: [
                     'Efficient for large datasets with O(n log n) time complexity on average.',

@@ -32,13 +32,15 @@ export class SortingService {
   private delaySubject = new Subject<number>();
   public delaySubject$ = this.delaySubject.asObservable();
 
+  cancelTrigger = false;
+
 
   constructor() { }
 
   // Helper functions
 
-  setAnimationDelay(delay: number) { 
-    console.log('Animation delay set to', delay); 
+  setAnimationDelay(delay: number) {
+    console.log('Animation delay set to', delay);
     this.delay = delay;
     this.delaySubject.next(delay);
   }
@@ -47,27 +49,48 @@ export class SortingService {
     return this.delay;
   }
 
+  getCancelTrigger() {
+    return this.cancelTrigger;
+  }
+
+  cancelSorting() {
+    this.cancelTrigger = true;
+  }
+
+  startSorting() {
+    this.cancelTrigger = false;
+  }
+
 
 
   async highlightElement(index: number, unhighlight: boolean, needTrigger = false, colorType: string = 'accent') {
+    // cancel sorting
+    if (!this.cancelTrigger) {
 
-    this.highlightSubject.next({ index, unhighlight, needTrigger, colorType });
 
-    if (needTrigger) {
-      await this.waitForUserStep();
+      this.highlightSubject.next({ index, unhighlight, needTrigger, colorType });
+
+      if (needTrigger) {
+        await this.waitForUserStep();
+      }
     }
-
   }
 
   async moveToLine(line: number) {
-    this.linePointerSubject.next(line + this.deltaLine);
-    await this.waitForUserStep();
+    if (!this.cancelTrigger) {
+      this.linePointerSubject.next(line + this.deltaLine);
+      await this.waitForUserStep();
+    }
   }
 
   async swapElements(arr: number[], index1: number, index2: number) {
-    [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
-    this.swapSubject.next({ index1, index2 });
-    await this.waitForUserStep();
+
+    if (!this.cancelTrigger) {
+
+      [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
+      this.swapSubject.next({ index1, index2 });
+      await this.waitForUserStep();
+    }
   }
 
   // Bubble Sort Implementation
@@ -79,6 +102,10 @@ export class SortingService {
     for (let i = 0; i < n - 1; i++) {
       await this.moveToLine(2);
       for (let j = 0; j < n - i - 1; j++) {
+
+        // cancel sorting
+        if (this.cancelTrigger)
+          return arr;
         await this.moveToLine(3);
 
         // Highlight current elements
@@ -119,6 +146,9 @@ export class SortingService {
 
       await this.moveToLine(4);
       for (let j = i + 1; j < n; j++) {
+        // cancel sorting
+        if (this.cancelTrigger)
+          return arr;
 
         // Highlight current element
         await this.highlightElement(j, false, true, 'accent-light');
@@ -172,7 +202,13 @@ export class SortingService {
       await this.waitForUserStep();
 
       await this.moveToLine(4);
+      // cancel sorting
+      if (this.cancelTrigger)
+        return arr;
       while (j >= 0 && arr[j] > key) {
+        // cancel sorting
+        if (this.cancelTrigger)
+          return arr;
         // Highlight current elements
         await this.highlightElement(j, false, false, 'accent-light');
         await this.highlightElement(j + 1, false, true, 'accent-light');
@@ -186,13 +222,13 @@ export class SortingService {
         j--;
         await this.moveToLine(6);
 
-        
+
         this.linePointerSubject.next(4 + this.deltaLine);
         await this.waitForUserStep();
-        
+
 
       }
-       await this.highlightElement(j+1 , false, true);
+      await this.highlightElement(j + 1, false, true);
 
 
       arr[j + 1] = key;
@@ -201,7 +237,7 @@ export class SortingService {
       this.linePointerSubject.next(5 + this.deltaLine);
       await this.waitForUserStep();
     }
-    await this.highlightElement(n-1, false, false);
+    await this.highlightElement(n - 1, false, false);
     this.linePointerSubject.next(1);
 
     await this.moveToLine(0);
@@ -211,73 +247,83 @@ export class SortingService {
 
   // Inside SortingService
 
-async quickSort(arr: number[], low = 0, high = arr.length - 1): Promise<number[]> {
-  console.log('quickSort');
-  // Line pointer for tracking line execution
-  await this.moveToLine(10);
+  async quickSort(arr: number[], low = 0, high = arr.length - 1): Promise<number[]> {
+    console.log('quickSort');
 
-  if (low < high) {
-    await this.moveToLine(11);
-    const pivotIndex = await this.partition(arr, low, high);
-
-
-    await this.moveToLine(12);
-
-    // Recursively sort the left and right halves around the pivot
-    await this.quickSort(arr, low, pivotIndex - 1);
-    await this.moveToLine(13);
-
-    await this.quickSort(arr, pivotIndex + 1, high);
-    await this.moveToLine(14);
+    // cancel sorting
+    if (this.cancelTrigger)
+      return arr;
+    // Line pointer for tracking line execution
+    await this.moveToLine(10);
 
 
 
-  }
+    if (low < high) {
 
-  await this.moveToLine(1);
-  return arr;
-}
+      await this.moveToLine(11);
+      const pivotIndex = await this.partition(arr, low, high);
 
-// Partition function used in QuickSort
-private async partition(arr: number[], low: number, high: number): Promise<number> {
-  await this.moveToLine(0);
-  const pivot = arr[high];
-  await this.moveToLine(1);
-  let i = low - 1;
 
-  // Highlight the pivot element
-  await this.highlightElement(high, false, true, 'accent');
 
-  for (let j = low; j < high; j++) {
-    await this.moveToLine(2);
-    // Highlight current element for comparison
-    await this.highlightElement(j, false, true, 'accent-light');
-    if (arr[j] < pivot) {
-      await this.moveToLine(3);
-      i++;
-      await this.moveToLine(4);
 
-      // Swap if element is less than pivot
-      if(i !== j)
-        await this.swapElements(arr, i, j);
-      await this.moveToLine(5);
+      await this.moveToLine(12);
+
+      // Recursively sort the left and right halves around the pivot
+      await this.quickSort(arr, low, pivotIndex - 1);
+      await this.moveToLine(13);
+
+      await this.quickSort(arr, pivotIndex + 1, high);
+      await this.moveToLine(14);
+
 
 
     }
-    // Unhighlight current element
-    await this.highlightElement(j, true);
 
+    await this.moveToLine(1);
+    return arr;
   }
 
-  await this.highlightElement(high, true);
-  // Place pivot in correct sorted position
-  await this.swapElements(arr, i + 1, high);
-  await this.moveToLine(6);
+  // Partition function used in QuickSort
+  private async partition(arr: number[], low: number, high: number): Promise<number> {
+    await this.moveToLine(0);
+    const pivot = arr[high];
+    await this.moveToLine(1);
+    let i = low - 1;
 
-  // await this.highlightElement(i + 1, false, true); // Highlight sorted pivot position
-  await this.moveToLine(7);
-  return i + 1;
-}
+    // Highlight the pivot element
+    await this.highlightElement(high, false, true, 'accent');
+
+    for (let j = low; j < high; j++) {
+
+      await this.moveToLine(2);
+      // Highlight current element for comparison
+      await this.highlightElement(j, false, true, 'accent-light');
+      if (arr[j] < pivot) {
+        await this.moveToLine(3);
+        i++;
+        await this.moveToLine(4);
+
+        // Swap if element is less than pivot
+        if (i !== j)
+          await this.swapElements(arr, i, j);
+        await this.moveToLine(5);
+
+
+      }
+      // Unhighlight current element
+      await this.highlightElement(j, true);
+
+    }
+
+    await this.highlightElement(high, true);
+    // Place pivot in correct sorted position
+    await this.swapElements(arr, i + 1, high);
+    await this.moveToLine(6);
+
+    // await this.highlightElement(i + 1, false, true); // Highlight sorted pivot position
+    await this.moveToLine(7);
+    return i + 1;
+  }
 
 
   // Function to randomize the order of values

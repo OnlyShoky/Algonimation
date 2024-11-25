@@ -11,7 +11,6 @@ export const routes: Routes = [
     { path: '404', component: NotFoundComponent },
     { path: 'example', component: TempExampleComponent },
     { path: '', redirectTo: '/dsa/intro', pathMatch: 'full' },
-
     { path: '**', redirectTo: '/404' },
 
 ];

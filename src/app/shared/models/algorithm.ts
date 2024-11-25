@@ -22,4 +22,9 @@ export interface Algorithm {
     pros: string[];
     cons: string[];
   };
+  runtime?: {
+    cpp: number;
+    python: number;
+    javascript: number;
+  }
 }

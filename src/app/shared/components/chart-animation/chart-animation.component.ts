@@ -124,6 +124,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
     let arr: Promise<number[]>;
 
+    this.sortingService.startSorting();
+
     switch (this.sortAlgorithm) {
       case 'bubble-sort':
         arr = this.sortingService.bubbleSort([...this.data]);
@@ -148,9 +150,20 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
 
     await arr;
 
-    this.highlightAllBars();
+    if(this.sortingService.getCancelTrigger())
+      this.unHighlightAllBars();
+    else
+      this.highlightAllBars();
 
     this.isSorting = false;  // Disable buttons during sorting
+  }
+
+  async unHighlightAllBars() {
+    this.animationDelay = 0
+    // Unhighlight all bars from start to end
+    for (let i = 0; i < this.data.length; i++) {
+      await this.highlightBar(i, true); // true to unhighlight
+    }
   }
 
   async highlightAllBars() {

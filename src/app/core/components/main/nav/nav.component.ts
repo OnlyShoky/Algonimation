@@ -8,10 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { DarkmodeToggleComponent } from '../../../../shared/components/darkmode-toggle/darkmode-toggle.component';
-import { DsaComponent } from '../dsa/dsa.component';
 import { RouterOutlet,RouterLink } from '@angular/router';
-import { FooterComponent } from '../../footer/footer.component';
 import { AlgorithmService } from '../../../../shared/services/algorithm.service';
 
 @Component({
@@ -26,10 +23,7 @@ import { AlgorithmService } from '../../../../shared/services/algorithm.service'
     MatListModule,
     MatIconModule,
     AsyncPipe,
-    DarkmodeToggleComponent,
-    DsaComponent,
     RouterOutlet,
-    FooterComponent,
     RouterLink,
     CommonModule
   ],

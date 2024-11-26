@@ -62,7 +62,7 @@ export class ThemesManagerService {
     };
 
   initTheme(): void {
-    if (typeof window != 'undefined' && document.readyState === 'complete') {
+    if (typeof window != 'undefined' && typeof document != 'undefined') {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (prefersDark)
         this.toggleDarkMode();

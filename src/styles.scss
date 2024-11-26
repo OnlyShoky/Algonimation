@@ -114,6 +114,8 @@ body.python-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($python-primary, 200);
+    color: black
+  
   }
   .color-primary {
     color: mat.get-color-from-palette($python-primary, 900);
@@ -121,6 +123,8 @@ body.python-theme {
   .color-primaryLight {
     color: mat.get-color-from-palette($python-primary, 200);
   }
+
+   
 
   a:hover {
     background-color: mat.get-color-from-palette($python-primary, 50);
@@ -150,6 +154,8 @@ body.cpp-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($cpp-primary, 200);
+    color: black
+
   }
   .color-primary {
     color: mat.get-color-from-palette($cpp-primary, 900);
@@ -186,7 +192,11 @@ body.js-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($js-primary, 200);
+    color: black
+
   }
+
+
   .color-primary {
     color: mat.get-color-from-palette($js-primary, 900);
   }
@@ -212,6 +222,8 @@ body.python-dark-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($python-primary, 900);
+    color: white;
+
   }
   .color-primary {
     color: mat.get-color-from-palette($python-primary, 900);
@@ -249,6 +261,8 @@ body.cpp-dark-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($cpp-primary, 900);
+    color: white;
+
   }
   .color-primary {
     color: mat.get-color-from-palette($cpp-primary, 900);
@@ -273,6 +287,8 @@ body.js-dark-theme {
 
   .bg-primary {
     background-color: mat.get-color-from-palette($js-primary, 900);
+    color: white;
+
   }
   .color-primary {
     color: mat.get-color-from-palette($js-primary, 900);

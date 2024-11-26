@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class ThemesManagerService {
+
   private currentTheme: string = 'python-theme';
   private isDarkMode: boolean = false;
   private currentLanguage: string = 'python';
@@ -17,42 +21,56 @@ export class ThemesManagerService {
   private themeSubject = new BehaviorSubject<string>(this.currentTheme);
   currentTheme$ = this.themeSubject.asObservable();
 
+
+
+
   // Define theme colors
   private themeColors: {
-    [key: string]: { primary: string; accent: string; secondary : string; warn: string };
+    [key: string]: { primary: string; accent: string; secondary: string; warn: string };
   } = {
-    'python-theme': {
-      primary: '#A8D5BA',
-      accent: '#69F0AE',
-      secondary: '#FEFFA7',
-      warn: '#FF5252',
-    },
-    'python-dark-theme': {
-      primary: '#005A32',
-      accent: '#69F0AE',
-      secondary: '#FFE700',
-      warn: '#D32F2F',
-    },
-    'cpp-theme': {
-      primary: '#A1C4E9',
-      accent: '#448AFF',
-      secondary: '#FEFFA7',
-      warn: '#FF5252',
-    },
-    'cpp-dark-theme': {
-      primary: '#0D47A1',
-      accent: '#2962FF',
-      secondary: '#FFE700',
-      warn: '#D32F2F',
-    },
-    'js-theme': {
-      primary: '#fad643',
-      accent: '#ff6e40',
-      secondary: '#BCF2F6',
-      warn: '#FF5252',
-    },
-    'js-dark-theme': { primary: '#FFA000', accent: '#FF6D00', secondary: '#08C2FF', warn: '#D32F2F' },
-  };
+      'python-theme': {
+        primary: '#A8D5BA',
+        accent: '#69F0AE',
+        secondary: '#FEFFA7',
+        warn: '#FF5252',
+      },
+      'python-dark-theme': {
+        primary: '#005A32',
+        accent: '#69F0AE',
+        secondary: '#FFE700',
+        warn: '#D32F2F',
+      },
+      'cpp-theme': {
+        primary: '#A1C4E9',
+        accent: '#448AFF',
+        secondary: '#FEFFA7',
+        warn: '#FF5252',
+      },
+      'cpp-dark-theme': {
+        primary: '#0D47A1',
+        accent: '#2962FF',
+        secondary: '#FFE700',
+        warn: '#D32F2F',
+      },
+      'js-theme': {
+        primary: '#fad643',
+        accent: '#ff6e40',
+        secondary: '#BCF2F6',
+        warn: '#FF5252',
+      },
+      'js-dark-theme': { primary: '#FFA000', accent: '#FF6D00', secondary: '#08C2FF', warn: '#D32F2F' },
+    };
+
+  initTheme(): void {
+    if (typeof window != 'undefined') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark)
+        this.toggleDarkMode();
+
+        document.body.style.visibility = 'visible';
+        document.body.style.opacity = '1';
+    }
+  }
 
   // Toggle dark mode
   toggleDarkMode() {
@@ -119,7 +137,7 @@ export class ThemesManagerService {
       return {
         primary: hexToRgba(colors.primary, alpha),
         accent: hexToRgba(colors.accent, alpha),
-        secondary : hexToRgba(colors.secondary, alpha),
+        secondary: hexToRgba(colors.secondary, alpha),
         warn: hexToRgba(colors.warn, alpha),
       };
     }

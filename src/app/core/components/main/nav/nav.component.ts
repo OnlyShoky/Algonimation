@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterOutlet,RouterLink } from '@angular/router';
 import { AlgorithmService } from '../../../../shared/services/algorithm.service';
+import { FooterComponent } from "../../footer/footer.component";
 
 @Component({
   selector: 'app-nav',
@@ -25,8 +26,9 @@ import { AlgorithmService } from '../../../../shared/services/algorithm.service'
     AsyncPipe,
     RouterOutlet,
     RouterLink,
-    CommonModule
-  ],
+    CommonModule,
+    FooterComponent
+],
 })
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);

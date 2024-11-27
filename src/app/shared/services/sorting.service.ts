@@ -330,8 +330,6 @@ async binarySearch(arr: number[], target: number): Promise<number[]> {
   let low = 0;
   let high = arr.length - 1;
 
-  console.log(arr);
-
   await this.highlightElement(low, false, false, 'secondary');
   await this.highlightElement(high, false, false, 'secondary');
 
@@ -351,7 +349,6 @@ async binarySearch(arr: number[], target: number): Promise<number[]> {
       await this.moveToLine(4);
       // Highlight the found element
       await this.highlightElement(mid, false, true, 'accent');
-      console.log('Target found at index', mid);
       return [mid];
     }
 

@@ -325,6 +325,61 @@ export class SortingService {
     return i + 1;
   }
 
+  // Inside SortingService
+async binarySearch(arr: number[], target: number): Promise<number[]> {
+  let low = 0;
+  let high = arr.length - 1;
+
+  console.log(arr);
+
+  await this.highlightElement(low, false, false, 'secondary');
+  await this.highlightElement(high, false, false, 'secondary');
+
+  await this.moveToLine(1); // Initial setup for binary search
+  while (low <= high) {
+
+
+    await this.moveToLine(2); // Compute middle index
+    const mid = Math.floor((low + high) / 2);
+
+    // Highlight the middle element
+    await this.highlightElement(mid, false, true, 'accent-light');
+    await this.moveToLine(3); // Check if middle is the target
+
+    if (arr[mid] === target) {
+      // Target found
+      await this.moveToLine(4);
+      // Highlight the found element
+      await this.highlightElement(mid, false, true, 'accent');
+      console.log('Target found at index', mid);
+      return [mid];
+    }
+
+    await this.moveToLine(5); // Determine search range
+
+    if (arr[mid] < target) {
+      await this.moveToLine(6); // Target is in the upper half
+      await this.highlightElement(mid, true);
+      await this.highlightElement(low, true);
+
+      low = mid + 1;
+      await this.highlightElement(low, false, false, 'secondary');
+      await this.highlightElement(high, false, true, 'secondary');
+    } else {
+      await this.moveToLine(7); // Target is in the lower half
+      await this.highlightElement(high, true);
+      await this.highlightElement(mid, true);
+      high = mid - 1;
+      await this.highlightElement(low, false, false, 'secondary');
+      await this.highlightElement(high, false, true, 'secondary');
+    }
+  }
+
+  await this.moveToLine(8); // Target not found
+  return [-1];
+}
+
+
 
   // Function to randomize the order of values
   shuffleArray(arr: number[]): number[] {

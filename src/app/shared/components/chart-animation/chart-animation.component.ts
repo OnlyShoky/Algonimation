@@ -11,22 +11,25 @@ import { ThemesManagerService } from '../../services/themes-manager.service';
 import { SortingService } from '../../services/sorting.service';
 import Chart from 'chart.js/auto';
 import { Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AudioService } from '../../services/audio.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
 import { AudioSettingsBSComponent } from "../audio-settings-bs/audio-settings-bs.component";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-chart-animation',
   standalone: true,
-  imports: [MatButtonModule, FormsModule, MatSliderModule, MatIconModule, AudioSettingsBSComponent],
+  imports: [MatButtonModule, FormsModule, MatSliderModule, MatIconModule, AudioSettingsBSComponent,MatSnackBarModule ],
   templateUrl: './chart-animation.component.html',
   styleUrls: ['./chart-animation.component.scss'],
 })
 export class ChartAnimationComponent implements OnInit, OnDestroy {
   @Input() sortAlgorithm!: string; // The sorting algorithm to be used
+
 
   // Subscription array to store all subscriptions for cleanup
   private subscriptions: Subscription[] = [];
@@ -50,6 +53,9 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   index1: number = -1; // First index for swapping
   index2: number = -1; // Second index for swapping
 
+  // Variables to search
+  target = 0;
+
   // Variables for tracking positions during animation
   private initialX1: number | null = null; // Initial X position of element 1 (for animation)
   private initialX2: number | null = null; // Initial X position of element 2 (for animation)
@@ -61,7 +67,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
     private themesManagerService: ThemesManagerService,
     private sortingService: SortingService,
     private audioService: AudioService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {
     // Fetch initial data for sorting
     this.data = this.sortingService.getValues();
@@ -143,6 +150,32 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
         arr = this.sortingService.quickSort([...this.data]);
         break;
 
+      case 'binary-search':
+        arr = this.sortingService.binarySearch([...this.data], this.data[this.target]);
+        await arr;
+        // Show the pop-up message
+        const resolvedArr = await arr;
+        if (resolvedArr[0] === -1){
+         
+          this.snackBar.open(`Target not found`, 'Close', {
+            duration: 3000, // Duration in milliseconds
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+
+        }
+        else{
+          this.snackBar.open(`Target found at index ${resolvedArr[0]}`, 'Close', {
+            duration: 3000, // Duration in milliseconds
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+          
+        }
+        
+      
+        break;
+
       default:
         arr = Promise.resolve([]);
         break;
@@ -183,6 +216,13 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
   }
 
   shuffleArray() {
+    if( this.sortAlgorithm === 'binary-search'){
+      this.highlightBar(this.target, true);
+      this.target = Math.floor(Math.random() * (10));
+      this.highlightBar(this.target, false, 'primary');
+      return ;
+    }
+
     this.data = this.sortingService.shuffleArray(this.data);
     this.updateColors();
     this.chart.update();

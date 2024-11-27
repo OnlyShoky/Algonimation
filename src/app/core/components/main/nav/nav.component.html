@@ -17,7 +17,6 @@
         <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase }} </a>
       </div>
     </div>
-    <!-- Darkmode Toggle: Always Sticky at Bottom Left -->
 
   </mat-nav-list>
 </mat-sidenav>
@@ -37,10 +36,6 @@
       }
     </mat-toolbar>
     <router-outlet></router-outlet>
-
-    <div style="position: absolute; width: 100%;">
-    <app-footer></app-footer>
-  </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 

@@ -322,6 +322,88 @@ export class AlgorithmService {
                 ],
             },
         },
+        {
+            name: 'binary-search',
+            description: 'A highly efficient algorithm for finding an element in a sorted array by repeatedly dividing the search interval in half.',
+            keyProperties: {
+                bestCase: 'O(1)',
+                averageCase: 'O(log n)',
+                worstCase: 'O(log n)',
+                spaceComplexity: 'O(1)',
+            },
+            runtime: {
+                cpp: 1,
+                python: 1.5,
+                javascript: 1.2,
+            },
+            steps: [
+                '1. Start with two pointers: one at the beginning and one at the end of the array.',
+                '2. Find the middle element of the array.',
+                '3. If the middle element matches the target, return its position.',
+                '4. If the middle element is greater than the target, narrow the search to the left subarray.',
+                '5. If the middle element is less than the target, narrow the search to the right subarray.',
+                '6. Repeat steps 2-5 until the element is found or the subarray becomes empty.'
+            ],
+            code: {
+                cpp: `#include <iostream>
+        using namespace std;
+        
+        int binarySearch(int arr[], int size, int target) {
+            int low = 0, high = size - 1;
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (arr[mid] == target)
+                    return mid;
+                else if (arr[mid] < target)
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+            }
+            return -1; // Element not found
+        }`,
+                python: `def binary_search(arr, target):
+            low, high = 0, len(arr) - 1
+            while low <= high:
+                mid = (low + high) // 2
+                if arr[mid] == target:
+                    return mid
+                elif arr[mid] < target:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+            return -1 # Element not found`,
+                javascript: `function binarySearch(arr, target) {
+            let low = 0, high = arr.length - 1;
+            while (low <= high) {
+                let mid = Math.floor(low + (high - low) / 2);
+                if (arr[mid] === target) {
+                    return mid;
+                } else if (arr[mid] < target) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            return -1; // Element not found
+        }`,
+            },
+            deltaLine: {
+                cpp: 1,
+                python: 1,
+                javascript: 1,
+            },
+            prosAndCons: {
+                pros: [
+                    'Highly efficient for sorted arrays with O(log n) time complexity.',
+                    'Simple to implement and widely used in real-world applications.',
+                    'In-place algorithm with minimal memory usage.'
+                ],
+                cons: [
+                    'Only works on sorted arrays, requiring an additional sorting step if data is unsorted.',
+                    'Not suitable for dynamic datasets as the array must be re-sorted after each update.'
+                ],
+            },
+        }
     ];
 
     getAlgorithms(): Algorithm[] {

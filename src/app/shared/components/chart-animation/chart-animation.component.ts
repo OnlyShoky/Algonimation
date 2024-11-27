@@ -151,11 +151,8 @@ export class ChartAnimationComponent implements OnInit, OnDestroy {
         break;
 
       case 'binary-search':
-        console.log(this.data);
         this.data.sort((a,b) => a - b);
         this.chart.update();
-        console.log(this.data);
-
         arr = this.sortingService.binarySearch([...this.data], this.data[this.target]);
         await arr;
         // Show the pop-up message

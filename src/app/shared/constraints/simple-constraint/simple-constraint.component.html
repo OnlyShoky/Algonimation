@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="left-aligned">
+        <h3>Distance Constraint Visualization</h3>
+        <p>
+            This example demonstrates a<strong> simple constraint </strong>where the "ball" cannot move beyond a certain
+            distance from the mouse pointer.
+        </p>
+
+        <div class="flex-container">
+            <div class="chart-content">
+                <canvas class="canvas" id="simpleConstraintCanvas1" (mousemove)="onMouseMove($event)"></canvas>
+
+            </div>
+
+            <div class="chart-content">
+                <canvas class="canvas" id="simpleConstraintCanvas2" (mousemove)="onMouseMove($event)"></canvas>
+
+            </div>
+
+
+            <div class="code-block-container">
+                <app-code-block [algorithmName]="'simple-constraint'"></app-code-block>
+            </div>
+
+            
+        </div>
+
+
+    </div>
+</div>

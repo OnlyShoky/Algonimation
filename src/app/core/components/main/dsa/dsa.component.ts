@@ -51,6 +51,7 @@ export class DsaComponent {
     // Load the content for the specific algorithm, like bubble sort, etc.
     this.algorithm = this.algorithmService.getAlgorithmByName(algorithmName) || {
       name: '',
+      category: '',
       description: '',
       code: { cpp: '', python: '', javascript: '' },
       deltaLine: { cpp: 0, python: 0, javascript: 0 },

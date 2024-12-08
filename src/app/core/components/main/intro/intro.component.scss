@@ -1,24 +1,5 @@
 
 
-.steps {
-  padding: 1rem;
-
-  ul {
-    list-style: none;
-    padding-left: 2em;
-    margin: 0;
-
-    li {
-      margin-bottom: 10px;
-    }
-  }
-
-  h5 {
-    font-weight: bold;
-    margin-top: 0;
-  }
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -97,49 +78,6 @@
   }
 }
 
-/* Flex container for tables and extra content */
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2rem;
-  margin: 2rem 0;
-
-  .table-container {
-    flex: 2;
-    max-width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-  }
-
-  .explanation-container {
-    flex: 1;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-
-    h5 {
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 1rem;
-      line-height: 1.5;
-      // color: #555;
-    }
-  }
-
-  @media (max-width: 1500px) {
-    flex-direction: column;
-
-    .table-container,
-    .explanation-container {
-      width: 100%;
-    }
-  }
-}
 
 /* Typography styling */
 .left-aligned {

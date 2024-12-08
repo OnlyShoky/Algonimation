@@ -25,7 +25,7 @@ export class CodeBlockComponent implements OnInit {
       await import('prismjs');
     }
   }
-  @Input() sortAlgorithm!: string;
+  @Input() algorithmName!: string;
   private _snackBar = inject(MatSnackBar);
 
   private subscriptions: Subscription[] = [];
@@ -97,7 +97,7 @@ function bogosort(arr) {
 
 
     this.algorithm = this.algorithmService.getAlgorithmByName(
-      this.sortAlgorithm
+      this.algorithmName
     );
 
     if (this.algorithm) {

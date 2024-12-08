@@ -44,7 +44,7 @@ export class NavComponent {
 
     constructor(algorithmService: AlgorithmService) {
       
-      this.algoNames = algorithmService.getAllAlgorithmNames();
+      this.algoNames = algorithmService.getAlgorithmNamesByCategory("DSA");
       
      }
 }

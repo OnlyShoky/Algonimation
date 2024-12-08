@@ -8,6 +8,7 @@ export class AlgorithmService {
     private algorithms: Algorithm[] = [
         {
             name: 'bubble-sort',
+            category: 'DSA',
             description: 'A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.',
             keyProperties: {
                 bestCase: 'O(n)',
@@ -78,6 +79,7 @@ export class AlgorithmService {
 
         {
             name: 'selection-sort',
+            category: 'DSA',
             description: 'An in-place, comparison-based sorting algorithm that is not stable but simple to implement.',
             keyProperties: {
                 bestCase: 'O(n^2)',
@@ -152,6 +154,7 @@ export class AlgorithmService {
 
         {
             name: 'insertion-sort',
+            category: 'DSA',
             description: 'An efficient algorithm for sorting a small number of elements, where elements are gradually inserted into their correct position.',
             keyProperties: {
                 bestCase: 'O(n)',
@@ -226,6 +229,7 @@ export class AlgorithmService {
         },
         {
             name: 'quick-sort',
+            category: 'DSA',
             description: 'A highly efficient sorting algorithm using the divide and conquer principle.',
             keyProperties: {
                 bestCase: 'O(n log n)',
@@ -324,6 +328,7 @@ export class AlgorithmService {
         },
         {
             name: 'binary-search',
+            category: 'DSA',
             description: 'A highly efficient algorithm for finding an element in a sorted array by repeatedly dividing the search interval in half.',
             keyProperties: {
                 bestCase: 'O(1)',
@@ -403,6 +408,91 @@ export class AlgorithmService {
                     'Not suitable for dynamic datasets as the array must be re-sorted after each update.'
                 ],
             },
+        },
+        {
+            name: 'simple-constraint',
+            category: 'constraint',
+            description: 'This example demonstrates a simple constraint where the "ball" cannot move beyond a certain distance from the mouse pointer.',
+            steps: [
+                '1. Start with two pointers: one at the beginning and one at the end of the array.',
+                '2. Find the middle element of the array.',
+                '3. If the middle element matches the target, return its position.',
+                '4. If the middle element is greater than the target, narrow the search to the left subarray.',
+                '5. If the middle element is less than the target, narrow the search to the right subarray.',
+                '6. Repeat steps 2-5 until the element is found or the subarray becomes empty.'
+            ],
+            code: {
+                cpp: `#include <cmath>
+
+struct Point {
+    double x, y;
+};
+
+Point constrainDistance(const Point& point, const Point& anchor, double distance) {
+    // Subtract the anchor from the point
+    double dx = point.x - anchor.x;
+    double dy = point.y - anchor.y;
+    
+    // Normalize the vector (dx, dy)
+    double magnitude = std::sqrt(dx * dx + dy * dy);
+    double normalizedX = dx / magnitude;
+    double normalizedY = dy / magnitude;
+    
+    // Scale the normalized vector by the distance and add to the anchor
+    Point constrainedPoint = {
+        normalizedX * distance + anchor.x,
+        normalizedY * distance + anchor.y
+    };
+    
+    return constrainedPoint;
+}
+`,
+                python: `def constrain_distance(point, anchor, distance):
+    # Subtract the anchor from the point
+    dx, dy = point[0] - anchor[0], point[1] - anchor[1]
+    
+    # Normalize the vector (dx, dy)
+    magnitude = (dx**2 + dy**2)**0.5
+    normalized = (dx / magnitude, dy / magnitude)
+    
+    # Scale the normalized vector by the distance and add to the anchor
+    constrained_point = (normalized[0] * distance + anchor[0], normalized[1] * distance + anchor[1])
+    
+    return constrained_point
+`,
+                javascript: `function constrainDistance(point, anchor, distance) {
+  // Subtract the anchor from the point
+  let dx = point.x - anchor.x;
+  let dy = point.y - anchor.y;
+
+  // Normalize the vector (dx, dy)
+  let magnitude = Math.sqrt(dx * dx + dy * dy);
+  let normalized = { x: dx / magnitude, y: dy / magnitude };
+
+  // Scale the normalized vector by the distance and add to the anchor
+  return {
+    x: normalized.x * distance + anchor.x,
+    y: normalized.y * distance + anchor.y
+  };
+}
+`,
+            },
+            deltaLine: {
+                cpp: 1,
+                python: 1,
+                javascript: 1,
+            },
+            prosAndCons: {
+                pros: [
+                    'Highly efficient for sorted arrays with O(log n) time complexity.',
+                    'Simple to implement and widely used in real-world applications.',
+                    'In-place algorithm with minimal memory usage.'
+                ],
+                cons: [
+                    'Only works on sorted arrays, requiring an additional sorting step if data is unsorted.',
+                    'Not suitable for dynamic datasets as the array must be re-sorted after each update.'
+                ],
+            },
         }
     ];
 
@@ -412,6 +502,11 @@ export class AlgorithmService {
 
     getAllAlgorithmNames(): string[] {
         return this.algorithms.map((algo) => algo.name);
+    }
+
+    getAlgorithmNamesByCategory(category: string): string[] {
+        
+        return this.algorithms.filter((algo) => algo.category === category).map((algo) => algo.name);
     }
 
     getAlgorithmByName(name: string): Algorithm | undefined {

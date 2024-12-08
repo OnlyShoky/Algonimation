@@ -1,5 +1,6 @@
 export interface Algorithm {
   name: string;
+  category: string;
   description?: string;
   keyProperties?: {
     bestCase: string;

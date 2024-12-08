@@ -131,7 +131,6 @@ export class ThemesManagerService {
   getThemeColorsRGBA(
     alpha: number = 1
   ): { primary: string; accent: string; secondary: string; warn: string } | undefined {
-    console.log('RGBA : currenttheme : ', this.currentTheme);
     const colors = this.themeColors[this.currentTheme];
     if (colors) {
       return {

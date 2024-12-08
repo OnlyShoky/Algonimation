@@ -63,9 +63,7 @@ export class SimpleConstraintComponent implements AfterViewInit {
 
     this.subscriptions.push(
       this.themesManagerService.currentTheme$.subscribe(() => {
-        console.log("Theme changed simple constraint");
         this.themeColors = this.themesManagerService.getThemeColorsRGBA(1);
-        console.log(this.themeColors, this.themesManagerService.getThemeColorsRGBA(1))
 
       })
     )

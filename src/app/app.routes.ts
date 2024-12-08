@@ -9,7 +9,7 @@ import { SimpleConstraintComponent } from './shared/constraints/simple-constrain
 export const routes: Routes = [
     { path: 'dsa/intro', component: IntroComponent },
     { path: 'dsa/:algorithm', component: DsaComponent },
-    { path: 'constraint', component: SimpleConstraintComponent },
+    { path: 'constraint/:algorithm', component: SimpleConstraintComponent },
     { path: '404', component: NotFoundComponent },
     { path: 'example', component: TempExampleComponent },
     { path: '', redirectTo: '/dsa/intro', pathMatch: 'full' },

@@ -40,7 +40,6 @@ export class SortingService {
   // Helper functions
 
   setAnimationDelay(delay: number) {
-    console.log('Animation delay set to', delay);
     this.delay = delay;
     this.delaySubject.next(delay);
   }
@@ -178,7 +177,6 @@ export class SortingService {
     return arr;
   }
   async insertionSort(arr: number[]): Promise<number[]> {
-    console.log("insertionSort");
     await this.moveToLine(0);
 
     const n = arr.length;
@@ -248,8 +246,6 @@ export class SortingService {
   // Inside SortingService
 
   async quickSort(arr: number[], low = 0, high = arr.length - 1): Promise<number[]> {
-    console.log('quickSort');
-
     // cancel sorting
     if (this.cancelTrigger)
       return arr;

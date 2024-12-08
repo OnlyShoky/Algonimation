@@ -6,14 +6,14 @@
             distance from the mouse pointer.
         </p>
 
-        <div class="flex-container">
+        <div class="flex-container" (mousemove)="onMouseMove($event)">
             <div class="chart-content">
-                <canvas class="canvas" id="simpleConstraintCanvas1" (mousemove)="onMouseMove($event)"></canvas>
+                <canvas class="canvas" id="simpleConstraintCanvas1" ></canvas>
 
             </div>
 
             <div class="chart-content">
-                <canvas class="canvas" id="simpleConstraintCanvas2" (mousemove)="onMouseMove($event)"></canvas>
+                <canvas class="canvas" id="simpleConstraintCanvas2" ></canvas>
 
             </div>
 

@@ -7,13 +7,13 @@ import { AlgorithmService } from '../../services/algorithm.service';
 import { Algorithm } from '../../models/algorithm';
 
 @Component({
-  selector: 'app-simple-constraint',
+  selector: 'app-chain-constraint',
   standalone: true,
   imports: [CodeBlockComponent, CommonModule],
-  templateUrl: './simple-constraint.component.html',
-  styleUrl: './simple-constraint.component.scss'
+  templateUrl: './chain-constraint.component.html',
+  styleUrl: './chain-constraint.component.scss'
 })
-export class SimpleConstraintComponent implements AfterViewInit {
+export class ChainConstraintComponent implements AfterViewInit {
 
   public themeColors: { primary: string; accent: string; secondary: string; warn: string } | undefined = { primary: '#A8D5BA', accent: '#69F0AE', secondary: '#FEFFA7', warn: '#FF5252' };
 
@@ -24,6 +24,13 @@ export class SimpleConstraintComponent implements AfterViewInit {
   // To store the width and height of the board
   boardWidth: number = 400;
   boardHeight: number = 400;
+
+  chainLength = 10; // Number of joints 
+  jointLength = 30; // Distance between each joint
+
+  //Set up the drawable elements (the chain, joints, and circles)
+  joints: { x: number; y: number; size: number }[] = [];
+  circles = [];
 
   //Mouse position
   mouseX = 0;
@@ -39,49 +46,24 @@ export class SimpleConstraintComponent implements AfterViewInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private themesManagerService: ThemesManagerService,  private algorithmService: AlgorithmService) { }
 
+  initializeChain(): void {
+    const startX = this.boardWidth / 2;
+    const startY = this.boardHeight / 2;
 
+    for (let i = 0; i < this.chainLength; i++) {
+      this.joints.push({
+        x: startX - i * this.jointLength,
+        y: startY,
+        size: 10,
+      });
+    }
+  }
 
   // Method to update the size of the board
 
   onMouseMove(event: MouseEvent): void {
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
-  }
-
-  startAnimation(): void {
-
-    const animate = () => {
-      this.drawSimpleConstraint1();
-      this.drawSimpleConstraint2();
-
-      this.animationFrameId = requestAnimationFrame(animate);
-    };
-    animate();
-  }
-
-
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)){
-      this.loadAlgorithmContent("simple-constraint");
-      this.startAnimation();
-
-
-    }
-
-     
-  
-
-    this.subscriptions.push(
-      this.themesManagerService.currentTheme$.subscribe(() => {
-        this.themeColors = this.themesManagerService.getThemeColorsRGBA(1);
-
-      }),
-
-    )
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   loadAlgorithmContent(algorithmName: string) {
@@ -93,6 +75,41 @@ export class SimpleConstraintComponent implements AfterViewInit {
       code: { cpp: '', python: '', javascript: '' },
       deltaLine: { cpp: 0, python: 0, javascript: 0 },
     };
+  }
+
+  startAnimation(): void {
+
+    const animate = () => {
+      this.drawSimpleConstraint1();
+
+      this.animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+  }
+
+
+  ngAfterViewInit(): void {
+    this.initializeChain();
+    
+    if (isPlatformBrowser(this.platformId)){
+      this.loadAlgorithmContent("chain-constraint");
+      this.startAnimation();
+
+
+    }
+
+
+
+    this.subscriptions.push(
+      this.themesManagerService.currentTheme$.subscribe(() => {
+        this.themeColors = this.themesManagerService.getThemeColorsRGBA(1);
+
+      })
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   // Constrain ball's position to the allowed distance
@@ -125,10 +142,7 @@ export class SimpleConstraintComponent implements AfterViewInit {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    const length = 100; // Maximum distance constraint
-    const center = { x: canvas.width / 2, y: canvas.height / 2 };
-    const ball = { x: center.x, y: center.y };
-
+    const head = this.joints[0];
 
     const rect = canvas.getBoundingClientRect();
 
@@ -137,83 +151,65 @@ export class SimpleConstraintComponent implements AfterViewInit {
       y: this.mouseY - rect.top,
     };
 
-    // Constrain the ball's movement
-    const constrainedPos = this.constrainDistance(mousePos, center, length);
-    ball.x = constrainedPos.x;
-    ball.y = constrainedPos.y
+    head.x = mousePos.x; // Move head towards the limited angle
+    head.y = mousePos.y;
 
+    for(let i =1; i<this.joints.length; i++) {
+      const joint = this.joints[i];
+      const prevJoint = this.joints[i-1];
+
+      const constrainedPos = this.constrainDistance(joint, prevJoint, this.jointLength);
+      this.joints[i].x = constrainedPos.x;
+      this.joints[i].y = constrainedPos.y;
+    }
+    
+  
     // Draw function to render the circle and ball
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw circle boundary
+    // Draw snake body
     context.beginPath();
-    context.arc(center.x, center.y, length, 0, Math.PI * 2);
-    if (this.themeColors)
-      context.strokeStyle = this.themeColors.accent;
-    context.lineWidth = 2;
-    context.stroke();
+    context.fillStyle = "black"; // Snake body color
+    context.strokeStyle = "black"; // Snake outline
+    if (this.themeColors){
+      context.fillStyle = this.themeColors.accent; // Snake body color
+      context.strokeStyle = this.themeColors.accent; // Snake outline
+    }
+    context.lineWidth = 5;
 
-    // Draw ball
+    
+
     context.beginPath();
-    context.arc(ball.x, ball.y, 8, 0, Math.PI * 2);
-    if (this.themeColors)
-      context.fillStyle = this.themeColors.accent;
-    context.fill();
+
+    // Draw right half
+    for (let i = 0; i < this.joints.length; i++) {
+
+      const joint = this.joints[i];
+      const x = joint.x;
+      const y = joint.y;
+      context.lineTo(x, y);
+
+    }
+    context.stroke();
+    context.closePath();
+
+
+    for (let i = 0; i < this.joints.length; i++) {
+      context.beginPath();
+
+      context.arc(this.joints[i].x, this.joints[i].y, this.joints[i].size, 0, Math.PI * 2);
+      context.stroke();
+      context.fill();
+
+      context.closePath();
+
+
+
+    }
+
 
 
   }
-
-
-  drawSimpleConstraint2(): void {
-    // Get the reference to the container
-
-    // Create a canvas dynamically
-    const canvas = document.getElementById('simpleConstraintCanvas2') as HTMLCanvasElement;
-    if (!canvas) return;
-
-    canvas.width = this.boardWidth;
-    canvas.height = this.boardHeight;
-
-    const context = canvas.getContext('2d');
-    if (!context) return;
-
-    const length = 100; // Maximum distance constraint
-
-
-    const rect = canvas.getBoundingClientRect();
-
-    const mousePos = {
-      x: this.mouseX - rect.left,
-      y: this.mouseY - rect.top,
-    };
-
-
-    const center = mousePos;
-    this.ball = this.constrainDistance(this.ball, mousePos, length);
-
-
-
-    // Draw function to render the circle and ball
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw circle boundary
-    context.beginPath();
-    context.arc(center.x, center.y, length, 0, Math.PI * 2);
-    if (this.themeColors)
-      context.strokeStyle = this.themeColors.accent; context.lineWidth = 2;
-    context.stroke();
-
-    // Draw ball
-    context.beginPath();
-    context.arc(this.ball.x, this.ball.y, 8, 0, Math.PI * 2);
-    if (this.themeColors)
-      context.fillStyle = this.themeColors.accent; context.fill();
-    context.fill();
-
-
-  }
-
-
 
 }
 

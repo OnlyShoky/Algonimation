@@ -412,70 +412,69 @@ export class AlgorithmService {
         {
             name: 'simple-constraint',
             category: 'constraint',
-            description: 'This example demonstrates a simple constraint where the "ball" cannot move beyond a certain distance from the mouse pointer.',
+            description: 'This example demonstrates a simple constraint where a "point" cannot move beyond a certain distance from a fixed anchor point.',
             steps: [
-                '1. Start with two pointers: one at the beginning and one at the end of the array.',
-                '2. Find the middle element of the array.',
-                '3. If the middle element matches the target, return its position.',
-                '4. If the middle element is greater than the target, narrow the search to the left subarray.',
-                '5. If the middle element is less than the target, narrow the search to the right subarray.',
-                '6. Repeat steps 2-5 until the element is found or the subarray becomes empty.'
+                '1. Identify the point to constrain and the fixed anchor point.',
+                '2. Calculate the vector from the anchor to the point.',
+                '3. Compute the magnitude (distance) of the vector.',
+                '4. Normalize the vector to unit length.',
+                '5. Scale the vector to the desired maximum distance.',
+                '6. Add the scaled vector to the anchor point to find the constrained position.',
+                '7. Update the position of the point to the constrained position.'
             ],
             code: {
                 cpp: `#include <cmath>
-
-struct Point {
-    double x, y;
-};
-
-Point constrainDistance(const Point& point, const Point& anchor, double distance) {
-    // Subtract the anchor from the point
-    double dx = point.x - anchor.x;
-    double dy = point.y - anchor.y;
-    
-    // Normalize the vector (dx, dy)
-    double magnitude = std::sqrt(dx * dx + dy * dy);
-    double normalizedX = dx / magnitude;
-    double normalizedY = dy / magnitude;
-    
-    // Scale the normalized vector by the distance and add to the anchor
-    Point constrainedPoint = {
-        normalizedX * distance + anchor.x,
-        normalizedY * distance + anchor.y
-    };
-    
-    return constrainedPoint;
-}
-`,
+        
+        struct Point {
+            double x, y;
+        };
+        
+        Point constrainDistance(const Point& point, const Point& anchor, double distance) {
+            double dx = point.x - anchor.x;
+            double dy = point.y - anchor.y;
+        
+            double magnitude = std::sqrt(dx * dx + dy * dy);
+            if (magnitude > distance) {
+                double normalizedX = dx / magnitude;
+                double normalizedY = dy / magnitude;
+        
+                Point constrainedPoint = {
+                    normalizedX * distance + anchor.x,
+                    normalizedY * distance + anchor.y
+                };
+        
+                return constrainedPoint;
+            }
+            return point;
+        }
+        `,
                 python: `def constrain_distance(point, anchor, distance):
-    # Subtract the anchor from the point
-    dx, dy = point[0] - anchor[0], point[1] - anchor[1]
-    
-    # Normalize the vector (dx, dy)
-    magnitude = (dx**2 + dy**2)**0.5
-    normalized = (dx / magnitude, dy / magnitude)
-    
-    # Scale the normalized vector by the distance and add to the anchor
-    constrained_point = (normalized[0] * distance + anchor[0], normalized[1] * distance + anchor[1])
-    
-    return constrained_point
-`,
+            dx, dy = point[0] - anchor[0], point[1] - anchor[1]
+            magnitude = (dx**2 + dy**2)**0.5
+        
+            if magnitude > distance:
+                normalized = (dx / magnitude, dy / magnitude)
+                return (
+                    normalized[0] * distance + anchor[0],
+                    normalized[1] * distance + anchor[1]
+                )
+            return point
+        `,
                 javascript: `function constrainDistance(point, anchor, distance) {
-  // Subtract the anchor from the point
-  let dx = point.x - anchor.x;
-  let dy = point.y - anchor.y;
-
-  // Normalize the vector (dx, dy)
-  let magnitude = Math.sqrt(dx * dx + dy * dy);
-  let normalized = { x: dx / magnitude, y: dy / magnitude };
-
-  // Scale the normalized vector by the distance and add to the anchor
-  return {
-    x: normalized.x * distance + anchor.x,
-    y: normalized.y * distance + anchor.y
-  };
-}
-`,
+          let dx = point.x - anchor.x;
+          let dy = point.y - anchor.y;
+        
+          let magnitude = Math.sqrt(dx * dx + dy * dy);
+          if (magnitude > distance) {
+            let normalized = { x: dx / magnitude, y: dy / magnitude };
+            return {
+              x: normalized.x * distance + anchor.x,
+              y: normalized.y * distance + anchor.y
+            };
+          }
+          return point;
+        }
+        `,
             },
             deltaLine: {
                 cpp: 1,
@@ -484,16 +483,114 @@ Point constrainDistance(const Point& point, const Point& anchor, double distance
             },
             prosAndCons: {
                 pros: [
-                    'Highly efficient for sorted arrays with O(log n) time complexity.',
-                    'Simple to implement and widely used in real-world applications.',
-                    'In-place algorithm with minimal memory usage.'
+                    'Simple and easy to implement.',
+                    'Ensures that a point remains within a fixed boundary.',
+                    'Highly efficient with minimal computation.'
                 ],
                 cons: [
-                    'Only works on sorted arrays, requiring an additional sorting step if data is unsorted.',
-                    'Not suitable for dynamic datasets as the array must be re-sorted after each update.'
+                    'Only works with fixed boundaries or constraints.',
+                    'Does not account for external forces or dynamic behaviors.',
+                    'Can result in sudden "jumps" if the point is far from the anchor.'
+                ],
+            },
+        },
+        {
+            name: 'chain-constraint',
+            category: 'constraint',
+            description: 'This example demonstrates a chain of distance constraints, where each segment is constrained to a fixed distance from the previous segment.',
+            steps: [
+                '1. Set the position of the first segment to a fixed point (e.g., mouse position or anchor).',
+                '2. Loop through all remaining segments in the chain.',
+                '3. For each segment, calculate the vector between the current segment and the previous one.',
+                '4. Normalize the vector to unit length.',
+                '5. Scale the vector to the desired fixed distance.',
+                '6. Update the current segment’s position to maintain the fixed distance from the previous segment.',
+                '7. Repeat the process for all segments in the chain.'
+            ],
+            code: {
+                cpp: `#include <cmath>
+        #include <vector>
+        
+        struct Point {
+            double x, y;
+        };
+        
+        Point constrainDistance(const Point& point, const Point& anchor, double distance) {
+            double dx = point.x - anchor.x;
+            double dy = point.y - anchor.y;
+        
+            double magnitude = std::sqrt(dx * dx + dy * dy);
+            double normalizedX = dx / magnitude;
+            double normalizedY = dy / magnitude;
+        
+            return {
+                normalizedX * distance + anchor.x,
+                normalizedY * distance + anchor.y
+            };
+        }
+        
+        void applyDistanceConstraintChain(std::vector<Point>& rope, const Point& anchor, double distance) {
+            rope[0] = anchor; // Set the first segment to the anchor position
+            for (size_t i = 1; i < rope.size(); ++i) {
+                rope[i] = constrainDistance(rope[i], rope[i - 1], distance);
+            }
+        }
+        `,
+                python: `def constrain_distance(point, anchor, distance):
+            dx, dy = point[0] - anchor[0], point[1] - anchor[1]
+            magnitude = (dx**2 + dy**2)**0.5
+            normalized = (dx / magnitude, dy / magnitude)
+            return (
+                normalized[0] * distance + anchor[0],
+                normalized[1] * distance + anchor[1]
+            )
+        
+        def apply_distance_constraint_chain(rope, anchor, distance):
+            rope[0] = anchor  # Set the first segment to the anchor position
+            for i in range(1, len(rope)):
+                rope[i] = constrain_distance(rope[i], rope[i - 1], distance)
+        `,
+                javascript: `function constrainDistance(point, anchor, distance) {
+          let dx = point.x - anchor.x;
+          let dy = point.y - anchor.y;
+        
+          let magnitude = Math.sqrt(dx * dx + dy * dy);
+          let normalized = { x: dx / magnitude, y: dy / magnitude };
+        
+          return {
+            x: normalized.x * distance + anchor.x,
+            y: normalized.y * distance + anchor.y
+          };
+        }
+        
+        function applyDistanceConstraintChain(rope, anchor, distance) {
+          rope[0] = anchor; // Set the first segment to the anchor position
+          for (let i = 1; i < rope.length; i++) {
+            rope[i] = constrainDistance(rope[i], rope[i - 1], distance);
+          }
+        }
+        `,
+            },
+            deltaLine: {
+                cpp: 1,
+                python: 1,
+                javascript: 1,
+            },
+            prosAndCons: {
+                pros: [
+                    'Enables realistic simulation of ropes, chains, or segmented objects.',
+                    'Maintains fixed distances between segments, ensuring structural integrity.',
+                    'Highly versatile and can be used in physics simulations, animations, and games.'
+                ],
+                cons: [
+                    'Can be computationally expensive for long chains.',
+                    'Requires careful handling of edge cases (e.g., collisions or overlaps).',
+                    'May need multiple iterations for the chain to reach a stable state.'
                 ],
             },
         }
+        
+        
     ];
 
     getAlgorithms(): Algorithm[] {

@@ -13,7 +13,7 @@
         <h2><abbr title="Data Structures and Algorithms">DSA</abbr></h2>
       </div>
       <a mat-list-item routerLink="/dsa/intro"> Introduction </a>
-      <div *ngFor="let algoName of algoNames">
+      <div *ngFor="let algoName of algoNamesDSA">
         <a mat-list-item routerLink="/dsa/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase }} </a>
       </div>
     </div>
@@ -22,7 +22,10 @@
       <div mat-subheader>
         <h2><abbr title="Data Structures and Algorithms">Constraint</abbr></h2>
       </div>
-      <a mat-list-item routerLink="constraint/simple-constraint"> Simple Constraint </a>
+      <div *ngFor="let algoName of algoNamesConstraint">
+        <a mat-list-item routerLink="/constraint/{{algoName}}"> {{ algoName.replace('-', ' ') | titlecase }} </a>
+      </div>
+      <!-- <a mat-list-item routerLink="constraint/simple-constraint"> Simple Constraint </a> -->
     </div>
 
   </mat-nav-list>

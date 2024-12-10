@@ -33,7 +33,9 @@ import { FooterComponent } from "../../footer/footer.component";
 export class NavComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  algoNames : string[] = [];
+  algoNamesDSA : string[] = [];
+  algoNamesConstraint : string[] = [];
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -44,7 +46,8 @@ export class NavComponent {
 
     constructor(algorithmService: AlgorithmService) {
       
-      this.algoNames = algorithmService.getAlgorithmNamesByCategory("DSA");
-      
+      this.algoNamesDSA = algorithmService.getAlgorithmNamesByCategory("DSA");
+      this.algoNamesConstraint = algorithmService.getAlgorithmNamesByCategory("constraint");
+
      }
 }

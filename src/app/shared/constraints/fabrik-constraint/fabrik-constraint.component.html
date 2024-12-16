@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="left-aligned">
+        <h3> {{ algorithm.name.replace("-", " ") | titlecase }}</h3>
+        <p>
+            {{ algorithm.description }}
+
+        </p>
+
+        <div class="flex-container" (mousemove)="onMouseMove($event)">
+            <div class="chart-content">
+                <canvas class="canvas" id="simpleConstraintCanvas1" ></canvas>
+
+            </div>
+
+
+            <div class="code-block-container">
+                <app-code-block [algorithmName]="'fabrik-constraint'"></app-code-block>
+            </div>
+
+            
+        </div>
+
+
+    </div>
+</div>
+
+<div class="steps bg-primary">
+    <p class="left-aligned"></p>
+    <h5>Steps:</h5>
+
+    <ul>
+        <li *ngFor="let step of algorithm.steps">
+            {{ step }}
+        </li>
+    </ul>
+</div>
+
+<div class="flex-container">
+    <div class="side-content">
+      <h5 style="font-weight: bold; font-family: 'Lexend Deca', sans-serif">
+        Pros
+      </h5>
+      <ul style="font-family: 'Lexend Deca', sans-serif">
+        <li *ngFor="let step of algorithm.prosAndCons?.pros">{{ step }}</li>
+      </ul>
+    </div>
+  
+    <div class="side-content">
+      <h5 style="font-weight: bold">Cons</h5>
+      <ul>
+        <li *ngFor="let step of algorithm.prosAndCons?.cons">{{ step }}</li>
+      </ul>
+    </div>
+  </div>

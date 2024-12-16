@@ -6,12 +6,14 @@ import { IntroComponent } from './core/components/main/intro/intro.component';
 import { NgModule } from '@angular/core';
 import { SimpleConstraintComponent } from './shared/constraints/simple-constraint/simple-constraint.component';
 import { ChainConstraintComponent } from './shared/constraints/chain-constraint/chain-constraint.component';
+import { FabrikConstraintComponent } from './shared/constraints/fabrik-constraint/fabrik-constraint.component';
 
 export const routes: Routes = [
     { path: 'dsa/intro', component: IntroComponent },
     { path: 'dsa/:algorithm', component: DsaComponent },
     { path: 'constraint/simple-constraint', component: SimpleConstraintComponent },
     { path: 'constraint/chain-constraint', component: ChainConstraintComponent },
+    { path: 'constraint/fabrik-constraint', component: FabrikConstraintComponent },
     { path: '404', component: NotFoundComponent },
     { path: 'example', component: TempExampleComponent },
     { path: '', redirectTo: '/dsa/intro', pathMatch: 'full' },

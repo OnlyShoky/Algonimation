@@ -588,7 +588,124 @@ export class AlgorithmService {
                     'May need multiple iterations for the chain to reach a stable state.'
                 ],
             },
+        },
+        {
+            "name": "fabrik-constraint",
+            "category": "constraint",
+            "description": "FABRIK (Forward And Backward Reaching Inverse Kinematics) adjusts the positions of segments in a chain to move an end-effector (e.g., a robotic arm) closer to a target position while preserving fixed segment lengths.",
+            "steps": [
+                "1. Define the chain of segments with fixed lengths and initialize their positions.",
+                "2. Set the target position for the end-effector (last segment).",
+                "3. Forward pass: Adjust segment positions from the base (root) towards the target:",
+                "   a. Set the first segment to its fixed position (e.g., a base or anchor point).",
+                "   b. For each subsequent segment, calculate the vector from the current segment to the previous one.",
+                "   c. Normalize the vector and scale it to the fixed segment length.",
+                "   d. Update the current segment's position to maintain the fixed distance from the previous segment.",
+                "4. Backward pass: Adjust segment positions from the end-effector towards the root:",
+                "   a. Set the last segment to the target position.",
+                "   b. For each preceding segment, calculate the vector from the current segment to the next one.",
+                "   c. Normalize the vector and scale it to the fixed segment length.",
+                "   d. Update the current segment's position to maintain the fixed distance from the next segment.",
+                "5. Repeat the forward and backward passes until the chain stabilizes (end-effector is sufficiently close to the target)."
+            ],
+            "code": {
+                "cpp": `#include <cmath>
+        #include <vector>
+        
+        struct Point {
+            double x, y;
+        };
+        
+        Point constrainDistance(const Point& point, const Point& anchor, double distance) {
+            double dx = point.x - anchor.x;
+            double dy = point.y - anchor.y;
+            double magnitude = std::sqrt(dx * dx + dy * dy);
+            double normalizedX = dx / magnitude;
+            double normalizedY = dy / magnitude;
+        
+            return {
+                normalizedX * distance + anchor.x,
+                normalizedY * distance + anchor.y
+            };
         }
+        
+        void fabrik(std::vector<Point>& chain, const Point& target, double distance) {
+            // Forward pass
+            for (size_t i = 1; i < chain.size(); ++i) {
+                chain[i] = constrainDistance(chain[i], chain[i - 1], distance);
+            }
+        
+            // Backward pass
+            chain.back() = target;
+            for (size_t i = chain.size() - 1; i > 0; --i) {
+                chain[i - 1] = constrainDistance(chain[i - 1], chain[i], distance);
+            }
+        }
+        `,
+                "python": `def constrain_distance(point, anchor, distance):
+            dx, dy = point[0] - anchor[0], point[1] - anchor[1]
+            magnitude = (dx**2 + dy**2)**0.5
+            normalized = (dx / magnitude, dy / magnitude)
+            return (
+                normalized[0] * distance + anchor[0],
+                normalized[1] * distance + anchor[1]
+            )
+        
+        def fabrik(chain, target, distance):
+            # Forward pass
+            for i in range(1, len(chain)):
+                chain[i] = constrain_distance(chain[i], chain[i - 1], distance)
+        
+            # Backward pass
+            chain[-1] = target
+            for i in range(len(chain) - 2, -1, -1):
+                chain[i] = constrain_distance(chain[i], chain[i + 1], distance)
+        `,
+                "javascript": `function constrainDistance(point, anchor, distance) {
+            let dx = point.x - anchor.x;
+            let dy = point.y - anchor.y;
+            let magnitude = Math.sqrt(dx * dx + dy * dy);
+            let normalized = { x: dx / magnitude, y: dy / magnitude };
+        
+            return {
+                x: normalized.x * distance + anchor.x,
+                y: normalized.y * distance + anchor.y
+            };
+        }
+        
+        function fabrik(chain, target, distance) {
+            // Forward pass
+            for (let i = 1; i < chain.length; i++) {
+                chain[i] = constrainDistance(chain[i], chain[i - 1], distance);
+            }
+        
+            // Backward pass
+            chain[chain.length - 1] = target;
+            for (let i = chain.length - 1; i > 0; i--) {
+                chain[i - 1] = constrainDistance(chain[i - 1], chain[i], distance);
+            }
+        }
+        `
+            },
+            "deltaLine": {
+                "cpp": 1,
+                "python": 1,
+                "javascript": 1
+            },
+            "prosAndCons": {
+                "pros": [
+                    "Effectively moves a chain of segments towards a target while preserving segment lengths.",
+                    "Highly versatile for solving inverse kinematics problems in robotics and animation.",
+                    "Efficient and simple to implement compared to other inverse kinematics algorithms."
+                ],
+                "cons": [
+                    "Requires iterative passes for stabilization, which may be computationally expensive.",
+                    "May not always reach the exact target position due to fixed segment lengths.",
+                    "Does not account for additional constraints like angular limits or external forces."
+                ]
+            }
+        }
+        
         
         
     ];
